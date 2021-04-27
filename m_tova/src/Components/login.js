@@ -1,5 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
+import { auth } from '../Firebase/firebase'
+import Button from 'react-bootstrap/Button';
 
 class Login extends React.Component {
 
@@ -8,13 +10,30 @@ class Login extends React.Component {
         super(props)
         this.state = {}
     }
+    test() { 
+        
+        auth.signInWithEmailAndPassword("t@gmail.com", "123456")
+        .then((userCredential) => {
+            // Signed in 
+            var user = userCredential.user;
+            console.log(user)
+            // ...
+        })
+        .catch((error) => {
+            console.log(error);
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // ..
+        });
+
+    }
 
     render(){
 
         return(
             <div>
                 <h1>Hello</h1>
-
+                <Button onClick = {() => {this.test()}}>Click me</Button>
             </div>
         )
     }
