@@ -3,6 +3,7 @@ import React from 'react';
 import { auth } from '../Firebase/firebase'
 import Button from 'react-bootstrap/Button';
 
+
 class Login extends React.Component {
 
     constructor(props)
@@ -21,13 +22,10 @@ class Login extends React.Component {
         })
         .catch((error) => {
             console.log(error);
-            var errorCode = error.code;
-            var errorMessage = error.message;
             // ..
         });
 
     }
-
     render(){
 
         return(

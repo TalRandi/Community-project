@@ -14,9 +14,8 @@ function App() {
   return (
     <div className="App">
       
-
       <Button variant="outline-primary">Primary</Button>
-      <Login></Login>
+      <Login/>
 
     </div>
   );
