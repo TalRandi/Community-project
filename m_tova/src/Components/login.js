@@ -26,24 +26,51 @@ function Login() {
     //     });
     // }
 
+
+    //Submit button clicked
     const login_clicked = () => {
         
-        // if(name === '' || password === '')
-        //     alert('Name and password are required');
-        console.log("in")
+        //Invalid input
+        if(name === '' || password === '')
+        {
+            alert('Name and password are required');
+            return;
+        }
+
+        db.collection("users").where("name","==",name)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.docs.forEach(element => {
+                    //Exists user
+                    if(element.data().password == password )
+                        console.log("logged in");
+                    //Unknown user
+                    else{
+                        console.log("denied");
+                    }
+                }); 
+            })
+
+        // db.collection("users")
+        //     .get()
+        //     .then(querySnapshot => {
+        //         querySnapshot.forEach(element => {
+        //             console.log(element.data());
+        //         });
+        //     })
         // db.collection("users").doc("5md9lchKDGK9mebC50mA")
         //     .get()
         //     .then(querySnapshot => {
         //       console.log(querySnapshot.data());
         // });
-        db.collection("users").where("name","==","tal")
-            .get()
-            .then(querySnapshot => {
-              console.log(querySnapshot);
+        // db.collection("users").where("name","==","tal")
+        //     .get()
+        //     .then(querySnapshot => {
+        //       console.log(querySnapshot);
             //   querySnapshot.docs.forEach(user=>{
             //       console.log(user.data())
             //   })
-        });
+        // });
     }
 
     useEffect(() => {
