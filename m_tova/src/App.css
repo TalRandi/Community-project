@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+
 }
 
 #login-form{
@@ -25,4 +26,24 @@
 }
 .radio-input{
   margin: 1% 2%;
+}
+
+.nav-list{
+  width: 40%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+}
+
+nav{
+  background-color: rgb(38, 60, 109);
+  color: rgb(224, 227, 235);
+  padding: 2%;
+  margin-bottom: 3%;
+}
+
+li{
+  color: #618685;
+  font-size: 1.5rem;
 }

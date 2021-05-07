@@ -1,20 +1,12 @@
-class HomeStudent extends React.Component {
+import NavBar from './navigation_bar';
 
-    constructor(props)
-    {
-        super(props)
-        this.state = {}
-    }
-
-    render(){
-
-        return(
-            <div>
-
-
-            </div>
-        )
-    }
+const HomeStudent = () => {
+    return ( 
+        <div>
+            <NavBar/>
+        </div>
+    );
 }
-
+ 
 export default HomeStudent;
+

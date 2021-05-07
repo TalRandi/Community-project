@@ -6,11 +6,12 @@ import '../App.css';
 import logo from '../Images/m_tova_logo.jpeg';
 import { db } from '../Firebase/firebase'
 
-function Login() {
+function Login({setAuthorized}) {
 
     const [choice, setChoice] = useState(0);
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+
 
     // const test = () => { 
     //     firebase.auth.signInWithEmailAndPassword("t@gmail.com", "123456")
@@ -43,7 +44,8 @@ function Login() {
                 querySnapshot.docs.forEach(element => {
                     //Exists user
                     if(element.data().password == password )
-                        console.log("logged in");
+                        setAuthorized(true);
+                    
                     //Unknown user
                     else{
                         console.log("denied");
@@ -79,7 +81,7 @@ function Login() {
 
     return (
         <div>
-    
+
             <div id = "login-form">
                 <h3 id = "login-title">התחברות</h3>
 
