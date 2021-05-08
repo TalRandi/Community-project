@@ -28,8 +28,9 @@
   margin: 1% 2%;
 }
 
-.nav-list{
+.nav-list, #log-off{
   width: 40%;
+  margin: 0 2%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -44,6 +45,31 @@ nav{
 }
 
 li{
-  color: #618685;
+  color: #f7fcfc;
   font-size: 1.5rem;
+}
+
+#small-logo{
+  position: absolute;
+  right: 1%;
+  height: 10%;
+  width: 15%;
+}
+
+.side-menu{
+  position: absolute;
+  border: 5px rgb(38, 60, 109) solid;
+  border-radius: 8px;
+  right: 3%;
+  top: 30%;
+}
+
+.menu-content{
+  margin: 10% 10%;
+  padding: 10px;
+}
+
+.hello-name{
+  position: absolute;
+  right: 45%;
 }
