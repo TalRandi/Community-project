@@ -1,38 +1,75 @@
 .App {
   text-align: center;
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#login-form{
+  position: absolute;
+  margin: 10% 0 20% 0;
+  right: 10%;
+  width: 30%;
+}
+#login-title{
+  margin-bottom: 15%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.btn{
+  margin: 10% 0 5% 0 ;
+}
+#logo{
+  position: absolute;
+  top: 25%;
+  left: 1%;
+  height: 35%;
+  width: 60%;
+  z-index: -1;
+}
+.radio-input{
+  margin: 1% 2%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.nav-list, #log-off{
+  width: 40%;
+  margin: 0 2%;
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  list-style: none;
 }
 
-.App-link {
-  color: #61dafb;
+nav{
+  background-color: rgb(38, 60, 109);
+  color: rgb(224, 227, 235);
+  padding: 2%;
+  margin-bottom: 3%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+li{
+  color: #f7fcfc;
+  font-size: 1.5rem;
+}
+
+#small-logo{
+  position: absolute;
+  right: 1%;
+  height: 10%;
+  width: 15%;
+}
+
+.side-menu{
+  position: absolute;
+  border: 5px rgb(38, 60, 109) solid;
+  border-radius: 8px;
+  right: 3%;
+  top: 30%;
+}
+
+.menu-content{
+  margin: 10% 10%;
+  padding: 10px;
+}
+
+.hello-name{
+  position: absolute;
+  right: 45%;
 }
