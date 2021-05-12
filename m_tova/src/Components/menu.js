@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap';
-import InternalContent from './internal_content';
 import { db } from '../Firebase/firebase'
+
 
 const Menu = (props) => {
 
@@ -8,27 +8,30 @@ const Menu = (props) => {
     let setEmail = props.setEmail
     let setInstructorName = props.setInstructorName
     let setContent = props.setContent
+    let instructor_name = props.instructor_name
+    let course_name = props.course_name
 
     const instructor_details = e => {
+
         setContent(e.target.id)
-        db.collection("courses").where("course_name", "==", props.course_name)
+        db.collection("courses").where("course_name", "==", course_name)
             .get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(element => {
                     setInstructorName(element.data().instructor_name)
-                    db.collection("instructors").where("name", "==", props.instructor_name)
-                        .get()
-                        .then(querySnapshot => {
-                            querySnapshot.docs.forEach(element => {
-                                setPhoneNumber(element.data().phone_number)
-                                setEmail(element.data().email)
-                            });
-                        })
                 });
             })
+        }
+        db.collection("instructors").where("name", "==", instructor_name)
+        .get()
+        .then(querySnapshot2 => {
+            
+            querySnapshot2.docs.forEach(element2 => {
+                setPhoneNumber(element2.data().phone_number)
+                setEmail(element2.data().email)
+            });
+        })
 
-
-    }
     return (
         <div className="side-menu">
             {(() => {

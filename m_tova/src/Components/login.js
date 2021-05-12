@@ -42,7 +42,7 @@ const Login = props =>{
                     if(element.data().password === password )
                     {
                         setAuthorized(true);
-                        setCourseName(element.data().courses[0])
+                        setCourseName(element.data().course)
                     }
                     
                     //Unknown user

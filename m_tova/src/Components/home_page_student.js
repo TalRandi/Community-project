@@ -11,12 +11,12 @@ const HomeStudent = (props) => {
                 name = {props.name}/>
             <Menu 
                 type = {props.type} 
-                name = {props.name}
+                instructor_name={props.instructor_name}
                 course_name={props.course_name}
+
                 setInstructorName={props.setInstructorName}
                 setEmail={props.setEmail}
                 setPhoneNumber={props.setPhoneNumber}
-                instructor_name={props.instructor_name}
                 setContent={props.setContent}
                 />
         </div>

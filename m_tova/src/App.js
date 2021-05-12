@@ -1,11 +1,10 @@
 import './App.css';
 // import Button from 'react-bootstrap/Button';
-// import InternalContent from './Components/internal_content';
 import Login from './Components/login';
 import HomeStudent from './Components/home_page_student';
 import HomeInstructor from './Components/home_page_instructor';
 import HomeAdmin from './Components/home_page_admin';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom';
 // import { Redirect } from "react-router-dom"
 
@@ -49,11 +48,13 @@ function App() {
                         setEmail={setEmail}
                         setPhoneNumber={setPhoneNumber}
                         setContent={setContent} />
-                      <InternalContent
-                        content={content}
-                        instructor_name={instructor_name}
-                        email={email}
-                        phone_number={phone_number} />
+                        {(email != '')&&(phone_number != '')&&(instructor_name != '') &&
+                          <InternalContent
+                            content={content}
+                            instructor_name={instructor_name}
+                            email={email}
+                            phone_number={phone_number} />
+                        }
                     </div>
                   )
                 //instructor
