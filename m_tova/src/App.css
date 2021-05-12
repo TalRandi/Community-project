@@ -74,13 +74,14 @@ li{
   right: 45%;
 }
 
-#instructorDetails{
+#instructorDetails,#courseDetails{
   width: 30rem;
   position:absolute;
   right: 30%;
   margin-top: 10%;
   
 }
+
 #listGroup{
   text-align: right;
 }

@@ -18,6 +18,10 @@ const HomeStudent = (props) => {
                 setEmail={props.setEmail}
                 setPhoneNumber={props.setPhoneNumber}
                 setContent={props.setContent}
+                setStartDate={props.setStartDate}
+                setEndDate={props.setEndDate}
+                setListOfStudent={props.setListOfStudent}
+
                 />
         </div>
     );

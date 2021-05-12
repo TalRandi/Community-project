@@ -15,6 +15,17 @@ const InternalContent = (props) => {
                     </ListGroup>
                 </Card>
             );
+        case "course_details":
+            return (
+                <Card id="courseDetails">
+                <ListGroup variant="flush" id="listGroup">
+                    <ListGroup.Item>שם הקורס: {props.course_name}</ListGroup.Item>
+                    <ListGroup.Item>תאריך התחלה: {props.start_date}</ListGroup.Item>
+                    <ListGroup.Item>תאריך סיום: {props.end_date}</ListGroup.Item>
+                    <ListGroup.Item> {props.list_of_student}</ListGroup.Item>
+                </ListGroup>
+            </Card>
+            );
 
 
         default:

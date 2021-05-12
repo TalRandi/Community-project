@@ -10,9 +10,34 @@ const Menu = (props) => {
     let setContent = props.setContent
     let instructor_name = props.instructor_name
     let course_name = props.course_name
+    let setStartDate=props.setStartDate
+    let setEndDate =props.setEndDate
+    let setListOfStudent=props.setListOfStudent
+
+    const course_details = e => {
+        setContent(e.target.id)
+        db.collection("courses").where("course_name", "==", course_name)
+        .get()
+        .then(querySnapshot => {
+            querySnapshot.docs.forEach(element => {
+               setStartDate(element.data().start_date)
+               setEndDate(element.data().end_date)
+            });
+        })
+     
+        db.collection("users").where("course_name","==",course_name)
+        .get()
+        .then(querySnapshot => {
+            querySnapshot.docs.forEach(element => {
+              setListOfStudent(element.data().name)
+              console.log("here");
+            });
+        })
+        
+
+    }
 
     const instructor_details = e => {
-
         setContent(e.target.id)
         db.collection("courses").where("course_name", "==", course_name)
             .get()
@@ -21,11 +46,11 @@ const Menu = (props) => {
                     setInstructorName(element.data().instructor_name)
                 });
             })
-        }
-        db.collection("instructors").where("name", "==", instructor_name)
+    }
+    db.collection("instructors").where("name", "==", instructor_name)
         .get()
         .then(querySnapshot2 => {
-            
+
             querySnapshot2.docs.forEach(element2 => {
                 setPhoneNumber(element2.data().phone_number)
                 setEmail(element2.data().email)
@@ -41,7 +66,7 @@ const Menu = (props) => {
                         <div className="menu-content">
                             <Button>תכנים קבוצתיים</Button><br />
                             <Button>תכני קורס</Button><br />
-                            <Button>פרטי קורס</Button><br />
+                            <Button onClick={course_details} id="course_details">פרטי קורס</Button><br />
                             <Button onClick={instructor_details} id="instructor_details">פרטי מדריך</Button>
                         </div>
                     )
