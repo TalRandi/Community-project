@@ -10,7 +10,15 @@ const HomeStudent = (props) => {
                 setAuthorized = {props.setAuthorized}
                 name = {props.name}/>
             <Menu 
-                type = {props.type}/>
+                type = {props.type} 
+                instructor_name={props.instructor_name}
+                course_name={props.course_name}
+
+                setInstructorName={props.setInstructorName}
+                setEmail={props.setEmail}
+                setPhoneNumber={props.setPhoneNumber}
+                setContent={props.setContent}
+                />
         </div>
     );
 }

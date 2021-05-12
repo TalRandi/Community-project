@@ -9,12 +9,15 @@ import { db } from '../Firebase/firebase'
 const Login = props =>{
 
     const [password, setPassword] = useState('');
+  
 
     let setAuthorized = props.setAuthorized;
     let type = props.type;
     let setType = props.setType;
     let name = props.name;
     let setName = props.setName;
+    let setCourseName =props.setCourseName
+    
 
     //Submit button clicked
     const login_clicked = () => {
@@ -37,7 +40,10 @@ const Login = props =>{
                 querySnapshot.docs.forEach(element => {
                     //Exists user
                     if(element.data().password === password )
+                    {
                         setAuthorized(true);
+                        setCourseName(element.data().course)
+                    }
                     
                     //Unknown user
                     else{

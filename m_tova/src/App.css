@@ -73,3 +73,14 @@ li{
   position: absolute;
   right: 45%;
 }
+
+#instructorDetails{
+  width: 30rem;
+  position:absolute;
+  right: 30%;
+  margin-top: 10%;
+  
+}
+#listGroup{
+  text-align: right;
+}
