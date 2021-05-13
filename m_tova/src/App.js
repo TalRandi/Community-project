@@ -21,10 +21,10 @@ function App() {
   const [phone_number, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [instructor_name, setInstructorName] = useState('')
-  const [content, setContent] =useState('') // save the type of internal content
-  const [start_date, setStartDate] =useState('')
-  const [end_date, setEndDate] =useState('')
-  const [list_of_student, setListOfStudent]= useState([])
+  const [content, setContent] = useState('') // save the type of internal content
+  const [start_date, setStartDate] = useState('')
+  const [end_date, setEndDate] = useState('')
+  const [list_of_student, setListOfStudent] = useState([])
 
 
 
@@ -51,22 +51,22 @@ function App() {
                         setInstructorName={setInstructorName}
                         setEmail={setEmail}
                         setPhoneNumber={setPhoneNumber}
-                        setContent={setContent} 
+                        setContent={setContent}
                         setStartDate={setStartDate}
                         setEndDate={setEndDate}
                         setListOfStudent={setListOfStudent}
-                        />
-                        {/* {(email != '')&&(phone_number != '')&&(instructor_name != '') && */}
-                          <InternalContent
-                            content={content}
-                            course_name={course_name}
-                            instructor_name={instructor_name}
-                            email={email}
-                            phone_number={phone_number}
-                            start_date={start_date}
-                            end_date={end_date}
-                            list_of_student={list_of_student} />
-                        {/* } */}
+                      />
+                      {/* {(email != '')&&(phone_number != '')&&(instructor_name != '') && */}
+                      <InternalContent
+                        content={content}
+                        course_name={course_name}
+                        instructor_name={instructor_name}
+                        email={email}
+                        phone_number={phone_number}
+                        start_date={start_date}
+                        end_date={end_date}
+                        list_of_student={list_of_student} />
+                      {/* } */}
                     </div>
                   )
                 //instructor

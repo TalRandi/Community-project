@@ -10,32 +10,32 @@ const Menu = (props) => {
     let setContent = props.setContent
     let instructor_name = props.instructor_name
     let course_name = props.course_name
-    let setStartDate=props.setStartDate
-    let setEndDate =props.setEndDate
-    let setListOfStudent=props.setListOfStudent
+    let setStartDate = props.setStartDate
+    let setEndDate = props.setEndDate
+    let setListOfStudent = props.setListOfStudent
 
     const course_details = e => {
         setContent(e.target.id)
         db.collection("courses").where("course_name", "==", course_name)
-        .get()
-        .then(querySnapshot => {
-            
-            querySnapshot.docs.forEach(element => {
-               setStartDate(element.data().start_date)
-               setEndDate(element.data().end_date)
-               console.log("check")
-            });
-        })
-        let new_list_student=[]
-        db.collection("users").where("course","==",course_name)
-        .get()
-        .then(querySnapshot => {
-            querySnapshot.docs.forEach(element => {
-                 new_list_student.push({'name': element.data().name, 'phone_number': element.data().phone_number})
-            });         
-            setListOfStudent(new_list_student)
-        })
-       
+            .get()
+            .then(querySnapshot => {
+
+                querySnapshot.docs.forEach(element => {
+                    setStartDate(element.data().start_date)
+                    setEndDate(element.data().end_date)
+                    console.log("check")
+                });
+            })
+        let new_list_student = []
+        db.collection("users").where("course", "==", course_name)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.docs.forEach(element => {
+                    new_list_student.push({ 'name': element.data().name, 'phone_number': element.data().phone_number })
+                });
+                setListOfStudent(new_list_student)
+            })
+
 
     }
 
@@ -46,23 +46,19 @@ const Menu = (props) => {
             .get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(element => {
-                    // setInstructorName(element.data().instructor_name)
-                    temp_instructor=element.data().instructor_name
+                    temp_instructor = element.data().instructor_name
                 });
                 db.collection("instructors").where("name", "==", temp_instructor)
-            .get()
-            .then(querySnapshot2 => {
+                    .get()
+                    .then(querySnapshot2 => {
 
-                querySnapshot2.docs.forEach(element2 => {
-                    setPhoneNumber(element2.data().phone_number)
-                    setEmail(element2.data().email)
-                    setInstructorName(temp_instructor)
-                });
+                        querySnapshot2.docs.forEach(element2 => {
+                            setPhoneNumber(element2.data().phone_number)
+                            setEmail(element2.data().email)
+                            setInstructorName(temp_instructor)
+                        });
+                    })
             })
-            })
-    
-        console.log(instructor_name)
-        
     }
     return (
         <div className="side-menu">
@@ -73,8 +69,8 @@ const Menu = (props) => {
                         <div className="menu-content">
                             <Button  >תכנים קבוצתיים</Button><br />
                             <Button >תכני קורס</Button><br />
-                            <Button  onClick={course_details} id="course_details">פרטי קורס</Button><br /> 
-                            <Button  onClick={instructor_details} id="instructor_details">פרטי מדריך</Button> 
+                            <Button onClick={course_details} id="course_details">פרטי קורס</Button><br />
+                            <Button onClick={instructor_details} id="instructor_details">פרטי מדריך</Button>
                         </div>
                     )
                 }
@@ -99,7 +95,7 @@ const Menu = (props) => {
             })()}
         </div>
     );
-    
+
 }
 
 export default Menu;

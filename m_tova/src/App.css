@@ -105,15 +105,15 @@ th {
   font-size: x-large;
 }
 
-
-
 .list_students h1 {
   text-align: right;
 }
 
-.menu-content Button,.menu-content Button:hover, .menu-content Button:active, .menu-content Button:visited , .menu-content Button:focus{
+.menu-content Button,
+.menu-content Button:hover,
+.menu-content Button:active,
+.menu-content Button:visited,
+.menu-content Button:focus {
   background-color: #614f54;
   border: #614f54;
-  
 }
-

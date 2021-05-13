@@ -3,14 +3,14 @@ import Menu from './menu';
 
 
 const HomeStudent = (props) => {
-    return ( 
+    return (
         <div>
-            <NavBar 
-                isAuthorized = {props.isAuthorized} 
-                setAuthorized = {props.setAuthorized}
-                name = {props.name}/>
-            <Menu 
-                type = {props.type} 
+            <NavBar
+                isAuthorized={props.isAuthorized}
+                setAuthorized={props.setAuthorized}
+                name={props.name} />
+            <Menu
+                type={props.type}
                 instructor_name={props.instructor_name}
                 course_name={props.course_name}
 
@@ -22,10 +22,10 @@ const HomeStudent = (props) => {
                 setEndDate={props.setEndDate}
                 setListOfStudent={props.setListOfStudent}
 
-                />
+            />
         </div>
     );
 }
- 
+
 export default HomeStudent;
 
