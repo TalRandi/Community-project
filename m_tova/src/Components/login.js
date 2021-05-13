@@ -28,7 +28,7 @@ const Login = props =>{
             alert('חובה למלא שם משתמש וסיסמא');
             return;
         }
-
+        
         db.collection("users").where("name","==",name)
             .get()
             .then(querySnapshot => {
@@ -38,11 +38,15 @@ const Login = props =>{
                     return;
                 }
                 querySnapshot.docs.forEach(element => {
+                    
                     //Exists user
                     if(element.data().password === password )
                     {
+                        
                         setAuthorized(true);
+                        console.log("1");
                         setCourseName(element.data().course)
+                       
                     }
                     
                     //Unknown user
@@ -52,6 +56,7 @@ const Login = props =>{
                 }); 
             })
             .catch((error) => {
+                console.log("2");
                 console.log("Error getting documents: ", error);
             });
     }
