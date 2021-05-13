@@ -8,13 +8,17 @@ const Menu = (props) => {
     let setEmail = props.setEmail
     let setInstructorName = props.setInstructorName
     let setContent = props.setContent
-    let instructor_name = props.instructor_name
+    // let instructor_name = props.instructor_name
     let course_name = props.course_name
     let setStartDate = props.setStartDate
     let setEndDate = props.setEndDate
     let setListOfStudent = props.setListOfStudent
+    let name = props.name
+    let setListOfCourses = props.setListOfCourses
 
+    //Course details clicked from student page
     const course_details = e => {
+
         setContent(e.target.id)
         db.collection("courses").where("course_name", "==", course_name)
             .get()
@@ -23,7 +27,6 @@ const Menu = (props) => {
                 querySnapshot.docs.forEach(element => {
                     setStartDate(element.data().start_date)
                     setEndDate(element.data().end_date)
-                    console.log("check")
                 });
             })
         let new_list_student = []
@@ -35,11 +38,10 @@ const Menu = (props) => {
                 });
                 setListOfStudent(new_list_student)
             })
-
-
     }
-
+    //Instructor details clicked from student page
     const instructor_details = e => {
+
         setContent(e.target.id)
         let temp_instructor
         db.collection("courses").where("course_name", "==", course_name)
@@ -60,6 +62,44 @@ const Menu = (props) => {
                     })
             })
     }
+    //Courses list clicked from instructor page
+    const courses_list = e =>{
+
+        let courses_arr = []
+        
+        db.collection("courses").where("instructor_name", "==", name)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.docs.forEach(element => {
+                    courses_arr.push(element.data().course_name)
+                });
+                setListOfCourses(courses_arr)
+                setContent(e.target.id)
+            })        
+    }
+    //Student list button clicked from instructor page
+    const student_list = e =>{
+
+        let students_arr = []
+        
+        db.collection("courses").where("instructor_name", "==", name)
+            .get()
+            .then(querySnapshot => {
+                
+                querySnapshot.docs.forEach(element => {
+                    
+                    db.collection("users").where("course", "==", element.data().course_name)
+                    .get()
+                    .then(querySnapshot2 => {
+                        querySnapshot2.docs.forEach(element2 => {
+                            students_arr.push(element2.data())
+                        });
+                    })  
+                });
+                setListOfStudent(students_arr)
+                setContent(e.target.id)
+            })   
+    }
     return (
         <div className="side-menu">
             {(() => {
@@ -78,8 +118,8 @@ const Menu = (props) => {
                 else if (props.type === 1) {
                     return (
                         <div className="menu-content">
-                            <Button >רשימת קורסים</Button><br />
-                            <Button >רשימת סטודנטים</Button>
+                            <Button onClick={courses_list} id = "courses_list">רשימת קורסים</Button><br />
+                            <Button onClick={student_list} id = "student_list_from_instructor">רשימת סטודנטים</Button>
                         </div>
                     )
                 }

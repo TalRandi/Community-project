@@ -79,7 +79,8 @@ li {
 #courseDetails {
   width: 30rem;
   position: absolute;
-  right: 30%;
+  right: 20%;
+  top: 5%;
   margin-top: 10%;
   font-size: x-large;
 }
@@ -91,7 +92,7 @@ li {
 .list_students {
   position: absolute;
   top: 50%;
-  right: 30%;
+  right: 20%;
 }
 td {
   width: 20%;
@@ -116,4 +117,23 @@ th {
 .menu-content Button:focus {
   background-color: #614f54;
   border: #614f54;
+}
+
+.courses_list{
+  position: absolute;
+  top: 25%;
+  right: 20%;
+  width: 40%;
+}
+
+.course-ul{
+  padding: 2% 0;
+  background-color: #b0aac0;
+  border: 5%;
+  border-radius: 15px;
+  cursor: pointer;
+  margin: 5% 0;
+  font-weight: bold;
+  font-size: x-large;
+  box-shadow: 4px 4px 2px 4px #5c5866;
 }

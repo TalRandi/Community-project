@@ -28,34 +28,59 @@ const Login = props => {
             return;
         }
 
-        db.collection("users").where("name", "==", name)
-            .get()
-            .then(querySnapshot => {
-                if (querySnapshot.docs.length === 0) {
-                    alert('משתמש לא קיים');
-                    return;
-                }
-                querySnapshot.docs.forEach(element => {
-
-                    //Exists user
-                    if (element.data().password === password) {
-
-                        setAuthorized(true);
-                        console.log("1");
-                        setCourseName(element.data().course)
-
+        switch (type) {
+            //Student
+            case 0:
+                db.collection("users").where("name", "==", name)
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.docs.length === 0) {
+                        alert('משתמש לא קיים');
+                        return;
                     }
-
-                    //Unknown user
-                    else {
-                        alert("סיסמא שגויה");
-                    }
-                });
-            })
-            .catch((error) => {
-                console.log("2");
-                console.log("Error getting documents: ", error);
-            });
+                    querySnapshot.docs.forEach(element => {
+    
+                        //Exists user
+                        if (element.data().password === password) {
+                            setAuthorized(true);
+                            setCourseName(element.data().course)
+                        }
+                        //Unknown user
+                        else {
+                            alert("סיסמא שגויה");
+                        }
+                    });
+                })
+                break;
+                //Instructor
+                case 1:
+                    db.collection("instructors").where("name", "==", name)
+                    .get()
+                    .then(querySnapshot => {
+                        if (querySnapshot.docs.length === 0) {
+                            alert('משתמש לא קיים');
+                            return;
+                        }
+                        querySnapshot.docs.forEach(element => {
+        
+                            //Exists user
+                            if (element.data().password === password)
+                                setAuthorized(true);
+                            
+                            //Unknown user
+                            else 
+                                alert("סיסמא שגויה");
+                        });
+                    })
+                break;
+            //Admin
+            case 2:
+            
+                break;
+        
+            default:
+                break;
+        }
     }
 
     useEffect(() => {

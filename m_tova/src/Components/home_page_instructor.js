@@ -9,6 +9,10 @@ const HomeInstructor = (props) => {
                 setAuthorized = {props.setAuthorized}
                 name = {props.name}/>
             <Menu 
+                setListOfStudent = {props.setListOfStudent}
+                setListOfCourses = {props.setListOfCourses}
+                name = {props.name}
+                setContent = {props.setContent}
                 type = {props.type}/>
         </div>
     );
