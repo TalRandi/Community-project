@@ -56,7 +56,7 @@ function App() {
                         setEndDate={setEndDate}
                         setListOfStudent={setListOfStudent}
                         />
-                        {(email != '')&&(phone_number != '')&&(instructor_name != '') &&
+                        {/* {(email != '')&&(phone_number != '')&&(instructor_name != '') && */}
                           <InternalContent
                             content={content}
                             course_name={course_name}
@@ -66,7 +66,7 @@ function App() {
                             start_date={start_date}
                             end_date={end_date}
                             list_of_student={list_of_student} />
-                        }
+                        {/* } */}
                     </div>
                   )
                 //instructor

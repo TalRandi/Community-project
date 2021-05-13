@@ -19,9 +19,11 @@ const Menu = (props) => {
         db.collection("courses").where("course_name", "==", course_name)
         .get()
         .then(querySnapshot => {
+            
             querySnapshot.docs.forEach(element => {
                setStartDate(element.data().start_date)
                setEndDate(element.data().end_date)
+               console.log("check")
             });
         })
         let new_list_student=[]
@@ -39,24 +41,29 @@ const Menu = (props) => {
 
     const instructor_details = e => {
         setContent(e.target.id)
+        let temp_instructor
         db.collection("courses").where("course_name", "==", course_name)
             .get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(element => {
-                    setInstructorName(element.data().instructor_name)
+                    // setInstructorName(element.data().instructor_name)
+                    temp_instructor=element.data().instructor_name
+                });
+                db.collection("instructors").where("name", "==", temp_instructor)
+            .get()
+            .then(querySnapshot2 => {
+
+                querySnapshot2.docs.forEach(element2 => {
+                    setPhoneNumber(element2.data().phone_number)
+                    setEmail(element2.data().email)
+                    setInstructorName(temp_instructor)
                 });
             })
+            })
+    
+        console.log(instructor_name)
+        
     }
-    db.collection("instructors").where("name", "==", instructor_name)
-        .get()
-        .then(querySnapshot2 => {
-
-            querySnapshot2.docs.forEach(element2 => {
-                setPhoneNumber(element2.data().phone_number)
-                setEmail(element2.data().email)
-            });
-        })
-
     return (
         <div className="side-menu">
             {(() => {
@@ -66,8 +73,8 @@ const Menu = (props) => {
                         <div className="menu-content">
                             <Button  >תכנים קבוצתיים</Button><br />
                             <Button >תכני קורס</Button><br />
-                            <Button  onClick={course_details} id="course_details">פרטי קורס</Button><br />
-                            <Button  onClick={instructor_details} id="instructor_details">פרטי מדריך</Button>
+                            <Button  onClick={course_details} id="course_details">פרטי קורס</Button><br /> 
+                            <Button  onClick={instructor_details} id="instructor_details">פרטי מדריך</Button> 
                         </div>
                     )
                 }
