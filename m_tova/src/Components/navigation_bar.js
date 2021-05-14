@@ -4,8 +4,21 @@ import logo from '../Images/m_tova_logo.jpeg';
 
 const NavBar = (props) => {
 
+    
+    //Reset all useState variables
     const log_off = () =>
     {
+        props.setName('')
+        props.setType(0)
+        props.setCourseName('')
+        props.setPhoneNumber('')
+        props.setEmail('')
+        props.setInstructorName('')
+        props.setContent('')
+        props.setStartDate('')
+        props.setEndDate('')
+        props.setListOfStudent([])
+        props.setListOfCourses([])  
         props.setAuthorized(false);
     }
 

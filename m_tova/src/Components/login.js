@@ -75,7 +75,24 @@ const Login = props => {
                 break;
             //Admin
             case 2:
-            
+                db.collection("administrators").where("name", "==", name)
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.docs.length === 0) {
+                        alert('משתמש לא קיים');
+                        return;
+                    }
+                    querySnapshot.docs.forEach(element => {
+    
+                        //Exists user
+                        if (element.data().password === password)
+                            setAuthorized(true);
+                        
+                        //Unknown user
+                        else 
+                            alert("סיסמא שגויה");
+                    });
+                })            
                 break;
         
             default:

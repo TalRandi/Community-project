@@ -1,16 +1,13 @@
 import './App.css';
-// import Button from 'react-bootstrap/Button';
 import Login from './Components/login';
 import HomeStudent from './Components/home_page_student';
 import HomeInstructor from './Components/home_page_instructor';
 import HomeAdmin from './Components/home_page_admin';
 import { useEffect, useState } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom';
-// import { Redirect } from "react-router-dom"
-
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import InternalContent from './Components/internal_content';
+
 
 function App() {
 
@@ -27,10 +24,7 @@ function App() {
   const [list_of_student, setListOfStudent] = useState([])
   const [list_of_courses, setListOfCourses] = useState([])
 
-
-
   return (
-
     <Router>
       <div className="App">
 
@@ -56,6 +50,10 @@ function App() {
                         setStartDate={setStartDate}
                         setEndDate={setEndDate}
                         setListOfStudent={setListOfStudent}
+                        setName = {setName}
+                        setType = {setType}
+                        setCourseName = {setCourseName}
+                        setListOfCourses = {setListOfCourses}
                       />
                       <InternalContent
                         content={content}
@@ -73,6 +71,16 @@ function App() {
                   return (
                     <div>
                       <HomeInstructor
+                        setName = {setName}
+                        setType = {setType}
+                        setCourseName = {setCourseName}
+                        setPhoneNumber = {setPhoneNumber}
+                        setEmail = {setEmail}
+                        setInstructorName = {setInstructorName}
+                        setStartDate = {setStartDate}
+                        setEndDate = {setEndDate}
+                        setListOfStudent = {setListOfStudent}
+                        setListOfCourses = {setListOfCourses}
                         isAuthorized={isAuthorized}
                         setAuthorized={setAuthorized}
                         setContent = {setContent}
@@ -93,7 +101,18 @@ function App() {
                 case 2:
                   return (
                     <HomeAdmin
+                      setName = {setName}
+                      setType = {setType}
+                      setCourseName = {setCourseName}
+                      setPhoneNumber = {setPhoneNumber}
+                      setEmail = {setEmail}
+                      setInstructorName = {setInstructorName}
+                      setStartDate = {setStartDate}
+                      setEndDate = {setEndDate}
+                      setListOfStudent = {setListOfStudent}
+                      setListOfCourses = {setListOfCourses}
                       isAuthorized={isAuthorized}
+                      setContent = {setContent}
                       setAuthorized={setAuthorized}
                       type={type}
                       name={name} />
