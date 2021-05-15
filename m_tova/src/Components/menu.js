@@ -8,7 +8,6 @@ const Menu = (props) => {
     let setEmail = props.setEmail
     let setInstructorName = props.setInstructorName
     let setContent = props.setContent
-    // let instructor_name = props.instructor_name
     let course_name = props.course_name
     let setStartDate = props.setStartDate
     let setEndDate = props.setEndDate
@@ -65,6 +64,7 @@ const Menu = (props) => {
     //Courses list clicked from instructor page
     const courses_list = e =>{
 
+        setContent(e.target.id)
         let courses_arr = []
         
         db.collection("courses").where("instructor_name", "==", name)
@@ -73,32 +73,13 @@ const Menu = (props) => {
                 querySnapshot.docs.forEach(element => {
                     courses_arr.push(element.data().course_name)
                 });
-                setListOfCourses(courses_arr)
-                setContent(e.target.id)
+                setListOfCourses(courses_arr)   
             })        
     }
     //Student list button clicked from instructor page
     const student_list = e =>{
-
-        let students_arr = []
         
-        db.collection("courses").where("instructor_name", "==", name)
-            .get()
-            .then(querySnapshot => {
-                
-                querySnapshot.docs.forEach(element => {
-                    
-                    db.collection("users").where("course", "==", element.data().course_name)
-                    .get()
-                    .then(querySnapshot2 => {
-                        querySnapshot2.docs.forEach(element2 => {
-                            students_arr.push(element2.data())
-                        });
-                    })  
-                });
-                setListOfStudent(students_arr)
-                setContent(e.target.id)
-            })   
+        setContent(e.target.id)
     }
     return (
         <div className="side-menu">
@@ -107,7 +88,7 @@ const Menu = (props) => {
                 if (props.type === 0) {
                     return (
                         <div className="menu-content">
-                            <Button  >תכנים קבוצתיים</Button><br />
+                            <Button >תכנים קבוצתיים</Button><br />
                             <Button >תכני קורס</Button><br />
                             <Button onClick={course_details} id="course_details">פרטי קורס</Button><br />
                             <Button onClick={instructor_details} id="instructor_details">פרטי מדריך</Button>

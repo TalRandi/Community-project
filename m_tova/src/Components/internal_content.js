@@ -1,6 +1,7 @@
 import { db } from '../Firebase/firebase'
-
+import { Button } from 'react-bootstrap';
 import { Card, ListGroup, Table } from 'react-bootstrap';
+// import del from '../Images/delete_student.png';s
 
 const InternalContent = (props) => {
 
@@ -8,7 +9,7 @@ const InternalContent = (props) => {
     let setEndDate = props.setEndDate
 
     const course_clicked = e =>{
-        
+ 
         db.collection("courses").where("course_name", "==", e.target.id)
         .get()
         .then(querySnapshot => {
@@ -20,9 +21,22 @@ const InternalContent = (props) => {
         })
 
     }
+    
+    const delete_student = e =>{
+        
+        const user_to_delete = e.target.id
+      
+        db.collection("users").where("name", "==", user_to_delete)
+        .get()
+        .then(querySnapshot => {
+            db.collection("users").doc(querySnapshot.docs[0].id).delete().then(() => {
+                console.log("Document successfully deleted!");
+            })
+        }) 
+    }
 
-
-    switch (props.content) {
+    switch (props.content) 
+    {
         case "instructor_details":
             return (
                 <Card id="instructorDetails">
@@ -37,7 +51,7 @@ const InternalContent = (props) => {
             let count = 1
             const listItems = props.list_of_student.map((d) => {
                 return (
-                    <tr key={count++}>
+                    <tr key={count}>
                         <td>{count++}</td>
                         <td >{d.name}</td>
                         <td>{d.phone_number}</td>
@@ -63,7 +77,9 @@ const InternalContent = (props) => {
                                     <th>מספר פלאפון </th>
                                 </tr>
                             </thead>
-                            {listItems}
+                            <tbody>
+                                {listItems}
+                            </tbody>
                         </Table>
                     </div>
                 </div>
@@ -81,9 +97,10 @@ const InternalContent = (props) => {
                 <div className = "courses_list">
                     {listItemsCourses}
                 </div>
-            );              
-        case "student_list_from_instructor":
+            );  
 
+        case "student_list_from_instructor":
+                
             let students_counter = 1
 
             const listItemStudents = props.list_of_student.map((student) => {
@@ -93,25 +110,30 @@ const InternalContent = (props) => {
                         <td >{student.name}</td>
                         <td >{student.course}</td>
                         <td>{student.phone_number}</td>
+                        <td><Button variant = "btn btn-danger" onClick = {delete_student} id = {student.name}>X</Button></td>
                     </tr>
                 )
             });  
             return (
-                <div className="list_students">
-                    <Table striped bordered hover variant="dark">
+
+                <div className="list_students student_list_table">
+                    <Table  striped bordered hover variant="dark">
                         <thead>
                             <tr>
                                 <th>שם הסטודנט</th>
                                 <th>שם קורס</th>
                                 <th>מספר פלאפון </th>
+                                <th>מחיקת סטודנט</th>
                             </tr>
                         </thead>
                         <tbody>
                             {listItemStudents}
                         </tbody>
                     </Table>
+                
                 </div>
-            );              
+            );    
+
         default:
             return (<div>
                 <h1>hello</h1>

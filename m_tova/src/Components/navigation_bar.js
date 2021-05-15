@@ -21,13 +21,11 @@ const NavBar = (props) => {
         props.setListOfCourses([])  
         props.setAuthorized(false);
     }
-
-
     return (
         <div>
             <nav>
                 <ul className = "nav-list">
-                    <img id = "small-logo" src={logo} />
+                    <img id = "small-logo" src={logo} alt = ""/>
                     <h3 className = "hello-name">שלום, {props.name}</h3>
                     <Link to = "/">
                         <li onClick = {log_off}>התנתק</li>

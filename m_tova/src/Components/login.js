@@ -72,6 +72,26 @@ const Login = props => {
                                 alert("סיסמא שגויה");
                         });
                     })
+                    let students_arr = []
+        
+                    db.collection("courses").where("instructor_name", "==", name)
+                        .get()
+                        .then(querySnapshot => {
+                            
+                            querySnapshot.docs.forEach(element => {
+                                
+                                db.collection("users").where("course", "==", element.data().course_name)
+                                .get()
+                                .then(querySnapshot2 => {
+                                    
+                                    querySnapshot2.docs.forEach(element2 => {
+                                        students_arr.push(element2.data())
+                                    });
+                                })  
+                            });
+            
+                            props.setListOfStudent(students_arr)
+                        })   
                 break;
             //Admin
             case 2:
@@ -124,10 +144,10 @@ const Login = props => {
 
                 <button onClick={login_clicked} type="submit" className="btn btn-dark btn-lg btn-block">התחבר</button>
                 <p className="forgot-password text-right">
-                    <a href="#">שכחתי סיסמא</a>
+                    <a href = "/">שכחתי סיסמא</a>
                 </p>
             </div>
-            <img id="logo" src={logo} />
+            <img id="logo" src={logo} alt = ""/>
 
         </div>
     );

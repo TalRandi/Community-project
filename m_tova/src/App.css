@@ -137,3 +137,8 @@ th {
   font-size: x-large;
   box-shadow: 4px 4px 2px 4px #5c5866;
 }
+.student_list_table{
+  position: absolute;
+  top: 20%;
+  right: 20%;
+}

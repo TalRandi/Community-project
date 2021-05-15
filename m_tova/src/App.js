@@ -3,7 +3,7 @@ import Login from './Components/login';
 import HomeStudent from './Components/home_page_student';
 import HomeInstructor from './Components/home_page_instructor';
 import HomeAdmin from './Components/home_page_admin';
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import InternalContent from './Components/internal_content';
@@ -86,8 +86,6 @@ function App() {
                         setContent = {setContent}
                         type={type}
                         name={name} 
-                        setListOfCourses = {setListOfCourses}
-                        setListOfStudent = {setListOfStudent}
                         />
                       <InternalContent
                         setStartDate = {setStartDate}
@@ -132,7 +130,9 @@ function App() {
               setType={setType}
               name={name}
               setName={setName}
-              setCourseName={setCourseName} />
+              setCourseName={setCourseName}
+              setListOfStudent = {setListOfStudent} 
+              />
           </div>
         )}
 

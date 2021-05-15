@@ -16,7 +16,6 @@ const HomeInstructor = (props) => {
                 setEndDate = {props.setEndDate}
                 setListOfStudent = {props.setListOfStudent}
                 setListOfCourses = {props.setListOfCourses}
-
                 isAuthorized = {props.isAuthorized} 
                 setAuthorized = {props.setAuthorized}
                 name = {props.name}/>
