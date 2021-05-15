@@ -89,7 +89,6 @@ const Login = props => {
                                     });
                                 })  
                             });
-            
                             props.setListOfStudent(students_arr)
                         })   
                 break;

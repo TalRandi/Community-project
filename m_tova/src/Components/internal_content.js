@@ -33,6 +33,27 @@ const InternalContent = (props) => {
                 console.log("Document successfully deleted!");
             })
         }) 
+   
+        let students_arr = []
+        db.collection("courses").where("instructor_name", "==", props.name)
+        .get()
+        .then(querySnapshot => {
+            
+            querySnapshot.docs.forEach(element => {
+                
+                db.collection("users").where("course", "==", element.data().course_name)
+                .get()
+                .then(querySnapshot2 => {
+                    
+                    querySnapshot2.docs.forEach(element2 => {
+                        students_arr.push(element2.data())
+                    });
+                    props.setListOfStudent(students_arr)
+                })  
+            });
+            
+        })   
+        
     }
 
     switch (props.content) 

@@ -88,6 +88,8 @@ function App() {
                         name={name} 
                         />
                       <InternalContent
+                        name = {name} 
+                        setListOfStudent = {setListOfStudent}
                         setStartDate = {setStartDate}
                         setEndDate = {setEndDate}
                         content={content}
