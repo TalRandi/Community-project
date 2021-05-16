@@ -21,9 +21,16 @@ const NavBar = (props) => {
         props.setListOfCourses([])  
         props.setAuthorized(false);
     }
+    let day = new Date().getDate()
+    let month = new Date().getMonth() + 1
+    let year = new Date().getFullYear()
+    
+
     return (
         <div>
             <nav>
+                <h3 id = "clock">{day + '/' + month + '/' + year}</h3>
+                
                 <ul className = "nav-list">
                     <img id = "small-logo" src={logo} alt = ""/>
                     <h3 className = "hello-name">שלום, {props.name}</h3>

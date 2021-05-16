@@ -20,7 +20,10 @@ const HomeAdmin = (props) => {
                 setAuthorized = {props.setAuthorized}
                 name = {props.name}/>
             <Menu 
-                type = {props.type}/>
+                setListOfCourses = {props.setListOfCourses}
+                type = {props.type}
+                setListOfInstructors = {props.setListOfInstructors}
+                setContent = {props.setContent}/>
         </div>
     );
 }

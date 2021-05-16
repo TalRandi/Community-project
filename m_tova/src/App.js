@@ -23,6 +23,7 @@ function App() {
   const [end_date, setEndDate] = useState('')
   const [list_of_student, setListOfStudent] = useState([])
   const [list_of_courses, setListOfCourses] = useState([])
+  const [list_of_instructors, setListOfInstructors] = useState([])
 
   return (
     <Router>
@@ -100,22 +101,35 @@ function App() {
                 //admin
                 case 2:
                   return (
-                    <HomeAdmin
-                      setName = {setName}
-                      setType = {setType}
-                      setCourseName = {setCourseName}
-                      setPhoneNumber = {setPhoneNumber}
-                      setEmail = {setEmail}
-                      setInstructorName = {setInstructorName}
-                      setStartDate = {setStartDate}
-                      setEndDate = {setEndDate}
-                      setListOfStudent = {setListOfStudent}
-                      setListOfCourses = {setListOfCourses}
-                      isAuthorized={isAuthorized}
-                      setContent = {setContent}
-                      setAuthorized={setAuthorized}
-                      type={type}
-                      name={name} />
+                    <div>
+                      <HomeAdmin
+                        setName = {setName}
+                        setType = {setType}
+                        setCourseName = {setCourseName}
+                        setPhoneNumber = {setPhoneNumber}
+                        setEmail = {setEmail}
+                        setInstructorName = {setInstructorName}
+                        setStartDate = {setStartDate}
+                        setEndDate = {setEndDate}
+                        setListOfStudent = {setListOfStudent}
+                        setListOfCourses = {setListOfCourses}
+                        isAuthorized={isAuthorized}
+                        setContent = {setContent}
+                        setAuthorized={setAuthorized}
+                        type={type}
+                        name={name} 
+                        setListOfInstructors = {setListOfInstructors}
+                        />
+                        <InternalContent
+                        list_of_courses ={list_of_courses}
+                        list_of_instructors = {list_of_instructors}
+                        content={content}
+                        setContent = {setContent}
+                        setListOfCourses = {setListOfCourses}
+                        setListOfInstructors = {setListOfInstructors}
+                        />
+                    </div>
+                      
                   )
 
                 default:

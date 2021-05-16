@@ -14,6 +14,7 @@ const Menu = (props) => {
     let setListOfStudent = props.setListOfStudent
     let name = props.name
     let setListOfCourses = props.setListOfCourses
+    let setListOfInstructors = props.setListOfInstructors
 
     //Course details clicked from student page
     const course_details = e => {
@@ -62,25 +63,57 @@ const Menu = (props) => {
             })
     }
     //Courses list clicked from instructor page
-    const courses_list = e =>{
+    const courses_list_from_instructor = e =>{
 
         setContent(e.target.id)
-        let courses_arr = []
+        let courses_arr_instructor = []
         
         db.collection("courses").where("instructor_name", "==", name)
             .get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(element => {
-                    courses_arr.push(element.data().course_name)
+                    courses_arr_instructor.push(element.data().course_name)
                 });
-                setListOfCourses(courses_arr)   
+                setListOfCourses(courses_arr_instructor)   
             })        
     }
+    
     //Student list button clicked from instructor page
     const student_list = e =>{
         
         setContent(e.target.id)
     }
+
+    //Instructor list button clicked from admin page
+    const instructors_list = e => {
+
+        setContent(e.target.id) 
+        let instructors_arr = []
+
+        db.collection("instructors").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                instructors_arr.push(doc.data())
+            });
+            setListOfInstructors(instructors_arr)    
+        });
+        
+
+    }
+    //Courses list button clicked from admin page
+    const courses_list_from_admin = e =>{
+
+        setContent(e.target.id)
+        let courses_arr_admin = []
+        
+        db.collection("courses").get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    courses_arr_admin.push(doc.data())
+                });
+                setListOfCourses(courses_arr_admin)   
+            }) 
+            
+    }
+
     return (
         <div className="side-menu">
             {(() => {
@@ -99,7 +132,7 @@ const Menu = (props) => {
                 else if (props.type === 1) {
                     return (
                         <div className="menu-content">
-                            <Button onClick={courses_list} id = "courses_list">רשימת קורסים</Button><br />
+                            <Button onClick={courses_list_from_instructor} id = "courses_list">רשימת קורסים</Button><br />
                             <Button onClick={student_list} id = "student_list_from_instructor">רשימת סטודנטים</Button>
                         </div>
                     )
@@ -108,8 +141,8 @@ const Menu = (props) => {
                 else if (props.type === 2) {
                     return (
                         <div className="menu-content">
-                            <Button >רשימת מדריכים</Button><br />
-                            <Button >רשימת קורסים</Button>
+                            <Button onClick={instructors_list} id = "instructors_list">רשימת מדריכים</Button><br />
+                            <Button onClick={courses_list_from_admin} id = "courses_list_from_admin">רשימת קורסים</Button>
                         </div>
                     )
                 }
