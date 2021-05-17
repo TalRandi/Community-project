@@ -1,4 +1,3 @@
-import './App.css';
 import Login from './Components/login';
 import HomeStudent from './Components/home_page_student';
 import HomeInstructor from './Components/home_page_instructor';
@@ -7,6 +6,7 @@ import { useState } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import InternalContent from './Components/internal_content';
+import './App.css';
 
 
 function App() {
@@ -93,6 +93,7 @@ function App() {
                         setListOfStudent = {setListOfStudent}
                         setStartDate = {setStartDate}
                         setEndDate = {setEndDate}
+                        setContent = {setContent}
                         content={content}
                         list_of_courses ={list_of_courses}
                         list_of_student = {list_of_student}/>

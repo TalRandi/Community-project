@@ -1,11 +1,17 @@
 import { db } from '../Firebase/firebase'
 import { Button } from 'react-bootstrap';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import React, { useState } from "react";
 import { Card, ListGroup, Table } from 'react-bootstrap';
 // import del from '../Images/delete_student.png';s
 
 
 //This componnent build the internal div with the relevant content inside it
 const InternalContent = (props) => {
+
+    const [inputStartDate, setInputStartDate] = useState(new Date());
+    const [inputEndDate, setInputEndDate] = useState(new Date());
 
     let setStartDate = props.setStartDate
     let setEndDate = props.setEndDate
@@ -125,9 +131,70 @@ const InternalContent = (props) => {
             });
         });
     }
+    //Submit courses button clicked from admin page
+    const submit_course = (c_name_id, i_name_id, start_id , end_id) =>{
+
+        const course_name = document.getElementById(c_name_id).value;
+        const instructor_name = document.getElementById(i_name_id).value;
+        const start_date = document.getElementById(start_id).value;
+        const end_date = document.getElementById(end_id).value;
+
+        const id = db.collection('stack_over').doc().id
+
+        var newCourse = {
+            course_name,
+            instructor_name,
+            start_date,
+            end_date
+        };
+
+        db.collection("courses").doc(id).set(newCourse).then(() => {
+            console.log("Documents successfully written!");
+            let courses_arr = []
+
+            db.collection("courses").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    courses_arr.push(doc.data())
+                });
+                props.setListOfCourses(courses_arr)    
+                props.setContent("courses_list_from_admin")
+            });
+        });
+    }
+    //Submit student button clicked from instructor page
+    const submit_student = (name_id, pass_id, course_id , phone_id) =>{
+
+        const name = document.getElementById(name_id).value;
+        const password = document.getElementById(pass_id).value;
+        const course = document.getElementById(course_id).value;
+        const phone_number = document.getElementById(phone_id).value;
+
+        const id = db.collection('stack_over').doc().id
+
+        var newStudent = {
+            name,
+            password,
+            course,
+            phone_number
+        };
+
+        db.collection("users").doc(id).set(newStudent).then(() => {
+            console.log("Documents successfully written!");
+            let students_arr = []
+
+            db.collection("users").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    students_arr.push(doc.data())
+                });
+                props.setListOfStudent(students_arr)    
+                props.setContent("student_list_from_instructor")
+            });
+        });
+    }
 
     switch (props.content) 
     {
+        //From student
         case "instructor_details":
        
             return (
@@ -139,6 +206,7 @@ const InternalContent = (props) => {
                     </ListGroup>
                 </Card>
             );
+        //From student
         case "course_details":
         
             let count = 1
@@ -160,7 +228,7 @@ const InternalContent = (props) => {
                             <ListGroup.Item>תאריך סיום: {props.end_date}</ListGroup.Item>
                         </ListGroup>
                     </Card>
-                    <div className="list_students">
+                    <div className = "internal_content list_students">
                         <h1>רשימת משתתפי הקורס:</h1>
                         <Table striped bordered hover variant="dark">
                             <thead>
@@ -178,6 +246,7 @@ const InternalContent = (props) => {
                 </div>
 
             );
+        //From instructor
         case "courses_list":
       
             let courses_counter = 1
@@ -187,11 +256,11 @@ const InternalContent = (props) => {
                 )
             });  
             return (
-                <div className = "courses_list">
+                <div className = "internal_content">
                     {listItemsCourses}
                 </div>
             );  
-
+        //From instructor        
         case "student_list_from_instructor":
   
             let students_counter = 1
@@ -209,7 +278,8 @@ const InternalContent = (props) => {
             });  
             return (
 
-                <div className="list_students student_list_table">
+                <div className = "internal_content">
+                    <Button className = "add_item" onClick = {() => props.setContent("add_student")} variant = "btn btn-success">הוסף סטודנט</Button>
                     <Table  striped bordered hover variant="dark">
                         <thead>
                             <tr>
@@ -223,9 +293,11 @@ const InternalContent = (props) => {
                             {listItemStudents}
                         </tbody>
                     </Table>
+                    <Button className = "add_item" onClick = {() => props.setContent("add_student")} variant = "btn btn-success">הוסף סטודנט</Button>
                 
                 </div>
-            );    
+            ); 
+        //From admin   
         case "instructors_list":
 
             let instructors_counter = 1
@@ -241,26 +313,26 @@ const InternalContent = (props) => {
                 )
             });  
             return (
-                <div>
+                <div className = "internal_content">
                     <Button className = "add_item" onClick = {() => props.setContent("add_instructor")} variant = "btn btn-success">הוסף מדריך</Button>
-                    <div className="list_students student_list_table">
-                        <Table  striped bordered hover variant="dark">
-                            <thead>
-                                <tr>
-                                    <th>שם המדריך</th>
-                                    <th>כתובת מייל</th>
-                                    <th>מספר פלאפון</th>
-                                    <th>מחיקת מדריך</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {listItemInstructors}
-                            </tbody>
-                        </Table>
-                    
-                    </div>
+                    <Table bordered variant="dark">
+                        <thead>
+                            <tr>
+                                <th>שם המדריך</th>
+                                <th>כתובת מייל</th>
+                                <th>מספר פלאפון</th>
+                                <th>מחיקת מדריך</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {listItemInstructors}
+                        </tbody>
+                    </Table>
+                    <Button className = "add_item" onClick = {() => props.setContent("add_instructor")} variant = "btn btn-success">הוסף מדריך</Button>
+
                 </div>
             );
+        //From admin 
         case "courses_list_from_admin":
 
             let counter = 1
@@ -276,7 +348,8 @@ const InternalContent = (props) => {
                 )
             });
             return (  
-                <div className="list_students student_list_table">
+                <div className = "internal_content">
+                    <Button className = "add_item" onClick = {() => props.setContent("add_course")} variant = "btn btn-success">הוסף קורס</Button>
                     <Table striped bordered hover variant="dark">
                         <thead>
                             <tr>
@@ -291,8 +364,10 @@ const InternalContent = (props) => {
                             {listCourses}
                         </tbody>
                     </Table>
+                    <Button className = "add_item" onClick = {() => props.setContent("add_course")} variant = "btn btn-success">הוסף קורס</Button>
                 </div>
             );
+        //From admin - inner button
         case "add_instructor":
             return(
                 <div className = "add_form">
@@ -304,11 +379,35 @@ const InternalContent = (props) => {
                     <Button className = "submit" variant = "btn btn-primary" onClick = {() => submit_instructor("input_name", "input_password", "input_email", "input_phone")}>אישור</Button>
                 </div>
             )    
+        //From admin - inner button    
+        case "add_course":
+            return(               
+                <div className = "add_form">
+                    <h1>הוספת קורס</h1>
+                    <input id = "input_course_name" className = "input_fields" type="text" placeholder="שם הקורס" required/>
+                    <input id = "input_instructor_name" className = "input_fields" type="text" placeholder="שם המדריך" required/>
+                    <DatePicker id = "input_start_date" className = "input_fields" selected={inputStartDate} onChange={date => setInputStartDate(date)} placeholderText='תאריך התחלה' required/><br />
+                    <DatePicker id = "input_end_date" className = "input_fields" selected={inputEndDate} onChange={date => setInputEndDate(date)} placeholderText="תאריך סיום" required/><br />
+                    <Button className = "submit" variant = "btn btn-primary" onClick = {() => submit_course("input_course_name", "input_instructor_name", "input_start_date", "input_end_date")}>אישור</Button>
+                </div>
+            )   
+        case "add_student":
+            return(
+                <div className = "add_form">
+                    <h1>הוספת סטודנט</h1>
+                    <input id = "input_student_name" className = "input_fields" type="text" placeholder="שם הסטודנט" required/>
+                    <input id = "input_password" className = "input_fields" type="text" placeholder="סיסמא" required/>
+                    <input id = "input_course_name" className = "input_fields" type="text" placeholder="שם הקורס" required/>
+                    <input id = "input_phone" className = "input_fields" type="text" placeholder="מספר פלאפון" required/>
+
+                    <Button className = "submit" variant = "btn btn-primary" onClick = {() => submit_student("input_student_name", "input_password", "input_course_name", "input_phone")}>אישור</Button>
+                </div>
+            )                
 
         
         default:
             return (<div>
-                <h1>hello</h1>
+                <h1>No Content</h1>
 
             </div>)
     }
