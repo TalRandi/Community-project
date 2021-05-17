@@ -1,5 +1,5 @@
 import { Button } from 'react-bootstrap';
-import { db } from '../Firebase/firebase'
+import { db, storage } from '../Firebase/firebase'
 
 
 const Menu = (props) => {
@@ -15,6 +15,8 @@ const Menu = (props) => {
     let name = props.name
     let setListOfCourses = props.setListOfCourses
     let setListOfInstructors = props.setListOfInstructors
+    let setArrOfClasses=props.setArrOfClasses
+   
 
     //Course details clicked from student page
     const course_details = e => {
@@ -63,55 +65,71 @@ const Menu = (props) => {
             })
     }
     //Courses list clicked from instructor page
-    const courses_list_from_instructor = e =>{
+    const courses_list_from_instructor = e => {
 
         setContent(e.target.id)
         let courses_arr_instructor = []
-        
+
         db.collection("courses").where("instructor_name", "==", name)
             .get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(element => {
                     courses_arr_instructor.push(element.data().course_name)
                 });
-                setListOfCourses(courses_arr_instructor)   
-            })        
+                setListOfCourses(courses_arr_instructor)
+            })
     }
-    
+
     //Student list button clicked from instructor page
-    const student_list = e =>{
-        
+    const student_list = e => {
+
         setContent(e.target.id)
     }
 
     //Instructor list button clicked from admin page
     const instructors_list = e => {
 
-        setContent(e.target.id) 
+        setContent(e.target.id)
         let instructors_arr = []
 
         db.collection("instructors").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 instructors_arr.push(doc.data())
             });
-            setListOfInstructors(instructors_arr)    
+            setListOfInstructors(instructors_arr)
         });
-        
+
 
     }
     //Courses list button clicked from admin page
-    const courses_list_from_admin = e =>{
+    const courses_list_from_admin = e => {
 
         setContent(e.target.id)
         let courses_arr_admin = []
-        
+
         db.collection("courses").get().then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-                    courses_arr_admin.push(doc.data())
-                });
-                setListOfCourses(courses_arr_admin)   
-            }) 
+            querySnapshot.forEach(doc => {
+                courses_arr_admin.push(doc.data())
+            });
+            setListOfCourses(courses_arr_admin)
+        })
+
+    }
+
+    const course_content = e => {
+       // generated url to specific folder
+        // storage.ref().child(course_name).listAll().then(list => { 
+        //     list.items.forEach(a=>{
+        //        a.getDownloadURL().then(url=>{
+        //            console.log(url);
+        //        })
+        //     })
             
+        // });
+        setContent(e.target.id)
+        storage.ref().child(course_name).listAll().then(list=>{
+            setArrOfClasses(list.prefixes)
+        })
     }
 
     return (
@@ -122,7 +140,7 @@ const Menu = (props) => {
                     return (
                         <div className="menu-content">
                             <Button >תכנים קבוצתיים</Button><br />
-                            <Button >תכני קורס</Button><br />
+                            <Button onClick={course_content} id="course_content">תכני קורס</Button><br />
                             <Button onClick={course_details} id="course_details">פרטי קורס</Button><br />
                             <Button onClick={instructor_details} id="instructor_details">פרטי מדריך</Button>
                         </div>
@@ -132,8 +150,8 @@ const Menu = (props) => {
                 else if (props.type === 1) {
                     return (
                         <div className="menu-content">
-                            <Button onClick={courses_list_from_instructor} id = "courses_list">רשימת קורסים</Button><br />
-                            <Button onClick={student_list} id = "student_list_from_instructor">רשימת סטודנטים</Button>
+                            <Button onClick={courses_list_from_instructor} id="courses_list">רשימת קורסים</Button><br />
+                            <Button onClick={student_list} id="student_list_from_instructor">רשימת סטודנטים</Button>
                         </div>
                     )
                 }
@@ -141,8 +159,8 @@ const Menu = (props) => {
                 else if (props.type === 2) {
                     return (
                         <div className="menu-content">
-                            <Button onClick={instructors_list} id = "instructors_list">רשימת מדריכים</Button><br />
-                            <Button onClick={courses_list_from_admin} id = "courses_list_from_admin">רשימת קורסים</Button>
+                            <Button onClick={instructors_list} id="instructors_list">רשימת מדריכים</Button><br />
+                            <Button onClick={courses_list_from_admin} id="courses_list_from_admin">רשימת קורסים</Button>
                         </div>
                     )
                 }

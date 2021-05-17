@@ -24,6 +24,9 @@ function App() {
   const [list_of_student, setListOfStudent] = useState([])
   const [list_of_courses, setListOfCourses] = useState([])
   const [list_of_instructors, setListOfInstructors] = useState([])
+  const [arr_of_classes, setArrOfClasses] = useState([])
+  const [arr_of_class_content, setClassContent] = useState([])
+
 
   return (
     <Router>
@@ -51,12 +54,17 @@ function App() {
                         setStartDate={setStartDate}
                         setEndDate={setEndDate}
                         setListOfStudent={setListOfStudent}
-                        setName = {setName}
-                        setType = {setType}
-                        setCourseName = {setCourseName}
-                        setListOfCourses = {setListOfCourses}
+                        setName={setName}
+                        setType={setType}
+                        setCourseName={setCourseName}
+                        setListOfCourses={setListOfCourses}
+                        setArrOfClasses={setArrOfClasses}
                       />
                       <InternalContent
+                        setContent={setContent}
+                        arr_of_class_content={arr_of_class_content}
+                        setClassContent={setClassContent}
+                        arr_of_classes={arr_of_classes}
                         content={content}
                         course_name={course_name}
                         instructor_name={instructor_name}
@@ -72,31 +80,31 @@ function App() {
                   return (
                     <div>
                       <HomeInstructor
-                        setName = {setName}
-                        setType = {setType}
-                        setCourseName = {setCourseName}
-                        setPhoneNumber = {setPhoneNumber}
-                        setEmail = {setEmail}
-                        setInstructorName = {setInstructorName}
-                        setStartDate = {setStartDate}
-                        setEndDate = {setEndDate}
-                        setListOfStudent = {setListOfStudent}
-                        setListOfCourses = {setListOfCourses}
+                        setName={setName}
+                        setType={setType}
+                        setCourseName={setCourseName}
+                        setPhoneNumber={setPhoneNumber}
+                        setEmail={setEmail}
+                        setInstructorName={setInstructorName}
+                        setStartDate={setStartDate}
+                        setEndDate={setEndDate}
+                        setListOfStudent={setListOfStudent}
+                        setListOfCourses={setListOfCourses}
                         isAuthorized={isAuthorized}
                         setAuthorized={setAuthorized}
-                        setContent = {setContent}
+                        setContent={setContent}
                         type={type}
-                        name={name} 
-                        />
+                        name={name}
+                      />
                       <InternalContent
-                        name = {name} 
-                        setListOfStudent = {setListOfStudent}
-                        setStartDate = {setStartDate}
-                        setEndDate = {setEndDate}
-                        setContent = {setContent}
+                        name={name}
+                        setListOfStudent={setListOfStudent}
+                        setStartDate={setStartDate}
+                        setEndDate={setEndDate}
+                        setContent={setContent}
                         content={content}
-                        list_of_courses ={list_of_courses}
-                        list_of_student = {list_of_student}/>
+                        list_of_courses={list_of_courses}
+                        list_of_student={list_of_student} />
                     </div>
                   )
                 //admin
@@ -104,33 +112,33 @@ function App() {
                   return (
                     <div>
                       <HomeAdmin
-                        setName = {setName}
-                        setType = {setType}
-                        setCourseName = {setCourseName}
-                        setPhoneNumber = {setPhoneNumber}
-                        setEmail = {setEmail}
-                        setInstructorName = {setInstructorName}
-                        setStartDate = {setStartDate}
-                        setEndDate = {setEndDate}
-                        setListOfStudent = {setListOfStudent}
-                        setListOfCourses = {setListOfCourses}
+                        setName={setName}
+                        setType={setType}
+                        setCourseName={setCourseName}
+                        setPhoneNumber={setPhoneNumber}
+                        setEmail={setEmail}
+                        setInstructorName={setInstructorName}
+                        setStartDate={setStartDate}
+                        setEndDate={setEndDate}
+                        setListOfStudent={setListOfStudent}
+                        setListOfCourses={setListOfCourses}
                         isAuthorized={isAuthorized}
-                        setContent = {setContent}
+                        setContent={setContent}
                         setAuthorized={setAuthorized}
                         type={type}
-                        name={name} 
-                        setListOfInstructors = {setListOfInstructors}
-                        />
-                        <InternalContent
-                        list_of_courses ={list_of_courses}
-                        list_of_instructors = {list_of_instructors}
+                        name={name}
+                        setListOfInstructors={setListOfInstructors}
+                      />
+                      <InternalContent
+                        list_of_courses={list_of_courses}
+                        list_of_instructors={list_of_instructors}
                         content={content}
-                        setContent = {setContent}
-                        setListOfCourses = {setListOfCourses}
-                        setListOfInstructors = {setListOfInstructors}
-                        />
+                        setContent={setContent}
+                        setListOfCourses={setListOfCourses}
+                        setListOfInstructors={setListOfInstructors}
+                      />
                     </div>
-                      
+
                   )
 
                 default:
@@ -148,8 +156,8 @@ function App() {
               name={name}
               setName={setName}
               setCourseName={setCourseName}
-              setListOfStudent = {setListOfStudent} 
-              />
+              setListOfStudent={setListOfStudent}
+            />
           </div>
         )}
 
