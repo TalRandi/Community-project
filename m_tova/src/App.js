@@ -25,13 +25,13 @@ function App() {
   const [list_of_courses, setListOfCourses] = useState([])
   const [list_of_instructors, setListOfInstructors] = useState([])
   const [arr_of_classes, setArrOfClasses] = useState([])
-  const [arr_of_class_content, setClassContent] = useState([])
+  const [arr_of_class_content, setClassContent] = useState(["www.google.com"])
 
 
   return (
     <Router>
+      {console.log("here")}
       <div className="App">
-
         {isAuthorized ? (
           <div>
             {(() => {

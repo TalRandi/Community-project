@@ -1,0 +1,25 @@
+administrators - 
+
+	name
+	password
+
+courses - 
+
+	course_name
+	start_date
+	end_date
+	instructor_name
+
+instructors - 
+
+	name
+	password
+	phone_number
+	email
+
+users - 
+
+	name
+	password
+	phone_number
+	course

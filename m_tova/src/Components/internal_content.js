@@ -41,67 +41,114 @@ const InternalContent = (props) => {
             .then(querySnapshot => {
                 db.collection("users").doc(querySnapshot.docs[0].id).delete().then(() => {
                     console.log("Document successfully deleted!");
+
+                    let students_arr = [...props.list_of_student]
+                    for(let index = 0 ;index < students_arr.length;index++){
+                        if(students_arr[index].name === user_to_delete) {
+                            students_arr.splice(index, 1);
+                            break;
+                        }
+                    }
+                
+                    props.setListOfStudent(students_arr)
+                    console.log("After set",props.list_of_student);
+                    // props.setContent("student_list_from_instructor")
                 })
+                
             })
 
-        let students_arr = []
-        db.collection("courses").where("instructor_name", "==", props.name)
-            .get()
-            .then(querySnapshot => {
+        // db.collection("courses").where("instructor_name", "==", props.name)
+        //     .get()
+        //     .then(querySnapshot => {
 
-                querySnapshot.docs.forEach(element => {
+        //         querySnapshot.docs.forEach(element => {
 
-                    db.collection("users").where("course", "==", element.data().course_name)
-                        .get()
-                        .then(querySnapshot2 => {
+        //             db.collection("users").where("course", "==", element.data().course_name)
+        //                 .get()
+        //                 .then(querySnapshot2 => {
 
-                            querySnapshot2.docs.forEach(element2 => {
-                                students_arr.push(element2.data())
-                            });
-                            props.setListOfStudent(students_arr)
-                        })
-                });
-            })
+        //                     querySnapshot2.docs.forEach(element2 => {
+        //                         students_arr.push(element2.data())
+        //                     });
+
+        //                 })
+        //         });
+        //         console.log(students_arr);
+        //         props.setListOfStudent(students_arr)
+        //     })
     }
     //Delete instructor button from admin
     const delete_instructor = e => {
 
         const instructor_to_delete = e.target.id
-
+        let instructors_arr = [...props.list_of_instructors]
+        for(let index = 0 ;index < instructors_arr.length;index++){
+            if(instructors_arr[index].name === instructor_to_delete) {
+                instructors_arr.splice(index, 1);
+                break;
+            }
+        }
         db.collection("instructors").where("name", "==", instructor_to_delete)
             .get()
             .then(querySnapshot => {
                 db.collection("instructors").doc(querySnapshot.docs[0].id).delete().then(() => {
                     console.log("Document successfully deleted!");
-                    let instructors_arr = []
-                    db.collection("instructors").get().then((querySnapshot) => {
-                        querySnapshot.forEach((doc) => {
-                            instructors_arr.push(doc.data())
-                        });
-                        props.setListOfInstructors(instructors_arr)
-                    });
                 })
+                props.setListOfInstructors(instructors_arr)
             })
+
+
+
+        // db.collection("instructors").where("name", "==", instructor_to_delete)
+        //     .get()
+        //     .then(querySnapshot => {
+        //         db.collection("instructors").doc(querySnapshot.docs[0].id).delete().then(() => {
+        //             console.log("Document successfully deleted!");
+        //             let instructors_arr = []
+        //             db.collection("instructors").get().then((querySnapshot) => {
+        //                 querySnapshot.forEach((doc) => {
+        //                     instructors_arr.push(doc.data())
+        //                 });
+        //                 props.setListOfInstructors(instructors_arr)
+        //             });
+        //         })
+        //     })
     }
     //Delete course button from admin
     const delete_course = e => {
 
         const course_to_delete = e.target.id
+        let course_arr = [...props.list_of_courses]
+        for(let index = 0 ;index < course_arr.length;index++){
+            if(course_arr[index].course_name === course_to_delete) {
+                course_arr.splice(index, 1);
+                break;
+            }
+        }
 
         db.collection("courses").where("course_name", "==", course_to_delete)
-            .get()
-            .then(querySnapshot => {
-                db.collection("courses").doc(querySnapshot.docs[0].id).delete().then(() => {
-                    console.log("Document successfully deleted!");
-                    let courses_arr = []
-                    db.collection("courses").get().then((querySnapshot) => {
-                        querySnapshot.forEach((doc) => {
-                            courses_arr.push(doc.data())
-                        });
-                        props.setListOfCourses(courses_arr)
-                    });
-                })
+        .get()
+        .then(querySnapshot => {
+            db.collection("courses").doc(querySnapshot.docs[0].id).delete().then(() => {
+                console.log("Document successfully deleted!");
+                    props.setListOfCourses(course_arr)
             })
+        })
+
+        // db.collection("courses").where("course_name", "==", course_to_delete)
+        //     .get()
+        //     .then(querySnapshot => {
+        //         db.collection("courses").doc(querySnapshot.docs[0].id).delete().then(() => {
+        //             console.log("Document successfully deleted!");
+        //             let courses_arr = []
+        //             db.collection("courses").get().then((querySnapshot) => {
+        //                 querySnapshot.forEach((doc) => {
+        //                     courses_arr.push(doc.data())
+        //                 });
+        //                 props.setListOfCourses(courses_arr)
+        //             });
+        //         })
+        //     })
     }
 
     //Submit instructor button clicked from admin page
@@ -230,16 +277,27 @@ const InternalContent = (props) => {
     //TODO: fix query time 
     const class_content = (e) => {
         let class_number = e.target.id
-        let arr_of_class_content = []
+        // console.log("in props",props.arr_of_class_content,props.arr_of_class_content.length);
+        let temp_class_content = []
         storage.ref().child(props.course_name + "/class" + class_number).listAll().then(list => {
             list.items.forEach(a => {
                 a.getDownloadURL().then(url => {
-                    arr_of_class_content.push(url)
+                    // temp_class_content = [...props.arr_of_class_content]
+                    temp_class_content.push(url)
+                   
+                
                 })
+                
             })
+            console.log(temp_class_content, temp_class_content.length);
+
+            props.setClassContent(temp_class_content)
+            console.log("after set",props.arr_of_class_content, props.arr_of_class_content.length);
+            props.setContent("class_content")
+
+
         });
-        props.setClassContent(arr_of_class_content)
-        props.setContent("class_content")
+
 
     }
 
@@ -312,7 +370,7 @@ const InternalContent = (props) => {
             );
         //From instructor        
         case "student_list_from_instructor":
-
+            // console.log( "intrenal",props.list_of_student);
             let students_counter = 1
 
             const listItemStudents = props.list_of_student.map((student) => {
@@ -459,6 +517,7 @@ const InternalContent = (props) => {
 
         case "course_content":
             let counter_class = 1
+            // console.log(props.arr_of_classes);
             const listClasses = props.arr_of_classes.map((lesson) => {
                 return (
                     <tr key={counter_class}>
@@ -478,9 +537,10 @@ const InternalContent = (props) => {
             )
 
         case "class_content":
+            console.log(props.arr_of_class_content);
             let counter_content = 1
             const listContent = props.arr_of_class_content.map((content) => {
-                console.log(content);
+                // console.log(content);
                 return (
                     <tr key={counter_content}>
                         <td><a href={content} target="_blank">קובץ {counter_content++}</a></td>
