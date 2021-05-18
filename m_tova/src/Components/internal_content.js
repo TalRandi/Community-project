@@ -112,6 +112,17 @@ const InternalContent = (props) => {
         const email = document.getElementById(email_id).value;
         const phone_number = document.getElementById(phone_id).value;
 
+        if(name === ""){
+            alert("חובה להכניס שם משתמש")
+            return;
+        }
+
+        if(password.length < 6){
+            alert("הסיסמה חייבת להכיל לפחות 6 תווים")
+            return;
+        }
+
+        var name_already_exist = false;
         const id = db.collection('stack_over').doc().id
 
         var newInstructor = {
@@ -120,17 +131,25 @@ const InternalContent = (props) => {
             email,
             phone_number
         };
-        db.collection("instructors").doc(id).set(newInstructor).then(() => {
-            console.log("Documents successfully written!");
-            let instructors_arr = []
 
-            db.collection("instructors").get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    instructors_arr.push(doc.data())
-                });
-                props.setListOfInstructors(instructors_arr)
-                props.setContent("instructors_list")
+        db.collection("instructors").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if(doc.data().name === name){
+                    alert("שם משתמש כבר קיים")
+                    name_already_exist = true;
+                }
             });
+            if(!name_already_exist){
+                db.collection("instructors").doc(id).set(newInstructor).then(() => {
+                    console.log("Documents successfully written!");
+                    let instructors_arr = []
+                    instructors_arr = props.list_of_instructors
+                    instructors_arr.push(newInstructor)
+                    props.setContent("instructors_list")
+                    props.setListOfInstructors(instructors_arr)
+                    
+                });
+            }
         });
     }
     //Submit courses button clicked from admin page
@@ -141,6 +160,17 @@ const InternalContent = (props) => {
         const start_date = document.getElementById(start_id).value;
         const end_date = document.getElementById(end_id).value;
 
+        if(course_name === ""){
+            alert("חובה להכניס שם קורס")
+            return;
+        }
+
+        if(instructor_name === ""){
+            alert("חובה להכניס שם מדריך")
+            return;
+        }
+
+        var course_already_exist = false;
         const id = db.collection('stack_over').doc().id
 
         var newCourse = {
@@ -150,17 +180,23 @@ const InternalContent = (props) => {
             end_date
         };
 
-        db.collection("courses").doc(id).set(newCourse).then(() => {
-            console.log("Documents successfully written!");
-            let courses_arr = []
-
-            db.collection("courses").get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    courses_arr.push(doc.data())
-                });
-                props.setListOfCourses(courses_arr)
-                props.setContent("courses_list_from_admin")
+        db.collection("courses").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if(doc.data().course_name === course_name){
+                    alert("קורס כבר קיים")
+                    course_already_exist = true;
+                }
             });
+            if(!course_already_exist){
+                db.collection("courses").doc(id).set(newCourse).then(() => {
+                    console.log("Documents successfully written!");
+                    let courses_arr = []
+                    courses_arr = props.list_of_courses
+                    courses_arr.push(newCourse)
+                    props.setListOfCourses(courses_arr)
+                    props.setContent("courses_list_from_admin")
+                });
+            }
         });
     }
     //Submit student button clicked from instructor page
@@ -179,7 +215,7 @@ const InternalContent = (props) => {
             course,
             phone_number
         };
-
+ 
         db.collection("users").doc(id).set(newStudent).then(() => {
             console.log("Documents successfully written!");
             let students_arr = []
@@ -187,7 +223,7 @@ const InternalContent = (props) => {
             students_arr.push(newStudent)
             props.setListOfStudent(students_arr)
             props.setContent("student_list_from_instructor")
-        });
+        });         
     }
 
     //display all files in specific course 
