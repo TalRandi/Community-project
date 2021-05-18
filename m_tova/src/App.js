@@ -5,6 +5,7 @@ import HomeAdmin from './Components/home_page_admin';
 import { useState } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import InternalContent from './Components/internal_content';
 import './App.css';
 
@@ -30,7 +31,6 @@ function App() {
 
   return (
     <Router>
-      {console.log("here")}
       <div className="App">
         {isAuthorized ? (
           <div>
@@ -61,6 +61,7 @@ function App() {
                         setArrOfClasses={setArrOfClasses}
                       />
                       <InternalContent
+                        type={type}
                         setContent={setContent}
                         arr_of_class_content={arr_of_class_content}
                         setClassContent={setClassContent}
@@ -98,10 +99,17 @@ function App() {
                       />
                       <InternalContent
                         name={name}
+                        type={type}
+                        setCourseName={setCourseName}
                         setListOfStudent={setListOfStudent}
                         setStartDate={setStartDate}
                         setEndDate={setEndDate}
                         setContent={setContent}
+                        setArrOfClasses = {setArrOfClasses}
+                        setClassContent={setClassContent}
+                        course_name={course_name}
+                        arr_of_class_content={arr_of_class_content}
+                        arr_of_classes = {arr_of_classes}
                         content={content}
                         list_of_courses={list_of_courses}
                         list_of_student={list_of_student} />
@@ -154,7 +162,10 @@ function App() {
               type={type}
               setType={setType}
               name={name}
+              setContent={setContent}
               setName={setName}
+              setListOfCourses = {setListOfCourses}
+              setArrOfClasses = {setArrOfClasses}
               setCourseName={setCourseName}
               setListOfStudent={setListOfStudent}
             />

@@ -5,31 +5,26 @@ import "react-datepicker/dist/react-datepicker.css";
 import React, { useState } from "react";
 import { Card, ListGroup, Table } from 'react-bootstrap';
 import deleteButton from '../Images/delete_student.png';
-// import del from '../Images/delete_student.png';s
+import Loader from "react-loader-spinner";
 
 
 //This componnent build the internal div with the relevant content inside it
 const InternalContent = (props) => {
 
-
     const [inputStartDate, setInputStartDate] = useState(new Date());
     const [inputEndDate, setInputEndDate] = useState(new Date());
 
-    let setStartDate = props.setStartDate
-    let setEndDate = props.setEndDate
-
     const course_clicked = e => {
 
-        db.collection("courses").where("course_name", "==", e.target.id)
-            .get()
-            .then(querySnapshot => {
+        props.setContent("loading")
+        let course_name = e.target.id
+        props.setCourseName(course_name)
 
-                querySnapshot.docs.forEach(element => {
-                    setStartDate(element.data().start_date)
-                    setEndDate(element.data().end_date)
-                });
-            })
-
+        storage.ref().child(course_name).listAll().then(list=>{
+            props.setArrOfClasses(list.prefixes)
+            console.log(props.arr_of_classes);
+            props.setContent("course_content")
+        })
     }
     //Delete student button from instructor
     const delete_student = e => {
@@ -275,29 +270,25 @@ const InternalContent = (props) => {
 
     //display all files in specific course 
     //TODO: fix query time 
-    const class_content = (e) => {
+    const class_content = e => {
+
+        props.setContent("loading")
         let class_number = e.target.id
-        // console.log("in props",props.arr_of_class_content,props.arr_of_class_content.length);
         let temp_class_content = []
-        storage.ref().child(props.course_name + "/class" + class_number).listAll().then(list => {
-            list.items.forEach(a => {
-                a.getDownloadURL().then(url => {
-                    // temp_class_content = [...props.arr_of_class_content]
-                    temp_class_content.push(url)
-                   
-                
-                })
-                
-            })
-            console.log(temp_class_content, temp_class_content.length);
 
+        storage.ref().child(props.course_name + "/class" + class_number).listAll().then(async list => {
+            for(let lesson of list.items)
+            {
+                let url = await lesson.getDownloadURL()
+                temp_class_content.push({"url": url, "description": lesson.name})            
+            }
             props.setClassContent(temp_class_content)
-            console.log("after set",props.arr_of_class_content, props.arr_of_class_content.length);
             props.setContent("class_content")
-
-
         });
+    }
 
+    //TODO : complete this function after we talked with Noa & Hagit
+    const add_class_from_instructor = e =>{
 
     }
 
@@ -306,13 +297,15 @@ const InternalContent = (props) => {
         case "instructor_details":
 
             return (
-                <Card id="instructorDetails">
-                    <ListGroup variant="flush" id="listGroup">
-                        <ListGroup.Item>שם מדריך: {props.instructor_name}</ListGroup.Item>
-                        <ListGroup.Item>מספר פלאפון: {props.phone_number}</ListGroup.Item>
-                        <ListGroup.Item>מייל: {props.email}</ListGroup.Item>
-                    </ListGroup>
-                </Card>
+                <div className = "internal_content">
+                    <Card className = "custom_card">
+                        <ListGroup variant="flush" className="listGroup">
+                            <ListGroup.Item className="listGroup" >שם מדריך: {props.instructor_name}</ListGroup.Item>
+                            <ListGroup.Item className="listGroup" >מספר פלאפון: {props.phone_number}</ListGroup.Item>
+                            <ListGroup.Item className="listGroup" >מייל: {props.email}</ListGroup.Item>
+                        </ListGroup>
+                    </Card>
+                </div>
             );
         //From student
         case "course_details":
@@ -328,15 +321,15 @@ const InternalContent = (props) => {
                 )
             });
             return (
-                <div>
-                    <Card id="courseDetails">
-                        <ListGroup variant="flush" id="listGroup">
-                            <ListGroup.Item>שם הקורס: {props.course_name}</ListGroup.Item>
-                            <ListGroup.Item>תאריך התחלה: {props.start_date}</ListGroup.Item>
-                            <ListGroup.Item>תאריך סיום: {props.end_date}</ListGroup.Item>
+                <div className="internal_content">
+                    <Card className = "custom_card">
+                        <ListGroup variant="flush" className="listGroup">
+                            <ListGroup.Item className="listGroup">שם הקורס: {props.course_name}</ListGroup.Item>
+                            <ListGroup.Item className="listGroup">תאריך התחלה: {props.start_date}</ListGroup.Item>
+                            <ListGroup.Item className="listGroup">תאריך סיום: {props.end_date}</ListGroup.Item>
                         </ListGroup>
                     </Card>
-                    <div className="internal_content list_students">
+                    <div className="list_students">
                         <h1>רשימת משתתפי הקורס:</h1>
                         <Table striped bordered hover variant="dark">
                             <thead>
@@ -370,7 +363,7 @@ const InternalContent = (props) => {
             );
         //From instructor        
         case "student_list_from_instructor":
-            // console.log( "intrenal",props.list_of_student);
+
             let students_counter = 1
 
             const listItemStudents = props.list_of_student.map((student) => {
@@ -386,7 +379,6 @@ const InternalContent = (props) => {
             });
 
             return (
-
                 <div className="internal_content">
                     <Button className="add_item" onClick={() => props.setContent("add_student")} variant="btn btn-success">הוסף סטודנט</Button>
                     <Table striped bordered hover variant="dark">
@@ -516,61 +508,84 @@ const InternalContent = (props) => {
             )
 
         case "course_content":
+
             let counter_class = 1
-            // console.log(props.arr_of_classes);
             const listClasses = props.arr_of_classes.map((lesson) => {
+
                 return (
-                    <tr key={counter_class}>
-                        <td id={counter_class} onClick={class_content}>שיעור {counter_class++}</td>
-                    </tr>
+                    <div key = {counter_class} className = "content_div">
+                        <ul id={counter_class} onClick={class_content} >שיעור {counter_class++}</ul>
+                    </div>
                 )
             });
             return (
-                <div className="course-content">
-                    <Table striped bordered hover variant="dark">
-                        <thead></thead>
-                        <tbody>
-                            {listClasses}
-                        </tbody>
-                    </Table>
+                <div className = "internal_content">
+                    {(props.type === 1) ? (
+                        <div>
+                            <h4 className = "course_header">{props.course_name}</h4>
+                            <Button className="add_item" onClick={add_class_from_instructor} variant="btn btn-success">הוסף שיעור</Button>
+                        </div>
+                        ) : (
+                            <div/>
+                    )}
+                    {listClasses}
                 </div>
+                // <div className="course-content">
+                //     <Table striped bordered hover variant="dark">
+                //         <thead></thead>
+                //         <tbody>
+                //             {listClasses}
+                //         </tbody>
+                //     </Table>
+                // </div>
             )
 
         case "class_content":
-            console.log(props.arr_of_class_content);
+
             let counter_content = 1
             const listContent = props.arr_of_class_content.map((content) => {
-                // console.log(content);
+
                 return (
-                    <tr key={counter_content}>
-                        <td><a href={content} target="_blank">קובץ {counter_content++}</a></td>
-                    </tr>
+                    <div key = {counter_content++} className = "content_div">
+                        <a href={content.url} target="_blank" rel="noreferrer">{content.description}</a>
+                    </div>
+                    // <tr key={counter_content}>
+                    //     <td><a href={content.url} rel="noreferrer" target="_blank">{content.description}</a></td>
+                    // </tr>
                 )
             });
             return (
-                <div className="course-content">
-                    <Table striped bordered hover variant="dark">
-                        <thead></thead>
-                        <tbody>
-                            {listContent}
-                        </tbody>
-                    </Table>
+                <div className= "internal_content">
+                    {listContent}
+                </div>
+                // <div className="course-content">
+                //     <Table striped bordered hover variant="dark">
+                //         <thead></thead>
+                //         <tbody>
+                //             {listContent}
+                //         </tbody>
+                //     </Table>
+                // </div>
+            )
+        case "loading":
+            return(
+                <div className = "internal_content">
+                    <Loader
+                        type="Puff"
+                        color= "rgb(92, 128, 194)"
+                        height={100}
+                        width={100}
+                    />
                 </div>
             )
 
-
-
-
-
         default:
-            return (<div>
-                <h1>No Content</h1>
-
-            </div>)
+            return(
+                <div>
+                    <h1>No Content</h1>
+                </div>
+            )
     }
-
-
-
 }
 
 export default InternalContent;

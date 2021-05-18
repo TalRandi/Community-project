@@ -21,7 +21,7 @@ const Menu = (props) => {
     //Course details clicked from student page
     const course_details = e => {
 
-        setContent(e.target.id)
+        setContent("loading")
         db.collection("courses").where("course_name", "==", course_name)
             .get()
             .then(querySnapshot => {
@@ -39,12 +39,13 @@ const Menu = (props) => {
                     new_list_student.push({ 'name': element.data().name, 'phone_number': element.data().phone_number })
                 });
                 setListOfStudent(new_list_student)
+                setContent(e.target.id)
             })
     }
     //Instructor details clicked from student page
     const instructor_details = e => {
 
-        setContent(e.target.id)
+        setContent("loading")
         let temp_instructor
         db.collection("courses").where("course_name", "==", course_name)
             .get()
@@ -60,6 +61,7 @@ const Menu = (props) => {
                             setPhoneNumber(element2.data().phone_number)
                             setEmail(element2.data().email)
                             setInstructorName(temp_instructor)
+                            setContent(e.target.id)
                         });
                     })
             })

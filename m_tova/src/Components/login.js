@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState, useEffect } from 'react'
 import '../App.css';
 import logo from '../Images/m_tova_logo.jpeg';
-import { db } from '../Firebase/firebase'
+import { db, storage } from '../Firebase/firebase'
 
 const Login = props => {
 
@@ -17,7 +17,9 @@ const Login = props => {
     let name = props.name;
     let setName = props.setName;
     let setCourseName = props.setCourseName
-
+    let setContent= props.setContent
+    let setArrOfClasses = props.setArrOfClasses
+    let setListOfCourses = props.setListOfCourses
 
     //Submit button clicked
     const login_clicked = () => {
@@ -29,8 +31,10 @@ const Login = props => {
         }
 
         switch (type) {
+
             //Student
             case 0:
+                
                 db.collection("users").where("name", "==", name)
                 .get()
                 .then(querySnapshot => {
@@ -38,12 +42,19 @@ const Login = props => {
                         alert('משתמש לא קיים');
                         return;
                     }
+                    
                     querySnapshot.docs.forEach(element => {
     
                         //Exists user
                         if (element.data().password === password) {
+                            
                             setAuthorized(true);
                             setCourseName(element.data().course)
+ 
+                            storage.ref().child(element.data().course).listAll().then(list=>{
+                                setArrOfClasses(list.prefixes)
+                            })
+                            setContent("course_content")
                         }
                         //Unknown user
                         else {
@@ -65,8 +76,20 @@ const Login = props => {
         
                             //Exists user
                             if (element.data().password === password)
+                            {
                                 setAuthorized(true);
-                            
+                                let courses_arr_instructor = []
+
+                                db.collection("courses").where("instructor_name", "==", name)
+                                    .get()
+                                    .then(querySnapshot => {
+                                        querySnapshot.docs.forEach(element => {
+                                            courses_arr_instructor.push(element.data().course_name)
+                                        });
+                                        setListOfCourses(courses_arr_instructor)
+                                        setContent("courses_list")
+                                    })
+                            }
                             //Unknown user
                             else 
                                 alert("סיסמא שגויה");
@@ -105,7 +128,18 @@ const Login = props => {
     
                         //Exists user
                         if (element.data().password === password)
+                        {
                             setAuthorized(true);
+                            let courses_arr_admin = []
+
+                            db.collection("courses").get().then(querySnapshot => {
+                                querySnapshot.forEach(doc => {
+                                    courses_arr_admin.push(doc.data())
+                                });
+                                setListOfCourses(courses_arr_admin)
+                            })
+                            setContent("courses_list_from_admin")
+                        }
                         
                         //Unknown user
                         else 

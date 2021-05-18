@@ -39,14 +39,17 @@
 
 nav {
   /* background-color: rgb(38, 60, 109); */
-  background-color: #b0aac0;
+  background: rgb(167,172,231);
+  background: radial-gradient(circle, rgba(167,172,231,1) 0%, rgba(149,198,255,1) 53%, rgba(226,199,247,1) 100%);  background-color: #b0aac0;
   color: rgb(224, 227, 235);
   padding: 2%;
   margin-bottom: 3%;
+
 }
 
 li {
-  color: #f7fcfc;
+  color: black;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-size: 1.5rem;
 }
 
@@ -80,37 +83,35 @@ li {
   left: 3%;
 }
 
-#instructorDetails, #courseDetails {
+.custom_card {
   width: 30rem;
-  position: absolute;
-  right: 20%;
-  top: 5%;
-  margin-top: 10%;
   font-size: x-large;
 }
 
-#listGroup {
+.listGroup {
+  background-color: #f7f7f7;
   text-align: right;
 }
 
 .list_students {
   position: absolute;
-  top: 50%;
-  right: 20%;
+  margin-top: 5%;
 }
 .table td, .table th{
   vertical-align: middle;
 }
 td{
   width: 20%;
-  background-color: #b0aac0;
+  background-color: #95c6ff;
+  
+  /* background-color: #b0aac0; */
   color: black;
   font-size: x-large;
 }
 th {
-  background-color: #614f54;
+  background-color: #a7ace7;
+  /* background-color: #614f54; */
 }
-
 .list_students h1 {
   text-align: right;
 }
@@ -120,7 +121,8 @@ th {
 .menu-content Button:active,
 .menu-content Button:visited,
 .menu-content Button:focus {
-  background-color: #614f54;
+  background-color: #a7ace7;
+  /* background-color: #614f54; */
   border: #614f54;
 }
 
@@ -136,10 +138,10 @@ th {
   border: 5%;
   border-radius: 15px;
   cursor: pointer;
-  margin: 5% 0;
+  margin: 2% 0;
   font-weight: bold;
   font-size: x-large;
-  box-shadow: 4px 4px 2px 4px #5c5866;
+  box-shadow: 3px 4px 2px 1px #5c5866;
 }
 .student_list_table{
   position: absolute;
@@ -148,8 +150,10 @@ th {
 }
 
 .add_item{
+  margin: 0 0 5% 0;
   height: 60px;
   width: 110px;
+  background-color:rgb(112, 221, 112);
 }
 
 .add_form{
@@ -180,6 +184,7 @@ th {
   position: absolute;
   right: 20%;
   width: 50%;
+  top: 28%;
 }
 .delete-button{
   cursor: pointer;
@@ -191,6 +196,41 @@ th {
 }
 .course-content td{
   cursor: pointer;
-
 }
 
+.content_div{
+  background-color: #b0aac0;
+  margin: 2%;
+  padding: 2% 3%;
+  height: 10%;
+  border: #614f54 solid 2px;
+}
+.content_div a{
+  color: #000000;
+  font-weight: bold;
+}
+.content_div ul{
+  color: #000000;
+  font-weight: bold;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+.content_div ul:hover{
+  color: rgb(92, 128, 194);
+  font-weight: bold;
+}
+.content_div a:hover{
+  color: rgb(92, 128, 194);
+  font-weight: bold;
+}
+
+.course_header{
+  display: inline-block;
+  position: absolute;
+  right: 5%;
+}
+
+h3{
+  color: black;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
