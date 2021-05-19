@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { Card, ListGroup, Table } from 'react-bootstrap';
 import deleteButton from '../Images/delete_student.png';
 import Loader from "react-loader-spinner";
-
+import DropzoneFiles1 from './DropzoneFiles1';
 
 //This componnent build the internal div with the relevant content inside it
 const InternalContent = (props) => {
@@ -288,14 +288,25 @@ const InternalContent = (props) => {
     }
 
     //TODO : complete this function after we talked with Noa & Hagit
+    
+
     const add_class_from_instructor = e =>{
+        // dor changed 
+        console.log(props.course_name);
+        let fileName = "filename"
+        let newDirectory = "someDir"
+        let storage_temp = storage.ref(`${props.course_name}/${newDirectory}/${fileName}`)
+        console.log(`${props.course_name}/${newDirectory}/${fileName}`);
+        console.log(storage_temp);
 
     }
+
+    
 
     switch (props.content) {
         //From student
         case "instructor_details":
-
+            
             return (
                 <div className = "internal_content">
                     <Card className = "custom_card">
@@ -557,6 +568,7 @@ const InternalContent = (props) => {
             return (
                 <div className= "internal_content">
                     {listContent}
+                    <DropzoneFiles1/>
                 </div>
                 // <div className="course-content">
                 //     <Table striped bordered hover variant="dark">
