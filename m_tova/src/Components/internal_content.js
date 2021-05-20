@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { Card, ListGroup, Table } from 'react-bootstrap';
 import deleteButton from '../Images/delete_student.png';
 import Loader from "react-loader-spinner";
-import DropzoneFiles1 from './DropzoneFiles1';
+import AddZone from './add_course_content';
 
 //This componnent build the internal div with the relevant content inside it
 const InternalContent = (props) => {
@@ -14,15 +14,16 @@ const InternalContent = (props) => {
     const [inputStartDate, setInputStartDate] = useState(new Date());
     const [inputEndDate, setInputEndDate] = useState(new Date());
 
+    const [class_number, setClassNumber] = useState(0);
+    const [current_class_number, setCurrentClassNumber] = useState(0);
     const course_clicked = e => {
 
         props.setContent("loading")
         let course_name = e.target.id
         props.setCourseName(course_name)
-
         storage.ref().child(course_name).listAll().then(list=>{
+            setClassNumber(list.prefixes.length)
             props.setArrOfClasses(list.prefixes)
-            console.log(props.arr_of_classes);
             props.setContent("course_content")
         })
     }
@@ -47,30 +48,9 @@ const InternalContent = (props) => {
                 
                     props.setListOfStudent(students_arr)
                     console.log("After set",props.list_of_student);
-                    // props.setContent("student_list_from_instructor")
                 })
                 
             })
-
-        // db.collection("courses").where("instructor_name", "==", props.name)
-        //     .get()
-        //     .then(querySnapshot => {
-
-        //         querySnapshot.docs.forEach(element => {
-
-        //             db.collection("users").where("course", "==", element.data().course_name)
-        //                 .get()
-        //                 .then(querySnapshot2 => {
-
-        //                     querySnapshot2.docs.forEach(element2 => {
-        //                         students_arr.push(element2.data())
-        //                     });
-
-        //                 })
-        //         });
-        //         console.log(students_arr);
-        //         props.setListOfStudent(students_arr)
-        //     })
     }
     //Delete instructor button from admin
     const delete_instructor = e => {
@@ -92,22 +72,6 @@ const InternalContent = (props) => {
                 props.setListOfInstructors(instructors_arr)
             })
 
-
-
-        // db.collection("instructors").where("name", "==", instructor_to_delete)
-        //     .get()
-        //     .then(querySnapshot => {
-        //         db.collection("instructors").doc(querySnapshot.docs[0].id).delete().then(() => {
-        //             console.log("Document successfully deleted!");
-        //             let instructors_arr = []
-        //             db.collection("instructors").get().then((querySnapshot) => {
-        //                 querySnapshot.forEach((doc) => {
-        //                     instructors_arr.push(doc.data())
-        //                 });
-        //                 props.setListOfInstructors(instructors_arr)
-        //             });
-        //         })
-        //     })
     }
     //Delete course button from admin
     const delete_course = e => {
@@ -129,21 +93,6 @@ const InternalContent = (props) => {
                     props.setListOfCourses(course_arr)
             })
         })
-
-        // db.collection("courses").where("course_name", "==", course_to_delete)
-        //     .get()
-        //     .then(querySnapshot => {
-        //         db.collection("courses").doc(querySnapshot.docs[0].id).delete().then(() => {
-        //             console.log("Document successfully deleted!");
-        //             let courses_arr = []
-        //             db.collection("courses").get().then((querySnapshot) => {
-        //                 querySnapshot.forEach((doc) => {
-        //                     courses_arr.push(doc.data())
-        //                 });
-        //                 props.setListOfCourses(courses_arr)
-        //             });
-        //         })
-        //     })
     }
 
     //Submit instructor button clicked from admin page
@@ -231,7 +180,6 @@ const InternalContent = (props) => {
             });
             if(!course_already_exist){
                 db.collection("courses").doc(id).set(newCourse).then(() => {
-                    console.log("Documents successfully written!");
                     let courses_arr = []
                     courses_arr = props.list_of_courses
                     courses_arr.push(newCourse)
@@ -269,12 +217,13 @@ const InternalContent = (props) => {
     }
 
     //display all files in specific course 
-    //TODO: fix query time 
     const class_content = e => {
 
         props.setContent("loading")
         let class_number = e.target.id
         let temp_class_content = []
+
+        setCurrentClassNumber(class_number)
 
         storage.ref().child(props.course_name + "/class" + class_number).listAll().then(async list => {
             for(let lesson of list.items)
@@ -287,21 +236,11 @@ const InternalContent = (props) => {
         });
     }
 
-    //TODO : complete this function after we talked with Noa & Hagit
-    
-
-    const add_class_from_instructor = e =>{
-        // dor changed 
-        console.log(props.course_name);
-        let fileName = "filename"
-        let newDirectory = "someDir"
-        let storage_temp = storage.ref(`${props.course_name}/${newDirectory}/${fileName}`)
-        console.log(`${props.course_name}/${newDirectory}/${fileName}`);
-        console.log(storage_temp);
-
+    //TODO : complete this function - course clicked from admin page
+    const course_clicked_from_admin = e =>{
+        console.log(e.target.id);
     }
 
-    
 
     switch (props.content) {
         //From student
@@ -369,6 +308,7 @@ const InternalContent = (props) => {
             });
             return (
                 <div className="internal_content">
+                    <h4>רשימת קורסים</h4>
                     {listItemsCourses}
                 </div>
             );
@@ -405,8 +345,6 @@ const InternalContent = (props) => {
                             {listItemStudents}
                         </tbody>
                     </Table>
-                    {/* <Button className = "add_item" onClick = {() => props.setContent("add_student")} variant = "btn btn-success">הוסף סטודנט</Button> */}
-
                 </div>
             );
         //From admin   
@@ -440,8 +378,6 @@ const InternalContent = (props) => {
                             {listItemInstructors}
                         </tbody>
                     </Table>
-                    {/* <Button className = "add_item" onClick = {() => props.setContent("add_instructor")} variant = "btn btn-success">הוסף מדריך</Button> */}
-
                 </div>
             );
         //From admin 
@@ -451,7 +387,7 @@ const InternalContent = (props) => {
             const listCourses = props.list_of_courses.map((course) => {
                 return (
                     <tr key={counter++}>
-                        <td>{course.course_name}</td>
+                        <td id = {course.course_name} className = "clickable_courses" onClick = {course_clicked_from_admin}>{course.course_name}</td>
                         <td>{course.instructor_name}</td>
                         <td>{course.start_date}</td>
                         <td>{course.end_date}</td>
@@ -476,7 +412,6 @@ const InternalContent = (props) => {
                             {listCourses}
                         </tbody>
                     </Table>
-                    {/* <Button className = "add_item" onClick = {() => props.setContent("add_course")} variant = "btn btn-success">הוסף קורס</Button> */}
                 </div>
             );
         //From admin - inner button
@@ -534,25 +469,17 @@ const InternalContent = (props) => {
                     {(props.type === 1) ? (
                         <div>
                             <h4 className = "course_header">{props.course_name}</h4>
-                            <Button className="add_item" onClick={add_class_from_instructor} variant="btn btn-success">הוסף שיעור</Button>
+                            <Button className="add_item" onClick={() => {props.setContent("add_class_zone")}} variant="btn btn-success">הוסף שיעור</Button>
                         </div>
                         ) : (
-                            <div/>
+                        <h4>{props.course_name} - רשימת שיעורים</h4>
                     )}
                     {listClasses}
                 </div>
-                // <div className="course-content">
-                //     <Table striped bordered hover variant="dark">
-                //         <thead></thead>
-                //         <tbody>
-                //             {listClasses}
-                //         </tbody>
-                //     </Table>
-                // </div>
             )
 
         case "class_content":
-
+            
             let counter_content = 1
             const listContent = props.arr_of_class_content.map((content) => {
 
@@ -560,24 +487,13 @@ const InternalContent = (props) => {
                     <div key = {counter_content++} className = "content_div">
                         <a href={content.url} target="_blank" rel="noreferrer">{content.description}</a>
                     </div>
-                    // <tr key={counter_content}>
-                    //     <td><a href={content.url} rel="noreferrer" target="_blank">{content.description}</a></td>
-                    // </tr>
                 )
             });
             return (
                 <div className= "internal_content">
+                    <h4>שיעור: {current_class_number}</h4>
                     {listContent}
-                    <DropzoneFiles1/>
                 </div>
-                // <div className="course-content">
-                //     <Table striped bordered hover variant="dark">
-                //         <thead></thead>
-                //         <tbody>
-                //             {listContent}
-                //         </tbody>
-                //     </Table>
-                // </div>
             )
         case "loading":
             return(
@@ -588,6 +504,21 @@ const InternalContent = (props) => {
                         height={100}
                         width={100}
                     />
+                </div>
+            )
+
+        case "add_class_zone":
+
+            return(
+                <div className = "internal_content">
+                    <h4>הוספת שיעור חדש לקורס: {props.course_name}</h4><br /><br />
+                    <AddZone
+                        setCurrentClassNumber = {setCurrentClassNumber}
+                        setClassContent = {props.setClassContent}
+                        course_name = {props.course_name}
+                        class_number = {class_number + 1}
+                        setContent = {props.setContent}
+                        />
                 </div>
             )
 

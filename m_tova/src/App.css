@@ -64,8 +64,7 @@ li {
   position: absolute;
   border: 5px #b0aac0 solid;
   border-radius: 8px;
-  right: 3%;
-  top: 30%;
+  margin: 10% 2%;
 }
 
 .menu-content {
@@ -182,8 +181,8 @@ th {
 
 .internal_content{
   position: absolute;
-  right: 20%;
   width: 50%;
+  margin: 0% 25%;
   top: 28%;
 }
 .delete-button{
@@ -233,4 +232,38 @@ th {
 h3{
   color: black;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.add-zone{
+  flex-direction: column;
+  align-items: center;
+  padding: 5% 0%;
+  border-width: 2;
+  border-radius: 2;
+  border-color: #7a7a7a6c;
+  border-style: dashed ;
+  background-color: #fafafa ;
+  color: #008cdd;
+  cursor: pointer;
+}
+.internal_content h4{
+  text-align: right;
+  margin-bottom: 3%;
+}
+aside ul{
+  text-align: right;
+}
+
+#upload{
+  margin: 5% 0%;
+  font-size: 2rem;
+  color: #008cdd;
+}
+.clickable_courses{
+  cursor: pointer;
+  color: #000000;
+  background-color: #0076fd;
+}
+.clickable_courses:hover{
+  background-color: #1a63b6;
 }

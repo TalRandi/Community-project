@@ -115,19 +115,9 @@ const Menu = (props) => {
             });
             setListOfCourses(courses_arr_admin)
         })
-
     }
 
     const course_content = e => {
-       // generated url to specific folder
-        // storage.ref().child(course_name).listAll().then(list => { 
-        //     list.items.forEach(a=>{
-        //        a.getDownloadURL().then(url=>{
-        //            console.log(url);
-        //        })
-        //     })
-            
-        // });
         setContent(e.target.id)
         storage.ref().child(course_name).listAll().then(list=>{
             setArrOfClasses(list.prefixes)

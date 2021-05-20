@@ -25,8 +25,8 @@ function App() {
   const [list_of_student, setListOfStudent] = useState([])
   const [list_of_courses, setListOfCourses] = useState([])
   const [list_of_instructors, setListOfInstructors] = useState([])
-  const [arr_of_classes, setArrOfClasses] = useState([])
-  const [arr_of_class_content, setClassContent] = useState(["www.google.com"])
+  const [arr_of_classes, setArrOfClasses] = useState([])   //list of classes
+  const [arr_of_class_content, setClassContent] = useState([])   //list of content inside class page
 
 
   return (
