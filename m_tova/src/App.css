@@ -227,6 +227,13 @@ th {
   display: inline-block;
   position: absolute;
   right: 5%;
+  font-weight: bold;
+}
+.class_header{
+  display: inline-block;
+  position: absolute;
+  right: 5%;
+  font-weight: bold;
 }
 
 h3{
@@ -266,4 +273,9 @@ aside ul{
 }
 .clickable_courses:hover{
   background-color: #1a63b6;
+}
+
+.title_add_item{
+  font-weight: bold;
+  right: 0;
 }

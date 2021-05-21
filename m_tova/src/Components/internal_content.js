@@ -16,12 +16,17 @@ const InternalContent = (props) => {
 
     const [class_number, setClassNumber] = useState(0);
     const [current_class_number, setCurrentClassNumber] = useState(0);
+    const [flag_from_called, setFlagFromCalled] = useState(''); // flag to know if add item buttom clicked from course content or class content
+
+
+
+
     const course_clicked = e => {
 
         props.setContent("loading")
         let course_name = e.target.id
         props.setCourseName(course_name)
-        storage.ref().child(course_name).listAll().then(list=>{
+        storage.ref().child(course_name).listAll().then(list => {
             setClassNumber(list.prefixes.length)
             props.setArrOfClasses(list.prefixes)
             props.setContent("course_content")
@@ -39,17 +44,17 @@ const InternalContent = (props) => {
                     console.log("Document successfully deleted!");
 
                     let students_arr = [...props.list_of_student]
-                    for(let index = 0 ;index < students_arr.length;index++){
-                        if(students_arr[index].name === user_to_delete) {
+                    for (let index = 0; index < students_arr.length; index++) {
+                        if (students_arr[index].name === user_to_delete) {
                             students_arr.splice(index, 1);
                             break;
                         }
                     }
-                
+
                     props.setListOfStudent(students_arr)
-                    console.log("After set",props.list_of_student);
+                    console.log("After set", props.list_of_student);
                 })
-                
+
             })
     }
     //Delete instructor button from admin
@@ -57,8 +62,8 @@ const InternalContent = (props) => {
 
         const instructor_to_delete = e.target.id
         let instructors_arr = [...props.list_of_instructors]
-        for(let index = 0 ;index < instructors_arr.length;index++){
-            if(instructors_arr[index].name === instructor_to_delete) {
+        for (let index = 0; index < instructors_arr.length; index++) {
+            if (instructors_arr[index].name === instructor_to_delete) {
                 instructors_arr.splice(index, 1);
                 break;
             }
@@ -78,21 +83,21 @@ const InternalContent = (props) => {
 
         const course_to_delete = e.target.id
         let course_arr = [...props.list_of_courses]
-        for(let index = 0 ;index < course_arr.length;index++){
-            if(course_arr[index].course_name === course_to_delete) {
+        for (let index = 0; index < course_arr.length; index++) {
+            if (course_arr[index].course_name === course_to_delete) {
                 course_arr.splice(index, 1);
                 break;
             }
         }
 
         db.collection("courses").where("course_name", "==", course_to_delete)
-        .get()
-        .then(querySnapshot => {
-            db.collection("courses").doc(querySnapshot.docs[0].id).delete().then(() => {
-                console.log("Document successfully deleted!");
+            .get()
+            .then(querySnapshot => {
+                db.collection("courses").doc(querySnapshot.docs[0].id).delete().then(() => {
+                    console.log("Document successfully deleted!");
                     props.setListOfCourses(course_arr)
+                })
             })
-        })
     }
 
     //Submit instructor button clicked from admin page
@@ -103,12 +108,12 @@ const InternalContent = (props) => {
         const email = document.getElementById(email_id).value;
         const phone_number = document.getElementById(phone_id).value;
 
-        if(name === ""){
+        if (name === "") {
             alert("חובה להכניס שם משתמש")
             return;
         }
 
-        if(password.length < 6){
+        if (password.length < 6) {
             alert("הסיסמה חייבת להכיל לפחות 6 תווים")
             return;
         }
@@ -125,12 +130,12 @@ const InternalContent = (props) => {
 
         db.collection("instructors").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                if(doc.data().name === name){
+                if (doc.data().name === name) {
                     alert("שם משתמש כבר קיים")
                     name_already_exist = true;
                 }
             });
-            if(!name_already_exist){
+            if (!name_already_exist) {
                 db.collection("instructors").doc(id).set(newInstructor).then(() => {
                     console.log("Documents successfully written!");
                     let instructors_arr = []
@@ -138,7 +143,7 @@ const InternalContent = (props) => {
                     instructors_arr.push(newInstructor)
                     props.setContent("instructors_list")
                     props.setListOfInstructors(instructors_arr)
-                    
+
                 });
             }
         });
@@ -151,12 +156,12 @@ const InternalContent = (props) => {
         const start_date = document.getElementById(start_id).value;
         const end_date = document.getElementById(end_id).value;
 
-        if(course_name === ""){
+        if (course_name === "") {
             alert("חובה להכניס שם קורס")
             return;
         }
 
-        if(instructor_name === ""){
+        if (instructor_name === "") {
             alert("חובה להכניס שם מדריך")
             return;
         }
@@ -173,12 +178,12 @@ const InternalContent = (props) => {
 
         db.collection("courses").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                if(doc.data().course_name === course_name){
+                if (doc.data().course_name === course_name) {
                     alert("קורס כבר קיים")
                     course_already_exist = true;
                 }
             });
-            if(!course_already_exist){
+            if (!course_already_exist) {
                 db.collection("courses").doc(id).set(newCourse).then(() => {
                     let courses_arr = []
                     courses_arr = props.list_of_courses
@@ -205,7 +210,7 @@ const InternalContent = (props) => {
             course,
             phone_number
         };
- 
+
         db.collection("users").doc(id).set(newStudent).then(() => {
             console.log("Documents successfully written!");
             let students_arr = []
@@ -213,7 +218,7 @@ const InternalContent = (props) => {
             students_arr.push(newStudent)
             props.setListOfStudent(students_arr)
             props.setContent("student_list_from_instructor")
-        });         
+        });
     }
 
     //display all files in specific course 
@@ -226,10 +231,9 @@ const InternalContent = (props) => {
         setCurrentClassNumber(class_number)
 
         storage.ref().child(props.course_name + "/class" + class_number).listAll().then(async list => {
-            for(let lesson of list.items)
-            {
+            for (let lesson of list.items) {
                 let url = await lesson.getDownloadURL()
-                temp_class_content.push({"url": url, "description": lesson.name})            
+                temp_class_content.push({ "url": url, "description": lesson.name })
             }
             props.setClassContent(temp_class_content)
             props.setContent("class_content")
@@ -237,18 +241,17 @@ const InternalContent = (props) => {
     }
 
     //TODO : complete this function - course clicked from admin page
-    const course_clicked_from_admin = e =>{
+    const course_clicked_from_admin = e => {
         console.log(e.target.id);
     }
-
 
     switch (props.content) {
         //From student
         case "instructor_details":
-            
+
             return (
-                <div className = "internal_content">
-                    <Card className = "custom_card">
+                <div className="internal_content">
+                    <Card className="custom_card">
                         <ListGroup variant="flush" className="listGroup">
                             <ListGroup.Item className="listGroup" >שם מדריך: {props.instructor_name}</ListGroup.Item>
                             <ListGroup.Item className="listGroup" >מספר פלאפון: {props.phone_number}</ListGroup.Item>
@@ -272,7 +275,7 @@ const InternalContent = (props) => {
             });
             return (
                 <div className="internal_content">
-                    <Card className = "custom_card">
+                    <Card className="custom_card">
                         <ListGroup variant="flush" className="listGroup">
                             <ListGroup.Item className="listGroup">שם הקורס: {props.course_name}</ListGroup.Item>
                             <ListGroup.Item className="listGroup">תאריך התחלה: {props.start_date}</ListGroup.Item>
@@ -387,7 +390,7 @@ const InternalContent = (props) => {
             const listCourses = props.list_of_courses.map((course) => {
                 return (
                     <tr key={counter++}>
-                        <td id = {course.course_name} className = "clickable_courses" onClick = {course_clicked_from_admin}>{course.course_name}</td>
+                        <td id={course.course_name} className="clickable_courses" onClick={course_clicked_from_admin}>{course.course_name}</td>
                         <td>{course.instructor_name}</td>
                         <td>{course.start_date}</td>
                         <td>{course.end_date}</td>
@@ -454,24 +457,26 @@ const InternalContent = (props) => {
             )
 
         case "course_content":
-
             let counter_class = 1
             const listClasses = props.arr_of_classes.map((lesson) => {
 
                 return (
-                    <div key = {counter_class} className = "content_div">
+                    <div key={counter_class} className="content_div">
                         <ul id={counter_class} onClick={class_content} >שיעור {counter_class++}</ul>
                     </div>
                 )
             });
             return (
-                <div className = "internal_content">
+                <div className="internal_content">
                     {(props.type === 1) ? (
                         <div>
-                            <h4 className = "course_header">{props.course_name}</h4>
-                            <Button className="add_item" onClick={() => {props.setContent("add_class_zone")}} variant="btn btn-success">הוסף שיעור</Button>
+                            <h4 className="course_header">{props.course_name}</h4>
+                            <Button className="add_item" onClick={() => {
+                                setFlagFromCalled("course_content");
+                                setClassNumber(class_number + 1); props.setContent("add_class_zone")
+                            }} variant="btn btn-success">הוסף שיעור</Button>
                         </div>
-                        ) : (
+                    ) : (
                         <h4>{props.course_name} - רשימת שיעורים</h4>
                     )}
                     {listClasses}
@@ -479,28 +484,32 @@ const InternalContent = (props) => {
             )
 
         case "class_content":
-            
             let counter_content = 1
             const listContent = props.arr_of_class_content.map((content) => {
 
                 return (
-                    <div key = {counter_content++} className = "content_div">
+                    <div key={counter_content++} className="content_div">
                         <a href={content.url} target="_blank" rel="noreferrer">{content.description}</a>
                     </div>
                 )
             });
             return (
-                <div className= "internal_content">
-                    <h4>שיעור: {current_class_number}</h4>
+                <div className="internal_content">
+                    <h4 className="course_header">{props.course_name}</h4><br></br>
+                    <h4 className="class_header">שיעור: {current_class_number}</h4>
+                    <Button className="add_item" onClick={() => {
+                        setFlagFromCalled("class_content");
+                        setClassNumber(current_class_number); props.setContent("add_class_zone")
+                    }} variant="btn btn-success">הוסף תוכן</Button>
                     {listContent}
                 </div>
             )
         case "loading":
-            return(
-                <div className = "internal_content">
+            return (
+                <div className="internal_content">
                     <Loader
                         type="Puff"
-                        color= "rgb(92, 128, 194)"
+                        color="rgb(92, 128, 194)"
                         height={100}
                         width={100}
                     />
@@ -508,22 +517,25 @@ const InternalContent = (props) => {
             )
 
         case "add_class_zone":
-
-            return(
-                <div className = "internal_content">
-                    <h4>הוספת שיעור חדש לקורס: {props.course_name}</h4><br /><br />
+            console.log(flag_from_called);
+            return (
+                <div className="internal_content">
+                    {(flag_from_called === "course_content") ?
+                        (<div className="title_add_item"><h2> הוספת שיעור {class_number} לקורס {props.course_name}</h2><br /><br /></div>)
+                        : (<div className="title_add_item"><h2>הוספת תוכן חדש לשיעור  {class_number}</h2><br /><br /></div>)}
                     <AddZone
-                        setCurrentClassNumber = {setCurrentClassNumber}
-                        setClassContent = {props.setClassContent}
-                        course_name = {props.course_name}
-                        class_number = {class_number + 1}
-                        setContent = {props.setContent}
-                        />
+                        setCurrentClassNumber={setCurrentClassNumber}
+                        setClassContent={props.setClassContent}
+                        course_name={props.course_name}
+                        class_number={class_number + 1}
+                        class_number={class_number}
+                        setContent={props.setContent}
+                    />
                 </div>
             )
 
         default:
-            return(
+            return (
                 <div>
                     <h1>No Content</h1>
                 </div>
