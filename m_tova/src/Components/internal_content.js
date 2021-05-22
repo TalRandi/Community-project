@@ -497,10 +497,11 @@ const InternalContent = (props) => {
                 <div className="internal_content">
                     <h4 className="course_header">{props.course_name}</h4><br></br>
                     <h4 className="class_header">שיעור: {current_class_number}</h4>
-                    <Button className="add_item" onClick={() => {
+                    {(props.type !== 0) ? 
+                    (<Button className="add_item" onClick={() => {
                         setFlagFromCalled("class_content");
                         setClassNumber(current_class_number); props.setContent("add_class_zone")
-                    }} variant="btn btn-success">הוסף תוכן</Button>
+                    }} variant="btn btn-success">הוסף תוכן</Button>):(<br></br>)}
                     {listContent}
                 </div>
             )
