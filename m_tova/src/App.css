@@ -200,19 +200,18 @@ th {
 .content_div{
   background-color: #b0aac0;
   margin: 2%;
-  padding: 0% 3% 2% 0%;
-  height: 10%;
+  padding: 2% 3%;
   border: #614f54 solid 2px;
 }
 .content_div a{
   color: #000000;
   font-weight: bold;
 }
-.content_div img {
+.content_div .delete-button{
   position: absolute;
-  /* height: inherit; */
-  /* top: 1px;
-  left:2px; */
+  left: 3%;
+  height: 30px;
+  width: 40px;
 }
 .content_div ul{
   color: #000000;
@@ -284,4 +283,11 @@ aside ul{
 .title_add_item{
   font-weight: bold;
   right: 0;
+}
+.back{
+  position: absolute;
+  left: 5%;
+  height: 50px;
+  width: 100px;
+  background-color: #59a5fd;
 }

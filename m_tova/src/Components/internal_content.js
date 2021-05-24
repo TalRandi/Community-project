@@ -17,14 +17,13 @@ const InternalContent = (props) => {
     const [class_number, setClassNumber] = useState(0);
     const [current_class_number, setCurrentClassNumber] = useState(0);
     const [flag_from_called, setFlagFromCalled] = useState(''); // flag to know if add item buttom clicked from course content or class content
-
-
-
+    const [selected_course, setSelectedCourse] = useState('')
 
     const course_clicked = e => {
 
         props.setContent("loading")
         let course_name = e.target.id
+        setSelectedCourse(course_name)
         props.setCourseName(course_name)
         storage.ref().child(course_name).listAll().then(list => {
             setClassNumber(list.prefixes.length)
@@ -490,7 +489,8 @@ const InternalContent = (props) => {
                             <h4 className="course_header">{props.course_name}</h4>
                             <Button className="add_item" onClick={() => {
                                 setFlagFromCalled("course_content");
-                                setClassNumber(class_number + 1); props.setContent("add_class_zone")
+                                setClassNumber(class_number + 1); 
+                                props.setContent("add_class_zone")
                             }} variant="btn btn-success">הוסף שיעור</Button>
                         </div>
                     ) : (
@@ -503,7 +503,6 @@ const InternalContent = (props) => {
         case "class_content":
             let counter_content = 1
             const listContent = props.arr_of_class_content.map((content) => {
-                // console.log(content);
                 return (
                     <div key={counter_content++} className="content_div">
                         <a href={content.url} target="_blank" rel="noreferrer">{content.description}</a>
@@ -518,8 +517,12 @@ const InternalContent = (props) => {
                     {(props.type !== 0) ? 
                     (<Button className="add_item" onClick={() => {
                         setFlagFromCalled("class_content");
-                        setClassNumber(current_class_number); props.setContent("add_class_zone")
+                        setClassNumber(current_class_number); 
+                        props.setContent("add_class_zone")
                     }} variant="btn btn-success">הוסף תוכן</Button>):(<br></br>)}
+                    {props.type === 1 &&
+                        <Button className="add_item back" id = {selected_course} onClick = {course_clicked}>חזור</Button>
+                    }
                     {listContent}
                 </div>
             )
@@ -536,9 +539,11 @@ const InternalContent = (props) => {
             )
 
         case "add_class_zone":
-            console.log(flag_from_called);
+            // console.log(flag_from_called);
             return (
                 <div className="internal_content">
+                    <Button className="add_item back" id = {selected_course} onClick = {course_clicked}>חזור</Button>
+
                     {(flag_from_called === "course_content") ?
                         (<div className="title_add_item"><h2> הוספת שיעור {class_number} לקורס {props.course_name}</h2><br /><br /></div>)
                         : (<div className="title_add_item"><h2>הוספת תוכן חדש לשיעור  {class_number}</h2><br /><br /></div>)}

@@ -65,6 +65,7 @@ function App() {
                         setContent={setContent}
                         arr_of_class_content={arr_of_class_content}
                         setClassContent={setClassContent}
+                        setCourseName = {setCourseName}
                         arr_of_classes={arr_of_classes}
                         content={content}
                         course_name={course_name}
