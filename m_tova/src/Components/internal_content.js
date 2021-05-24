@@ -245,6 +245,23 @@ const InternalContent = (props) => {
         console.log(e.target.id);
     }
 
+    const delete_content = e =>{
+        props.setContent("loading")
+        let path_to_file = `${props.course_name}/class${current_class_number}/${e.target.id}`
+        for (let index = 0; index < props.arr_of_class_content.length; index++) {
+            if (props.arr_of_class_content[index].description === e.target.id) {
+                props.arr_of_class_content.splice(index, 1);
+                break;
+            }
+        }
+        storage.ref().child(path_to_file).delete().then(()=>{
+            console.log(props.arr_of_class_content);
+            props.setContent("class_content")
+        })
+    }
+
+
+
     switch (props.content) {
         //From student
         case "instructor_details":
@@ -486,10 +503,11 @@ const InternalContent = (props) => {
         case "class_content":
             let counter_content = 1
             const listContent = props.arr_of_class_content.map((content) => {
-
+                // console.log(content);
                 return (
                     <div key={counter_content++} className="content_div">
                         <a href={content.url} target="_blank" rel="noreferrer">{content.description}</a>
+                        <img className="delete-button" src={deleteButton} id={content.description} alt="" onClick={delete_content}></img>
                     </div>
                 )
             });

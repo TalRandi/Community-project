@@ -200,13 +200,19 @@ th {
 .content_div{
   background-color: #b0aac0;
   margin: 2%;
-  padding: 2% 3%;
+  padding: 0% 3% 2% 0%;
   height: 10%;
   border: #614f54 solid 2px;
 }
 .content_div a{
   color: #000000;
   font-weight: bold;
+}
+.content_div img {
+  position: absolute;
+  /* height: inherit; */
+  /* top: 1px;
+  left:2px; */
 }
 .content_div ul{
   color: #000000;
