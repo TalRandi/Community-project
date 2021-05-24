@@ -95,6 +95,7 @@ li {
 .list_students {
   position: absolute;
   margin-top: 5%;
+  padding-bottom: 12%;
 }
 .table td, .table th{
   vertical-align: middle;
@@ -186,6 +187,8 @@ th {
   top: 28%;
   padding-bottom: 6%;
 }
+
+
 .delete-button{
   cursor: pointer;
 }
@@ -284,6 +287,9 @@ aside ul{
 .title_add_item{
   font-weight: bold;
   right: 0;
+}
+.title_add_item h2{
+  text-align: right;
 }
 .back{
   position: absolute;
