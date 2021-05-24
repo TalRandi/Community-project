@@ -184,6 +184,7 @@ th {
   width: 50%;
   margin: 0% 25%;
   top: 28%;
+  padding-bottom: 6%;
 }
 .delete-button{
   cursor: pointer;
@@ -290,4 +291,26 @@ aside ul{
   height: 50px;
   width: 100px;
   background-color: #59a5fd;
+}
+footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width: 100%;
+  background-color: #b0aac0;
+  color: black;
+  text-align: center;
+  font-size: 14px;
+  padding: 1.3%;
+  font-weight: bold;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial
+  ,"Noto Sans","Liberation Sans",sans-serif
+  ,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+#small_logo_footer{
+  position: absolute;
+  height: 55px;
+  width: 124px;
+  left: 2%;
+  bottom:5%;
 }

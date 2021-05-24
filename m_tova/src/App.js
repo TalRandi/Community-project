@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import InternalContent from './Components/internal_content';
 import './App.css';
+import Footer from './Components/footer';
 
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
                         start_date={start_date}
                         end_date={end_date}
                         list_of_student={list_of_student} />
+                        <Footer/>
                     </div>
                   )
                 //instructor
@@ -114,6 +116,7 @@ function App() {
                         content={content}
                         list_of_courses={list_of_courses}
                         list_of_student={list_of_student} />
+                        <Footer/>
                     </div>
                   )
                 //admin
@@ -146,6 +149,7 @@ function App() {
                         setListOfCourses={setListOfCourses}
                         setListOfInstructors={setListOfInstructors}
                       />
+                      <Footer/>
                     </div>
 
                   )
