@@ -239,12 +239,14 @@ const InternalContent = (props) => {
         });
     }
 
-    //TODO : complete this function - course clicked from admin page
+    //display content course when course clicked from admin page
     const course_clicked_from_admin = e => {
-        console.log(e.target.id);
+        props.setContent("loading")
+        course_clicked(e)
+
     }
 
-    const delete_content = e =>{
+    const delete_content = e => {
         props.setContent("loading")
         let path_to_file = `${props.course_name}/class${current_class_number}/${e.target.id}`
         for (let index = 0; index < props.arr_of_class_content.length; index++) {
@@ -253,7 +255,7 @@ const InternalContent = (props) => {
                 break;
             }
         }
-        storage.ref().child(path_to_file).delete().then(()=>{
+        storage.ref().child(path_to_file).delete().then(() => {
             console.log(props.arr_of_class_content);
             props.setContent("class_content")
         })
@@ -461,21 +463,20 @@ const InternalContent = (props) => {
 
             return (
                 <div className="add_form">
+                    <Button className="add_item back" id={selected_course} onClick={() => { props.setContent("student_list_from_instructor") }}>חזור</Button>
                     <h1>הוספת סטודנט</h1>
                     <input id="input_student_name" className="input_fields" type="text" placeholder="שם הסטודנט" required />
                     <input id="input_password" className="input_fields" type="text" placeholder="סיסמא" required />
                     <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
                     <input id="input_phone" className="input_fields" type="text" placeholder="מספר פלאפון" required />
-
-
                     <Button className="submit" variant="btn btn-primary" onClick={() => submit_student("input_student_name", "input_password", "input_course_name", "input_phone")}>אישור</Button>
                 </div>
             )
 
         case "course_content":
+
             let counter_class = 1
             const listClasses = props.arr_of_classes.map((lesson) => {
-
                 return (
                     <div key={counter_class} className="content_div">
                         <ul id={counter_class} onClick={class_content} >שיעור {counter_class++}</ul>
@@ -484,19 +485,26 @@ const InternalContent = (props) => {
             });
             return (
                 <div className="internal_content">
-                    {(props.type === 1) ? (
+                    {(props.type !== 0) ? (
                         <div>
                             <h4 className="course_header">{props.course_name}</h4>
                             <Button className="add_item" onClick={() => {
                                 setFlagFromCalled("course_content");
-                                setClassNumber(class_number + 1); 
+                                setClassNumber(class_number + 1);
                                 props.setContent("add_class_zone")
                             }} variant="btn btn-success">הוסף שיעור</Button>
+                            {(props.type == 1) ?
+                                <Button className="add_item back" id={selected_course} onClick={() => { props.setContent("courses_list") }}>חזור</Button>
+                                : <Button className="add_item back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</Button>
+
+                            }
                         </div>
                     ) : (
                         <h4>{props.course_name} - רשימת שיעורים</h4>
                     )}
+
                     {listClasses}
+
                 </div>
             )
 
@@ -512,17 +520,21 @@ const InternalContent = (props) => {
             });
             return (
                 <div className="internal_content">
+
                     <h4 className="course_header">{props.course_name}</h4><br></br>
                     <h4 className="class_header">שיעור: {current_class_number}</h4>
-                    {(props.type !== 0) ? 
-                    (<Button className="add_item" onClick={() => {
-                        setFlagFromCalled("class_content");
-                        setClassNumber(current_class_number); 
-                        props.setContent("add_class_zone")
-                    }} variant="btn btn-success">הוסף תוכן</Button>):(<br></br>)}
-                    {props.type === 1 &&
-                        <Button className="add_item back" id = {selected_course} onClick = {course_clicked}>חזור</Button>
-                    }
+                    {(props.type !== 0) ?
+                        (<div><Button className="add_item" onClick={() => {
+                            setFlagFromCalled("class_content");
+                            setClassNumber(current_class_number);
+                            props.setContent("add_class_zone")
+                        }} variant="btn btn-success">הוסף תוכן</Button>
+                            {props.type === 1 ?
+                                <Button className="add_item back" id={selected_course} onClick={course_clicked}>חזור</Button> :
+                                <Button className="add_item back" id={selected_course} onClick={course_clicked}>חזור</Button>
+
+                            }</div>) : (<Button className="class-content-form-student" id={selected_course} onClick={() => props.setContent("course_content")}>חזור</Button>)}
+
                     {listContent}
                 </div>
             )
@@ -542,7 +554,7 @@ const InternalContent = (props) => {
             // console.log(flag_from_called);
             return (
                 <div className="internal_content">
-                    <Button className="add_item back" id = {selected_course} onClick = {course_clicked}>חזור</Button>
+                    <Button className="add_item back" id={selected_course} onClick={course_clicked}>חזור</Button>
 
                     {(flag_from_called === "course_content") ?
                         (<div className="title_add_item"><h2> הוספת שיעור {class_number} לקורס {props.course_name}</h2><br /><br /></div>)
@@ -552,7 +564,7 @@ const InternalContent = (props) => {
                         setClassContent={props.setClassContent}
                         course_name={props.course_name}
                         class_number={class_number + 1}
-                        class_number={class_number}
+                        // class_number={class_number}
                         setContent={props.setContent}
                     />
                 </div>

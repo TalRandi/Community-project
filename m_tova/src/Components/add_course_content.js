@@ -44,6 +44,8 @@ const AddZone = props => {
                 case firebase.storage.TaskState.RUNNING: // or 'running'
                     console.log('Upload is running');
                     break;
+                default:
+                    break;
                 }
             }, 
             (error) => {
@@ -89,7 +91,7 @@ const AddZone = props => {
             </aside>
 
             ):(<h4> </h4>) }
-            {prog != 0 ? (
+            {prog !== 0 ? (
                 <div>
                     {prog === 100 ? (
                         <h1>הפעולה הושלמה בהצלחה</h1>

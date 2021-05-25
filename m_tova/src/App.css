@@ -217,6 +217,7 @@ th {
   height: 30px;
   width: 40px;
 }
+
 .content_div ul{
   color: #000000;
   font-weight: bold;
@@ -238,6 +239,7 @@ th {
   right: 5%;
   font-weight: bold;
 }
+
 .class_header{
   display: inline-block;
   position: absolute;
@@ -291,6 +293,15 @@ aside ul{
 .title_add_item h2{
   text-align: right;
 }
+.class-content-form-student{
+  margin-right:  70% ;
+  margin-top: -2%;
+  height: 50px;
+  width: 100px;
+  background-color: #59a5fd;
+
+}
+
 .back{
   position: absolute;
   left: 5%;

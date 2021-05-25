@@ -148,6 +148,14 @@ function App() {
                         setContent={setContent}
                         setListOfCourses={setListOfCourses}
                         setListOfInstructors={setListOfInstructors}
+                        setCourseName={setCourseName}
+                        arr_of_class_content={arr_of_class_content}
+                        setClassContent={setClassContent}
+                        arr_of_classes = {arr_of_classes}
+                        setArrOfClasses = {setArrOfClasses}
+                        course_name={course_name}
+
+
                       />
                       <Footer/>
                     </div>
