@@ -18,6 +18,9 @@ const InternalContent = (props) => {
     const [current_class_number, setCurrentClassNumber] = useState(0);
     const [flag_from_called, setFlagFromCalled] = useState(''); // flag to know if add item buttom clicked from course content or class content
     const [selected_course, setSelectedCourse] = useState('')
+    const [class_description, setClassDescription] = useState('')
+    const [is_add_content, setIsAddContent]=useState(false)
+
 
     const course_clicked = e => {
 
@@ -229,6 +232,14 @@ const InternalContent = (props) => {
 
         setCurrentClassNumber(class_number)
 
+        db.collection("classDescription").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if (doc.data().course_name === props.course_name && doc.data().class_number === current_class_number)
+                    setClassDescription(doc.data().class_description)
+            })
+        });
+
+
         storage.ref().child(props.course_name + "/class" + class_number).listAll().then(async list => {
             for (let lesson of list.items) {
                 let url = await lesson.getDownloadURL()
@@ -237,6 +248,8 @@ const InternalContent = (props) => {
             props.setClassContent(temp_class_content)
             props.setContent("class_content")
         });
+
+
     }
 
     //display content course when course clicked from admin page
@@ -491,7 +504,8 @@ const InternalContent = (props) => {
                             <Button className="add_item" onClick={() => {
                                 setFlagFromCalled("course_content");
                                 setClassNumber(class_number + 1);
-                                props.setContent("add_class_zone")
+                                props.setContent("add_class_zone");
+                                setIsAddContent(false)
                             }} variant="btn btn-success">הוסף שיעור</Button>
                             {(props.type == 1) ?
                                 <Button className="add_item back" id={selected_course} onClick={() => { props.setContent("courses_list") }}>חזור</Button>
@@ -524,17 +538,15 @@ const InternalContent = (props) => {
                     <h4 className="course_header">{props.course_name}</h4><br></br>
                     <h4 className="class_header">שיעור: {current_class_number}</h4>
                     {(props.type !== 0) ?
-                        (<div><Button className="add_item" onClick={() => {
+                        (<div><Button className="add_item"  onClick={() => {
                             setFlagFromCalled("class_content");
-                            setClassNumber(current_class_number);
+                            setCurrentClassNumber(current_class_number);
+                            setIsAddContent(true);
                             props.setContent("add_class_zone")
                         }} variant="btn btn-success">הוסף תוכן</Button>
-                            {props.type === 1 ?
-                                <Button className="add_item back" id={selected_course} onClick={course_clicked}>חזור</Button> :
-                                <Button className="add_item back" id={selected_course} onClick={course_clicked}>חזור</Button>
-
-                            }</div>) : (<Button className="class-content-form-student" id={selected_course} onClick={() => props.setContent("course_content")}>חזור</Button>)}
-
+                            <Button className="add_item back" id={selected_course} onClick={course_clicked}>חזור</Button></div>) :
+                        (<Button className="class-content-form-student" id={selected_course} onClick={() => props.setContent("course_content")}>חזור</Button>)}
+                    <p>{class_description}</p>
                     {listContent}
                 </div>
             )
@@ -558,14 +570,21 @@ const InternalContent = (props) => {
 
                     {(flag_from_called === "course_content") ?
                         (<div className="title_add_item"><h2> הוספת שיעור {class_number} לקורס {props.course_name}</h2><br /><br /></div>)
-                        : (<div className="title_add_item"><h2>הוספת תוכן חדש לשיעור  {class_number}</h2><br /><br /></div>)}
+                        : (<div className="title_add_item"><h2>הוספת תוכן חדש לשיעור  {current_class_number}</h2><br /><br /></div>)}
+                    <div class="form-group">
+                        <label >תקציר שיעור</label>
+                        <textarea class="form-control" onChange={(e) => { setClassDescription(e.target.value) }} rows="5"></textarea>
+                    </div>
                     <AddZone
                         setCurrentClassNumber={setCurrentClassNumber}
                         setClassContent={props.setClassContent}
                         course_name={props.course_name}
-                        class_number={class_number + 1}
+                        is_add_content={is_add_content}
+                        current_class_number={current_class_number}
+                        class_number={class_number}
                         // class_number={class_number}
                         setContent={props.setContent}
+                        class_description={class_description}
                     />
                 </div>
             )

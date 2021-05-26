@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {storage} from '../Firebase/firebase';
+import {storage, db} from '../Firebase/firebase';
 import {useDropzone} from 'react-dropzone';
 import firebase from 'firebase';
 
@@ -7,15 +7,23 @@ const AddZone = props => {
 
     const course_name = props.course_name
     const class_number = props.class_number
+    const current_class_number=props.current_class_number
+    const is_add_content=props.is_add_content
     const setContent = props.setContent
     const setClassContent = props.setClassContent
     const setCurrentClassNumber = props.setCurrentClassNumber
+    const class_description =props.class_description
+
+    let class_number_to_set
+    is_add_content ?  class_number_to_set =current_class_number : class_number_to_set =class_number
+
     
     const [prog, setProg] = useState(0) 
 
     const {getRootProps, getInputProps, acceptedFiles} = useDropzone({noKeyboard: true});
     
     let loaded_files = []
+
 
     const files = acceptedFiles.map(file => {
         loaded_files.push(file)
@@ -24,11 +32,21 @@ const AddZone = props => {
     })
 
     const upload = (loaded_files) =>{ 
+        const id = db.collection('stack_over').doc().id
 
+        var newDescription = {
+            course_name,
+            class_number: class_number_to_set,
+            class_description
+        };
+
+        db.collection("classDescription").doc(id).set(newDescription).then(() => {
+            console.log("Documents successfully written!");
+        });
         var uploadTask
 
         loaded_files.forEach((item) => {
-            uploadTask = storage.ref().child(`${course_name}/class${class_number}/${item.name}`).put(item)
+            uploadTask = storage.ref().child(`${course_name}/class${class_number_to_set}/${item.name}`).put(item)
         })
         
         uploadTask.on('state_changed', 
@@ -60,14 +78,14 @@ const AddZone = props => {
                 });
                 let temp_class_content = []
                     
-                storage.ref().child(props.course_name + "/class" + class_number).listAll().then(async list => {
+                storage.ref().child(props.course_name + "/class" + class_number_to_set).listAll().then(async list => {
                     for(let lesson of list.items)
                     {
                         let url = await lesson.getDownloadURL()
                         temp_class_content.push({"url": url, "description": lesson.name})            
                     }
                     setClassContent(temp_class_content)
-                    setCurrentClassNumber(class_number)
+                    setCurrentClassNumber(class_number_to_set)
                     setContent("class_content")
                 });   
             }
