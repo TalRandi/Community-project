@@ -229,14 +229,19 @@ const InternalContent = (props) => {
         props.setContent("loading")
         let class_number = e.target.id
         let temp_class_content = []
-
+        let description_exist = false
         setCurrentClassNumber(class_number)
 
         db.collection("classDescription").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                if (doc.data().course_name === props.course_name && doc.data().class_number === current_class_number)
-                    setClassDescription(doc.data().class_description)
+                if (doc.data().course_name === props.course_name && doc.data().class_number === parseInt(class_number)){
+                    setClassDescription(doc.data().class_description)                                         
+                    description_exist = true
+                }                      
             })
+            if(!description_exist)
+                setClassDescription('')
+
         });
 
 
@@ -507,7 +512,7 @@ const InternalContent = (props) => {
                                 props.setContent("add_class_zone");
                                 setIsAddContent(false)
                             }} variant="btn btn-success">הוסף שיעור</Button>
-                            {(props.type == 1) ?
+                            {(props.type === 1) ?
                                 <Button className="add_item back" id={selected_course} onClick={() => { props.setContent("courses_list") }}>חזור</Button>
                                 : <Button className="add_item back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</Button>
 
@@ -528,7 +533,9 @@ const InternalContent = (props) => {
                 return (
                     <div key={counter_content++} className="content_div">
                         <a href={content.url} target="_blank" rel="noreferrer">{content.description}</a>
+                        {(props.type !== 0) ?
                         <img className="delete-button" src={deleteButton} id={content.description} alt="" onClick={delete_content}></img>
+                        :""}
                     </div>
                 )
             });
@@ -582,7 +589,6 @@ const InternalContent = (props) => {
                         is_add_content={is_add_content}
                         current_class_number={current_class_number}
                         class_number={class_number}
-                        // class_number={class_number}
                         setContent={props.setContent}
                         class_description={class_description}
                     />
