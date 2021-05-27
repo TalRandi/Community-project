@@ -33,11 +33,12 @@ const AddZone = props => {
 
     const upload = (loaded_files) =>{ 
         const id = db.collection('stack_over').doc().id
-
+        let temp_class_description = (class_description === '' ? "" : class_description)
+        
         var newDescription = {
             course_name,
             class_number: class_number_to_set,
-            class_description
+            class_description : temp_class_description
         };
 
         db.collection("classDescription").doc(id).set(newDescription).then(() => {
