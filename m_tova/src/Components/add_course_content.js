@@ -8,22 +8,26 @@ const AddZone = props => {
     const course_name = props.course_name
     const class_number = props.class_number
     const current_class_number=props.current_class_number
-    const is_add_content=props.is_add_content
+    const is_add_content = props.is_add_content
     const setContent = props.setContent
     const setClassContent = props.setClassContent
     const setCurrentClassNumber = props.setCurrentClassNumber
-    const class_description =props.class_description
+    const class_description = props.class_description
+    const setClassDescription = props.setClassDescription
+    const description_exist = props.description_exist
 
     let class_number_to_set
-    is_add_content ?  class_number_to_set =current_class_number : class_number_to_set =class_number
-
+    is_add_content ? class_number_to_set = current_class_number : class_number_to_set =class_number
+    
     
     const [prog, setProg] = useState(0) 
-
     const {getRootProps, getInputProps, acceptedFiles} = useDropzone({noKeyboard: true});
     
     let loaded_files = []
 
+    if(!description_exist)
+        setClassDescription(' ')
+    
 
     const files = acceptedFiles.map(file => {
         loaded_files.push(file)
@@ -31,14 +35,14 @@ const AddZone = props => {
             <ul key={file.path}>{file.path}</ul>)
     })
 
-    const upload = (loaded_files) =>{ 
-        const id = db.collection('stack_over').doc().id
-        let temp_class_description = (class_description === '' ? "" : class_description)
+    const upload = (loaded_files) =>{
+        
+        const id = db.collection('stack_over').doc().id     
         
         var newDescription = {
             course_name,
             class_number: class_number_to_set,
-            class_description : temp_class_description
+            class_description
         };
 
         db.collection("classDescription").doc(id).set(newDescription).then(() => {
@@ -61,7 +65,7 @@ const AddZone = props => {
                     console.log('Upload is paused');
                     break;
                 case firebase.storage.TaskState.RUNNING: // or 'running'
-                    console.log('Upload is running');
+                    // console.log('Upload is running');
                     break;
                 default:
                     break;
@@ -75,7 +79,7 @@ const AddZone = props => {
                 // Handle successful uploads on complete
                 // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                console.log('File available at', downloadURL);
+                // console.log('File available at', downloadURL);
                 });
                 let temp_class_content = []
                     

@@ -21,6 +21,7 @@ const InternalContent = (props) => {
     const [class_description, setClassDescription] = useState('')
     const [is_add_content, setIsAddContent]=useState(false)
     const [edit_open, setEditOpen] = useState(false)
+    const [description_exist, setDescriptionExist] = useState(false)
 
     const course_clicked = e => {
 
@@ -503,6 +504,7 @@ const InternalContent = (props) => {
                                 setFlagFromCalled("course_content");
                                 setClassNumber(class_number + 1);
                                 props.setContent("add_class_zone");
+                                setDescriptionExist(false)
                                 setIsAddContent(false)
                             }} variant="btn btn-success">הוסף שיעור</Button>
                             {(props.type === 1) ?
@@ -548,7 +550,7 @@ const InternalContent = (props) => {
                         (<Button className="class-content-form-student" id={selected_course} onClick={() => props.setContent("course_content")}>חזור</Button>)}
                     <h4 className = "right-align">תקציר השיעור :</h4>
                     <p className = "right-align description">{class_description}</p>
-                    {props.type !== 0 && <Button className ="edit-description" onClick = {() => {setEditOpen(true)}}>ערוך תקציר</Button>}
+                    {props.type !== 0 && <Button className ="edit-description" onClick = {() => {setEditOpen(!edit_open)}}>ערוך תקציר</Button>}
                     {edit_open ? 
    
                         (<div>
@@ -600,10 +602,12 @@ const InternalContent = (props) => {
                         : (<div className="title_add_item"><h2>הוספת תוכן חדש לשיעור  {current_class_number}</h2><br /><br /></div>)}
                     <div className="form-group">
                         <h4 className = "right-align">תקציר שיעור :</h4>
-                        <textarea className="form-control" onChange={(e) => { setClassDescription(e.target.value) }} rows="5"></textarea>
+                        <textarea className="form-control" onChange={(e) => { setClassDescription(e.target.value); setDescriptionExist(true) }} rows="5"></textarea>
                     </div>
                     <AddZone
+                        setClassDescription = {setClassDescription}
                         setCurrentClassNumber={setCurrentClassNumber}
+                        description_exist = {description_exist}
                         setClassContent={props.setClassContent}
                         course_name={props.course_name}
                         is_add_content={is_add_content}
