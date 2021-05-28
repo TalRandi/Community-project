@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {storage, db} from '../Firebase/firebase';
 import {useDropzone} from 'react-dropzone';
 import firebase from 'firebase';
+import { Button } from 'react-bootstrap';
 
 const AddZone = props => {
 
@@ -26,7 +27,7 @@ const AddZone = props => {
     let loaded_files = []
 
     if(!description_exist)
-        setClassDescription(' ')
+        setClassDescription('אין תיאור')
     
 
     const files = acceptedFiles.map(file => {
@@ -108,9 +109,9 @@ const AddZone = props => {
             <aside>
                 <h4>קבצים שנקלטו:</h4>
                 <ul>{files}</ul>
-                <button onClick={()=>{
+                <Button className = "submit" onClick={()=>{
                     upload(loaded_files)
-                }}>העלה קבצים</button>
+                }}>העלה קבצים</Button>
             </aside>
 
             ):(<h4> </h4>) }

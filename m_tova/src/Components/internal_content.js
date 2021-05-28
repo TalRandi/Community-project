@@ -7,6 +7,7 @@ import { Card, ListGroup, Table } from 'react-bootstrap';
 import deleteButton from '../Images/delete_student.png';
 import Loader from "react-loader-spinner";
 import AddZone from './add_course_content';
+import GroupContent from './group_content';
 
 //This componnent build the internal div with the relevant content inside it
 const InternalContent = (props) => {
@@ -456,7 +457,7 @@ const InternalContent = (props) => {
                     <input id="input_password" className="input_fields" type="text" placeholder="סיסמא" required />
                     <input id="input_email" className="input_fields" type="text" placeholder='דוא"ל' required />
                     <input id="input_phone" className="input_fields" type="text" placeholder="מספר פלאפון" required />
-                    <Button className="submit" variant="btn btn-primary" onClick={() => submit_instructor("input_name", "input_password", "input_email", "input_phone")}>אישור</Button>
+                    <Button className="submit" onClick={() => submit_instructor("input_name", "input_password", "input_email", "input_phone")}>אישור</Button>
                 </div>
             )
         //From admin - inner button    
@@ -468,7 +469,7 @@ const InternalContent = (props) => {
                     <input id="input_instructor_name" className="input_fields" type="text" placeholder="שם המדריך" required />
                     <DatePicker id="input_start_date" className="input_fields" selected={inputStartDate} onChange={date => setInputStartDate(date)} placeholderText='תאריך התחלה' required /><br />
                     <DatePicker id="input_end_date" className="input_fields" selected={inputEndDate} onChange={date => setInputEndDate(date)} placeholderText="תאריך סיום" required /><br />
-                    <Button className="submit" variant="btn btn-primary" onClick={() => submit_course("input_course_name", "input_instructor_name", "input_start_date", "input_end_date")}>אישור</Button>
+                    <Button className="submit" onClick={() => submit_course("input_course_name", "input_instructor_name", "input_start_date", "input_end_date")}>אישור</Button>
                 </div>
             )
         case "add_student":
@@ -481,7 +482,7 @@ const InternalContent = (props) => {
                     <input id="input_password" className="input_fields" type="text" placeholder="סיסמא" required />
                     <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
                     <input id="input_phone" className="input_fields" type="text" placeholder="מספר פלאפון" required />
-                    <Button className="submit" variant="btn btn-primary" onClick={() => submit_student("input_student_name", "input_password", "input_course_name", "input_phone")}>אישור</Button>
+                    <Button className="submit" onClick={() => submit_student("input_student_name", "input_password", "input_course_name", "input_phone")}>אישור</Button>
                 </div>
             )
 
@@ -536,26 +537,20 @@ const InternalContent = (props) => {
             return (
                 <div className="internal_content">
 
-                    <h4 className="course_header">{props.course_name}</h4>
-                    <h4 className="class_header">שיעור: {current_class_number}</h4>
                     {(props.type !== 0) ?
-                        (<div><Button className="add_item" onClick={() => {
-                            setFlagFromCalled("class_content");
-                            setCurrentClassNumber(current_class_number);
-                            setIsAddContent(true);
-                            props.setContent("add_class_zone")
-                        }} variant="btn btn-success">הוסף תוכן</Button>
+                        (<div>
                             <Button className="add_item back" id={selected_course} onClick={course_clicked}>חזור</Button>
                             </div>) :
                         (<Button className="class-content-form-student" id={selected_course} onClick={() => props.setContent("course_content")}>חזור</Button>)}
+                    <h4 className="course_header">{props.course_name}</h4>
+                    <h4 className="class_header">שיעור: {current_class_number}</h4>
                     <h4 className = "right-align">תקציר השיעור :</h4>
                     <p className = "right-align description">{class_description}</p>
-                    {props.type !== 0 && <Button className ="edit-description" onClick = {() => {setEditOpen(!edit_open)}}>ערוך תקציר</Button>}
-                    {edit_open ? 
-   
+                    {props.type !== 0 && <Button className = "edit" onClick = {() => {setEditOpen(!edit_open)}}>ערוך תקציר</Button>}
+                    {edit_open &&
                         (<div>
                             <textarea value = {class_description} className="form-control" onChange={(e) => { setClassDescription(e.target.value) }} rows="5"></textarea>
-                            <Button className="edit-description" onClick = {() => {
+                            <Button className="edit save" onClick = {() => {
                                 let temp_id
                                 db.collection("classDescription").get().then((querySnapshot) => {
                                     querySnapshot.forEach((doc) => {
@@ -572,11 +567,18 @@ const InternalContent = (props) => {
                                             console.log("Document successfully updated!");
                                         })
                                 });
-
                             }}>שמור</Button>
-                        </div>) :
-                        ("")}
+                        </div>)
+                    }
                     {listContent}
+                    {props.type !== 0 &&
+                    <Button className= "edit" onClick={() => {
+                            setFlagFromCalled("class_content");
+                            setCurrentClassNumber(current_class_number);
+                            setIsAddContent(true);
+                            props.setContent("add_class_zone")
+                        }} >הוסף קבצים</Button>
+                    }        
                 </div>
             )
         case "loading":
@@ -600,10 +602,13 @@ const InternalContent = (props) => {
                     {(flag_from_called === "course_content") ?
                         (<div className="title_add_item"><h2> הוספת שיעור {class_number} לקורס {props.course_name}</h2><br /><br /></div>)
                         : (<div className="title_add_item"><h2>הוספת תוכן חדש לשיעור  {current_class_number}</h2><br /><br /></div>)}
-                    <div className="form-group">
-                        <h4 className = "right-align">תקציר שיעור :</h4>
-                        <textarea className="form-control" onChange={(e) => { setClassDescription(e.target.value); setDescriptionExist(true) }} rows="5"></textarea>
-                    </div>
+                    
+                    {!is_add_content &&
+                        <div className="form-group">
+                            <h4 className = "right-align">תקציר השיעור: </h4>
+                            <textarea className="form-control" onChange={(e) => { setClassDescription(e.target.value); setDescriptionExist(true) }} rows="5"></textarea>
+                        </div>
+                    }
                     <AddZone
                         setClassDescription = {setClassDescription}
                         setCurrentClassNumber={setCurrentClassNumber}
@@ -618,7 +623,33 @@ const InternalContent = (props) => {
                     />
                 </div>
             )
+        case "shared_content":
+            return (
+                <GroupContent
+                    course_name = {props.course_name}
+                />
+                // <div className="internal_content">
+                //     <div className="container">
+                //         <div className="row justify-content-start">
+                //             <div className="col-2 test">
+                                
+                //                 שם סטודנט
+                //                 מספר תרגיל
+                //                 קבצים
+                //             </div>
+                //             <div className="col-2 test">
 
+                //             </div>
+                //             <div className="col-2 test">
+                //             </div>
+                //             <div className="col-2 test">
+                //             </div>
+                //             <div className="col-2 test">
+                //             </div>
+                //         </div>
+                //     </div>
+                // </div>
+            )
         default:
             return (
                 <div>

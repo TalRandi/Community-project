@@ -101,7 +101,6 @@ const Menu = (props) => {
             setListOfInstructors(instructors_arr)
         });
 
-
     }
     //Courses list button clicked from admin page
     const courses_list_from_admin = e => {
@@ -124,6 +123,11 @@ const Menu = (props) => {
         })
     }
 
+    //Shared content clicked from student page
+    const shared_content = e =>{
+        setContent(e.target.id)
+    }
+
     return (
         <div className="side-menu">
             {(() => {
@@ -131,7 +135,7 @@ const Menu = (props) => {
                 if (props.type === 0) {
                     return (
                         <div className="menu-content">
-                            <Button >תכנים קבוצתיים</Button><br />
+                            <Button onClick={shared_content} id = "shared_content">תכנים קבוצתיים</Button><br />
                             <Button onClick={course_content} id="course_content">תכני קורס</Button><br />
                             <Button onClick={course_details} id="course_details">פרטי קורס</Button><br />
                             <Button onClick={instructor_details} id="instructor_details">פרטי מדריך</Button>
