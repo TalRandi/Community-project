@@ -315,7 +315,7 @@ const InternalContent = (props) => {
                     </Card>
                     <div className="list_students">
                         <h1>רשימת משתתפי הקורס:</h1>
-                        <Table striped bordered hover variant="dark">
+                        <Table>
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -366,7 +366,7 @@ const InternalContent = (props) => {
             return (
                 <div className="internal_content">
                     <Button className="add_item" onClick={() => props.setContent("add_student")} variant="btn btn-success">הוסף סטודנט</Button>
-                    <Table striped bordered hover variant="dark">
+                    <Table>
                         <thead>
                             <tr>
                                 <th>שם הסטודנט</th>
@@ -399,7 +399,7 @@ const InternalContent = (props) => {
             return (
                 <div className="internal_content">
                     <Button className="add_item" onClick={() => props.setContent("add_instructor")} variant="btn btn-success">הוסף מדריך</Button>
-                    <Table bordered variant="dark">
+                    <Table >
                         <thead>
                             <tr>
                                 <th>שם המדריך</th>
@@ -432,7 +432,7 @@ const InternalContent = (props) => {
             return (
                 <div className="internal_content">
                     <Button className="add_item" onClick={() => props.setContent("add_course")} variant="btn btn-success">הוסף קורס</Button>
-                    <Table striped bordered hover variant="dark">
+                    <Table >
                         <thead>
                             <tr>
                                 <th>שם הקורס</th>

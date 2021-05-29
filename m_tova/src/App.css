@@ -103,16 +103,17 @@ li {
 }
 td{
   width: 20%;
-  background-color: #95c6ff;
-  
-  /* background-color: #b0aac0; */
+  background-color: rgb(145, 154, 248);
+  /* background-color: #95c6ff; */
   color: black;
   font-size: x-large;
 }
 th {
-  background-color: #a7ace7;
-  /* background-color: #614f54; */
+  background-color: rgb(110, 94, 158);
+  color: #fff;
+  /* background-color: #a7ace7; */
 }
+
 .list_students h1 {
   text-align: right;
 }
@@ -285,10 +286,10 @@ aside ul{
 .clickable_courses{
   cursor: pointer;
   color: #000000;
-  background-color: #0076fd;
+  background-color: #adbac9;
 }
 .clickable_courses:hover{
-  background-color: #1a63b6;
+  background-color: #7b8897;
 }
 
 .title_add_item{
