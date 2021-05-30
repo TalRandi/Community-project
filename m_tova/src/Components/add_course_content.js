@@ -3,6 +3,7 @@ import {storage, db} from '../Firebase/firebase';
 import {useDropzone} from 'react-dropzone';
 import firebase from 'firebase';
 import { Button } from 'react-bootstrap';
+import LinearWithValueLabel from '@material-ui/core/LinearProgress';
 
 const AddZone = props => {
 
@@ -105,27 +106,28 @@ const AddZone = props => {
                 <p>גרור לכאן או לחץ כדי לעלות קבצים</p>
             </div>
             <br />
-            {files.length > 0 ? (
+            {files.length > 0 &&
             <aside>
                 <h4>קבצים שנקלטו:</h4>
                 <ul>{files}</ul>
-                <Button className = "submit" onClick={()=>{
-                    upload(loaded_files)
-                }}>העלה קבצים</Button>
-            </aside>
-
-            ):(<h4> </h4>) }
-            {prog !== 0 ? (
-                <div>
+                {prog !== 0 ? (
+                    <div>
                     {prog === 100 ? (
                         <h1>הפעולה הושלמה בהצלחה</h1>
                     ):(
-                        <h5 id = "upload">מעלה קבצים: {prog.toFixed(2)}% <br />אנא המתן</h5>
+                        <div className = "progress_loading">
+                            <LinearWithValueLabel value={prog} />
+                            <h5 id = "upload">{prog.toFixed(2)}% <br />אנא המתן</h5>
+                        </div>
                     )}
                 </div>
-            ):(
-                <div></div>
-            )}
+                ): (
+                    <Button className = "submit" onClick={()=>{
+                        upload(loaded_files)
+                    }}>העלה קבצים</Button>
+                )}
+            </aside>
+            }
         </div>
     );
 }

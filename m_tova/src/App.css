@@ -30,9 +30,9 @@
 .nav-list,
 #log-off {
   width: 40%;
-  margin: 0 2%;
+  margin: 0%;
   display: flex;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   align-items: center;
   list-style: none;
 }
@@ -43,8 +43,7 @@ nav {
   background: radial-gradient(circle, rgba(167,172,231,1) 0%, rgba(149,198,255,1) 53%, rgba(226,199,247,1) 100%);  background-color: #b0aac0;
   color: rgb(224, 227, 235);
   padding: 2%;
-  margin-bottom: 3%;
-
+  /* margin-bottom: 3%; */
 }
 
 li {
@@ -55,7 +54,7 @@ li {
 
 #small-logo {
   position: absolute;
-  right: 1%;
+  left: 1%;
   height: 10%;
   width: 15%;
 }
@@ -63,8 +62,9 @@ li {
 .side-menu {
   position: absolute;
   border: 5px #b0aac0 solid;
+  top: 28%;
+  right: 3%;
   border-radius: 8px;
-  margin: 10% 2%;
 }
 
 .menu-content {
@@ -76,6 +76,7 @@ li {
   position: absolute;
   right: 45%;
 }
+
 #clock{
   position: absolute;
   display: inline-block;
@@ -152,6 +153,9 @@ th {
 }
 
 .add_item{
+  position: absolute;
+  left: 6%;
+  top: 28%;
   margin: 0 0 5% 0;
   height: 60px;
   width: 110px;
@@ -187,7 +191,7 @@ th {
 .internal_content{
   position: absolute;
   width: 60%;
-  margin: 0% 25%;
+  margin: 0% 20%;
   top: 28%;
   padding-bottom: 6%;
 }
@@ -280,8 +284,8 @@ aside ul{
 
 #upload{
   margin: 5% 0%;
-  font-size: 2rem;
-  color: #008cdd;
+  font-size: 1rem;
+  color: #9c9c9c;
 }
 .clickable_courses{
   cursor: pointer;
@@ -300,20 +304,27 @@ aside ul{
 .title_add_item h2{
   text-align: right;
 }
-.class-content-form-student{
+/* .class-content-form-student{
   margin-right: 85% ;
   margin-top: -2%;
   height: 50px;
   width: 90px;
   background-color: #59a5fd;
-}
+} */
 
 .back{
   position: absolute;
-  left: 0%;
+  left: 1%;
+  top: 15%;
+  border-radius: 5px;
+  border: none;
+  color: white;
   height: 50px;
   width: 100px;
   background-color: #59a5fd;
+}
+.back:hover{
+  background-color: #2573cc;
 }
 footer{
   position:fixed;

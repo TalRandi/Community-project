@@ -364,9 +364,9 @@ const InternalContent = (props) => {
             });
 
             return (
-                <div className="internal_content">
+                <div>
                     <Button className="add_item" onClick={() => props.setContent("add_student")} variant="btn btn-success">הוסף סטודנט</Button>
-                    <Table>
+                    <Table className="internal_content">
                         <thead>
                             <tr>
                                 <th>שם הסטודנט</th>
@@ -397,9 +397,9 @@ const InternalContent = (props) => {
                 )
             });
             return (
-                <div className="internal_content">
+                <div>
                     <Button className="add_item" onClick={() => props.setContent("add_instructor")} variant="btn btn-success">הוסף מדריך</Button>
-                    <Table >
+                    <Table className="internal_content">
                         <thead>
                             <tr>
                                 <th>שם המדריך</th>
@@ -430,9 +430,9 @@ const InternalContent = (props) => {
                 )
             });
             return (
-                <div className="internal_content">
+                <div>
                     <Button className="add_item" onClick={() => props.setContent("add_course")} variant="btn btn-success">הוסף קורס</Button>
-                    <Table >
+                    <Table className="internal_content">
                         <thead>
                             <tr>
                                 <th>שם הקורס</th>
@@ -475,14 +475,16 @@ const InternalContent = (props) => {
         case "add_student":
 
             return (
-                <div className="add_form">
-                    <Button className="add_item back" id={selected_course} onClick={() => { props.setContent("student_list_from_instructor") }}>חזור</Button>
-                    <h1>הוספת סטודנט</h1>
-                    <input id="input_student_name" className="input_fields" type="text" placeholder="שם הסטודנט" required />
-                    <input id="input_password" className="input_fields" type="text" placeholder="סיסמא" required />
-                    <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
-                    <input id="input_phone" className="input_fields" type="text" placeholder="מספר פלאפון" required />
-                    <Button className="submit" onClick={() => submit_student("input_student_name", "input_password", "input_course_name", "input_phone")}>אישור</Button>
+                <div>
+                    <button className="back" id={selected_course} onClick={() => { props.setContent("student_list_from_instructor") }}>חזור</button>
+                    <div className="add_form">
+                        <h1>הוספת סטודנט</h1>
+                        <input id="input_student_name" className="input_fields" type="text" placeholder="שם הסטודנט" required />
+                        <input id="input_password" className="input_fields" type="text" placeholder="סיסמא" required />
+                        <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
+                        <input id="input_phone" className="input_fields" type="text" placeholder="מספר פלאפון" required />
+                        <Button className="submit" onClick={() => submit_student("input_student_name", "input_password", "input_course_name", "input_phone")}>אישור</Button>
+                    </div>
                 </div>
             )
 
@@ -497,10 +499,9 @@ const InternalContent = (props) => {
                 )
             });
             return (
-                <div className="internal_content">
-                    {(props.type !== 0) ? (
-                        <div>
-                            <h4 className="course_header">{props.course_name}</h4>
+                <div>
+                    {props.type !== 0 && 
+                        <div>  
                             <Button className="add_item" onClick={() => {
                                 setFlagFromCalled("course_content");
                                 setClassNumber(class_number + 1);
@@ -509,15 +510,18 @@ const InternalContent = (props) => {
                                 setIsAddContent(false)
                             }} variant="btn btn-success">הוסף שיעור</Button>
                             {(props.type === 1) ?
-                                <Button className="add_item back" id={selected_course} onClick={() => { props.setContent("courses_list") }}>חזור</Button>
-                                : <Button className="add_item back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</Button>
+                                <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list") }}>חזור</button>
+                                : <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</button>
                             }
                         </div>
-                    ) : (
-                        <h4>{props.course_name} - רשימת שיעורים</h4>
-                    )}
-
-                    {listClasses}
+                    }
+                    <div className="internal_content">
+                    {props.type !== 0 ? 
+                       (<h4 className="course_header">{props.course_name}</h4>) :
+                       (<h4>{props.course_name} - רשימת שיעורים</h4>)
+                    }
+                        {listClasses}
+                    </div>
 
                 </div>
             )
@@ -535,50 +539,52 @@ const InternalContent = (props) => {
                 )
             });
             return (
-                <div className="internal_content">
-
+                <div>            
                     {(props.type !== 0) ?
                         (<div>
-                            <Button className="add_item back" id={selected_course} onClick={course_clicked}>חזור</Button>
+                            <button className="back" id={selected_course} onClick={course_clicked}>חזור</button>
                             </div>) :
-                        (<Button className="class-content-form-student" id={selected_course} onClick={() => props.setContent("course_content")}>חזור</Button>)}
-                    <h4 className="course_header">{props.course_name}</h4>
-                    <h4 className="class_header">שיעור: {current_class_number}</h4>
-                    <h4 className = "right-align">תקציר השיעור :</h4>
-                    <p className = "right-align description">{class_description}</p>
-                    {props.type !== 0 && <Button className = "edit" onClick = {() => {setEditOpen(!edit_open)}}>ערוך תקציר</Button>}
-                    {edit_open &&
-                        (<div>
-                            <textarea value = {class_description} className="form-control" onChange={(e) => { setClassDescription(e.target.value) }} rows="5"></textarea>
-                            <Button className="edit save" onClick = {() => {
-                                let temp_id
-                                db.collection("classDescription").get().then((querySnapshot) => {
-                                    querySnapshot.forEach((doc) => {
-                                        if (doc.data().course_name === props.course_name && doc.data().class_number === parseInt(current_class_number)){
-                                           temp_id = doc.id;                                        
-                                        }                      
+                        (<button className="back" id={selected_course} onClick={() => props.setContent("course_content")}>חזור</button>)}
+                    <div className = "internal_content">
+
+                        <h4 className="course_header">{props.course_name}</h4>
+                        <h4 className="class_header">שיעור: {current_class_number}</h4>
+                        <h4 className = "right-align">תקציר השיעור :</h4>
+                        <p className = "right-align description">{class_description}</p>
+                        {props.type !== 0 && <Button className = "edit" onClick = {() => {setEditOpen(!edit_open)}}>ערוך תקציר</Button>}
+                        {edit_open &&
+                            (<div>
+                                <textarea value = {class_description} className="form-control" onChange={(e) => { setClassDescription(e.target.value) }} rows="5"></textarea>
+                                <Button className="edit save" onClick = {() => {
+                                    let temp_id
+                                    db.collection("classDescription").get().then((querySnapshot) => {
+                                        querySnapshot.forEach((doc) => {
+                                            if (doc.data().course_name === props.course_name && doc.data().class_number === parseInt(current_class_number)){
+                                            temp_id = doc.id;                                        
+                                            }                      
+                                        });
+                                        db.collection("classDescription").doc(temp_id)
+                                            .update({
+                                                class_description: class_description
+                                            })
+                                            .then(() => {
+                                                setEditOpen(false)
+                                                console.log("Document successfully updated!");
+                                            })
                                     });
-                                    db.collection("classDescription").doc(temp_id)
-                                        .update({
-                                            class_description: class_description
-                                        })
-                                        .then(() => {
-                                            setEditOpen(false)
-                                            console.log("Document successfully updated!");
-                                        })
-                                });
-                            }}>שמור</Button>
-                        </div>)
-                    }
-                    {listContent}
-                    {props.type !== 0 &&
-                    <Button className= "edit" onClick={() => {
-                            setFlagFromCalled("class_content");
-                            setCurrentClassNumber(current_class_number);
-                            setIsAddContent(true);
-                            props.setContent("add_class_zone")
-                        }} >הוסף קבצים</Button>
-                    }        
+                                }}>שמור</Button>
+                            </div>)
+                        }
+                        {listContent}
+                        {props.type !== 0 &&
+                        <Button className= "edit" onClick={() => {
+                                setFlagFromCalled("class_content");
+                                setCurrentClassNumber(current_class_number);
+                                setIsAddContent(true);
+                                props.setContent("add_class_zone")
+                            }} >הוסף קבצים</Button>
+                        }        
+                    </div>
                 </div>
             )
         case "loading":
@@ -596,31 +602,33 @@ const InternalContent = (props) => {
         case "add_class_zone":
  
             return (
-                <div className="internal_content">
-                    <Button className="add_item back" id={selected_course} onClick={course_clicked}>חזור</Button>
+                <div>                    
+                    <button className="back" id={selected_course} onClick={course_clicked}>חזור</button>
+                    <div className="internal_content">
 
-                    {(flag_from_called === "course_content") ?
-                        (<div className="title_add_item"><h2> הוספת שיעור {class_number} לקורס {props.course_name}</h2><br /><br /></div>)
-                        : (<div className="title_add_item"><h2>הוספת תוכן חדש לשיעור  {current_class_number}</h2><br /><br /></div>)}
-                    
-                    {!is_add_content &&
-                        <div className="form-group">
-                            <h4 className = "right-align">תקציר השיעור: </h4>
-                            <textarea className="form-control" onChange={(e) => { setClassDescription(e.target.value); setDescriptionExist(true) }} rows="5"></textarea>
-                        </div>
-                    }
-                    <AddZone
-                        setClassDescription = {setClassDescription}
-                        setCurrentClassNumber={setCurrentClassNumber}
-                        description_exist = {description_exist}
-                        setClassContent={props.setClassContent}
-                        course_name={props.course_name}
-                        is_add_content={is_add_content}
-                        current_class_number={current_class_number}
-                        class_number={class_number}
-                        setContent={props.setContent}
-                        class_description={class_description}
-                    />
+                        {(flag_from_called === "course_content") ?
+                            (<div className="title_add_item"><h2> הוספת שיעור {class_number} לקורס {props.course_name}</h2><br /><br /></div>)
+                            : (<div className="title_add_item"><h2>הוספת תוכן חדש לשיעור  {current_class_number}</h2><br /><br /></div>)}
+                        
+                        {!is_add_content &&
+                            <div className="form-group">
+                                <h4 className = "right-align">תקציר השיעור: </h4>
+                                <textarea className="form-control" onChange={(e) => { setClassDescription(e.target.value); setDescriptionExist(true) }} rows="5"></textarea>
+                            </div>
+                        }
+                        <AddZone
+                            setClassDescription = {setClassDescription}
+                            setCurrentClassNumber={setCurrentClassNumber}
+                            description_exist = {description_exist}
+                            setClassContent={props.setClassContent}
+                            course_name={props.course_name}
+                            is_add_content={is_add_content}
+                            current_class_number={current_class_number}
+                            class_number={class_number}
+                            setContent={props.setContent}
+                            class_description={class_description}
+                        />
+                    </div>
                 </div>
             )
         case "shared_content":
