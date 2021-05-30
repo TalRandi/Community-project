@@ -1,7 +1,6 @@
 .App {
   text-align: center;
 }
-
 #login-form {
   position: absolute;
   margin: 10% 0 20% 0;
@@ -32,18 +31,15 @@
   width: 40%;
   margin: 0%;
   display: flex;
-  /* justify-content: space-around; */
   align-items: center;
   list-style: none;
 }
 
 nav {
-  /* background-color: rgb(38, 60, 109); */
   background: rgb(167,172,231);
   background: radial-gradient(circle, rgba(167,172,231,1) 0%, rgba(149,198,255,1) 53%, rgba(226,199,247,1) 100%);  background-color: #b0aac0;
   color: rgb(224, 227, 235);
   padding: 2%;
-  /* margin-bottom: 3%; */
 }
 
 li {
@@ -105,14 +101,12 @@ li {
 td{
   width: 20%;
   background-color: rgb(145, 154, 248);
-  /* background-color: #95c6ff; */
   color: black;
   font-size: x-large;
 }
 th {
   background-color: rgb(110, 94, 158);
   color: #fff;
-  /* background-color: #a7ace7; */
 }
 
 .list_students h1 {
@@ -125,7 +119,6 @@ th {
 .menu-content Button:visited,
 .menu-content Button:focus {
   background-color: #a7ace7;
-  /* background-color: #614f54; */
   border: #614f54;
 }
 
@@ -193,10 +186,7 @@ th {
   width: 60%;
   margin: 0% 20%;
   top: 28%;
-  padding-bottom: 6%;
 }
-
-
 .delete-button{
   cursor: pointer;
 }
@@ -304,13 +294,6 @@ aside ul{
 .title_add_item h2{
   text-align: right;
 }
-/* .class-content-form-student{
-  margin-right: 85% ;
-  margin-top: -2%;
-  height: 50px;
-  width: 90px;
-  background-color: #59a5fd;
-} */
 
 .back{
   position: absolute;
@@ -373,12 +356,6 @@ footer{
 
 .save{
   background-color: rgb(3, 83, 0);
-}
-
-.test{
-  border: #000000 solid 1px;
-  height: 150px;
-  margin: 1% 1.6%;
 }
 .shared-content-card{
   border: #000000 solid 1px;
