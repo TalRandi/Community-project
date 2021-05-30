@@ -93,7 +93,7 @@ li {
 .list_students {
   position: absolute;
   margin-top: 5%;
-  padding-bottom: 12%;
+  padding-bottom: 10%;
 }
 .table td, .table th{
   vertical-align: middle;
@@ -186,6 +186,8 @@ th {
   width: 60%;
   margin: 0% 20%;
   top: 28%;
+  /* margin-bottom: 10%; */
+  padding-bottom: 6%;
 }
 .delete-button{
   cursor: pointer;
@@ -273,7 +275,7 @@ aside ul{
 }
 
 #upload{
-  margin: 5% 0%;
+  margin: 2.5% 0%;
   font-size: 1rem;
   color: #9c9c9c;
 }

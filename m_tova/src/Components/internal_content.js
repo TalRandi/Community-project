@@ -366,20 +366,23 @@ const InternalContent = (props) => {
             return (
                 <div>
                     <Button className="add_item" onClick={() => props.setContent("add_student")} variant="btn btn-success">הוסף סטודנט</Button>
-                    <Table className="internal_content">
-                        <thead>
-                            <tr>
-                                <th>שם הסטודנט</th>
-                                <th>שם קורס</th>
-                                <th>מספר פלאפון </th>
-                                <th>מחיקת סטודנט</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {listItemStudents}
-                        </tbody>
+                    <div className="internal_content">
 
-                    </Table>
+                        <Table >
+                            <thead>
+                                <tr>
+                                    <th>שם הסטודנט</th>
+                                    <th>שם קורס</th>
+                                    <th>מספר פלאפון </th>
+                                    <th>מחיקת סטודנט</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {listItemStudents}
+                            </tbody>
+
+                        </Table>
+                    </div>
                 </div>
             );
         //From admin   
@@ -400,19 +403,21 @@ const InternalContent = (props) => {
             return (
                 <div>
                     <Button className="add_item" onClick={() => props.setContent("add_instructor")} variant="btn btn-success">הוסף מדריך</Button>
-                    <Table className="internal_content">
-                        <thead>
-                            <tr>
-                                <th>שם המדריך</th>
-                                <th>כתובת מייל</th>
-                                <th>מספר פלאפון</th>
-                                <th>מחיקת מדריך</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {listItemInstructors}
-                        </tbody>
-                    </Table>
+                    <div className="internal_content">       
+                        <Table >
+                            <thead>
+                                <tr>
+                                    <th>שם המדריך</th>
+                                    <th>כתובת מייל</th>
+                                    <th>מספר פלאפון</th>
+                                    <th>מחיקת מדריך</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {listItemInstructors}
+                            </tbody>
+                        </Table>
+                    </div>
                 </div>
             );
         //From admin 
@@ -433,20 +438,23 @@ const InternalContent = (props) => {
             return (
                 <div>
                     <Button className="add_item" onClick={() => props.setContent("add_course")} variant="btn btn-success">הוסף קורס</Button>
-                    <Table className="internal_content">
-                        <thead>
-                            <tr>
-                                <th>שם הקורס</th>
-                                <th>שם מדריך</th>
-                                <th>תאריך התחלה</th>
-                                <th>תאריך סיום</th>
-                                <th>מחיקת קורס</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {listCourses}
-                        </tbody>
-                    </Table>
+                    <div className="internal_content">
+
+                        <Table >
+                            <thead>
+                                <tr>
+                                    <th>שם הקורס</th>
+                                    <th>שם מדריך</th>
+                                    <th>תאריך התחלה</th>
+                                    <th>תאריך סיום</th>
+                                    <th>מחיקת קורס</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {listCourses}
+                            </tbody>
+                        </Table>
+                    </div>
                 </div>
             );
         //From admin - inner button
