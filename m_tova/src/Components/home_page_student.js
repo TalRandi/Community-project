@@ -21,7 +21,8 @@ const HomeStudent = (props) => {
                 setAuthorized={props.setAuthorized}
                 name={props.name} />
             <Menu
-                
+                students_shared_content={props.students_shared_content}
+                setStudentSharedContent={props.setStudentSharedContent}
                 type={props.type}
                 instructor_name={props.instructor_name}
                 course_name={props.course_name}

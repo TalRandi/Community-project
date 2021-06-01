@@ -28,6 +28,9 @@ function App() {
   const [list_of_instructors, setListOfInstructors] = useState([])
   const [arr_of_classes, setArrOfClasses] = useState([])   //list of classes
   const [arr_of_class_content, setClassContent] = useState([])   //list of content inside class page
+  const [students_shared_content, setStudentSharedContent] = useState([])
+  const [specific_student_shered_content, setSpecificStudentSheredContent]=useState([])
+
 
 
   return (
@@ -60,6 +63,8 @@ function App() {
                         setCourseName={setCourseName}
                         setListOfCourses={setListOfCourses}
                         setArrOfClasses={setArrOfClasses}
+                        students_shared_content={students_shared_content}
+                        setStudentSharedContent={setStudentSharedContent}
                       />
                       <InternalContent
                         type={type}
@@ -75,7 +80,11 @@ function App() {
                         phone_number={phone_number}
                         start_date={start_date}
                         end_date={end_date}
-                        list_of_student={list_of_student} />
+                        list_of_student={list_of_student}
+                        students_shared_content={students_shared_content}
+                        specific_student_shered_content={specific_student_shered_content}
+                        setSpecificStudentSheredContent={setSpecificStudentSheredContent}
+                        />
                         <Footer/>
                     </div>
                   )

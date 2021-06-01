@@ -16,6 +16,7 @@ const Menu = (props) => {
     let setListOfCourses = props.setListOfCourses
     let setListOfInstructors = props.setListOfInstructors
     let setArrOfClasses=props.setArrOfClasses
+    let setStudentSharedContent=props.setStudentSharedContent
    
 
     //Course details clicked from student page
@@ -123,9 +124,23 @@ const Menu = (props) => {
         })
     }
 
+
+  
     //Shared content clicked from student page
     const shared_content = e =>{
-        setContent(e.target.id)
+        let list=[]
+         db.collection("studentContent").where("course_name", "==", course_name)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    return (
+                        list.push({'course_name':doc.data().course_name, 'class_number': doc.data().class_number, 'student_name':doc.data().student_name})
+                    )
+                })
+                setStudentSharedContent(list)
+                setContent(e.target.id)
+            })
+       
     }
 
     return (

@@ -362,3 +362,10 @@ footer{
 .shared-content-card{
   border: #000000 solid 1px;
 }
+
+.test{
+  margin-right: 3%;
+  margin-top: 1%;
+  padding: 3%;
+  background-color:#a89f9f6c;
+}

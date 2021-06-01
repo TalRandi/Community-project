@@ -8,6 +8,9 @@ import deleteButton from '../Images/delete_student.png';
 import Loader from "react-loader-spinner";
 import AddZone from './add_course_content';
 import GroupContent from './group_content';
+import { getDefaultNormalizer } from '@testing-library/dom';
+import AddSharedZone from './add_shared_content';
+
 
 //This componnent build the internal div with the relevant content inside it
 const InternalContent = (props) => {
@@ -20,9 +23,13 @@ const InternalContent = (props) => {
     const [flag_from_called, setFlagFromCalled] = useState(''); // flag to know if add item buttom clicked from course content or class content
     const [selected_course, setSelectedCourse] = useState('')
     const [class_description, setClassDescription] = useState('')
-    const [is_add_content, setIsAddContent]=useState(false)
+    const [is_add_content, setIsAddContent] = useState(false)
     const [edit_open, setEditOpen] = useState(false)
     const [description_exist, setDescriptionExist] = useState(false)
+    // const [students_shared_content, setStudentSharedContent] = useState([])
+
+
+
 
     const course_clicked = e => {
 
@@ -234,9 +241,9 @@ const InternalContent = (props) => {
 
         db.collection("classDescription").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                if (doc.data().course_name === props.course_name && doc.data().class_number === parseInt(class_number)){
-                    setClassDescription(doc.data().class_description)                                         
-                }                      
+                if (doc.data().course_name === props.course_name && doc.data().class_number === parseInt(class_number)) {
+                    setClassDescription(doc.data().class_description)
+                }
             })
         });
 
@@ -403,7 +410,7 @@ const InternalContent = (props) => {
             return (
                 <div>
                     <Button className="add_item" onClick={() => props.setContent("add_instructor")} variant="btn btn-success">הוסף מדריך</Button>
-                    <div className="internal_content">       
+                    <div className="internal_content">
                         <Table >
                             <thead>
                                 <tr>
@@ -509,8 +516,8 @@ const InternalContent = (props) => {
             });
             return (
                 <div>
-                    {props.type !== 0 && 
-                        <div>  
+                    {props.type !== 0 &&
+                        <div>
                             <Button className="add_item" onClick={() => {
                                 setFlagFromCalled("course_content");
                                 setClassNumber(class_number + 1);
@@ -525,10 +532,10 @@ const InternalContent = (props) => {
                         </div>
                     }
                     <div className="internal_content">
-                    {props.type !== 0 ? 
-                       (<h4 className="course_header">{props.course_name}</h4>) :
-                       (<h4>{props.course_name} - רשימת שיעורים</h4>)
-                    }
+                        {props.type !== 0 ?
+                            (<h4 className="course_header">{props.course_name}</h4>) :
+                            (<h4>{props.course_name} - רשימת שיעורים</h4>)
+                        }
                         {listClasses}
                     </div>
 
@@ -539,38 +546,38 @@ const InternalContent = (props) => {
             let counter_content = 1
             const listContent = props.arr_of_class_content.map((content) => {
                 return (
-                    <div key={counter_content++} className="content_div">   
+                    <div key={counter_content++} className="content_div">
                         <a href={content.url} target="_blank" rel="noreferrer">{content.description}</a>
                         {(props.type !== 0) ?
-                        <img className="delete-button" src={deleteButton} id={content.description} alt="" onClick={delete_content}></img>
-                        :""}
+                            <img className="delete-button" src={deleteButton} id={content.description} alt="" onClick={delete_content}></img>
+                            : ""}
                     </div>
                 )
             });
             return (
-                <div>            
+                <div>
                     {(props.type !== 0) ?
                         (<div>
                             <button className="back" id={selected_course} onClick={course_clicked}>חזור</button>
-                            </div>) :
+                        </div>) :
                         (<button className="back" id={selected_course} onClick={() => props.setContent("course_content")}>חזור</button>)}
-                    <div className = "internal_content">
+                    <div className="internal_content">
 
                         <h4 className="course_header">{props.course_name}</h4>
                         <h4 className="class_header">שיעור: {current_class_number}</h4>
-                        <h4 className = "right-align">תקציר השיעור :</h4>
-                        <p className = "right-align description">{class_description}</p>
-                        {props.type !== 0 && <Button className = "edit" onClick = {() => {setEditOpen(!edit_open)}}>ערוך תקציר</Button>}
+                        <h4 className="right-align">תקציר השיעור :</h4>
+                        <p className="right-align description">{class_description}</p>
+                        {props.type !== 0 && <Button className="edit" onClick={() => { setEditOpen(!edit_open) }}>ערוך תקציר</Button>}
                         {edit_open &&
                             (<div>
-                                <textarea value = {class_description} className="form-control" onChange={(e) => { setClassDescription(e.target.value) }} rows="5"></textarea>
-                                <Button className="edit save" onClick = {() => {
+                                <textarea value={class_description} className="form-control" onChange={(e) => { setClassDescription(e.target.value) }} rows="5"></textarea>
+                                <Button className="edit save" onClick={() => {
                                     let temp_id
                                     db.collection("classDescription").get().then((querySnapshot) => {
                                         querySnapshot.forEach((doc) => {
-                                            if (doc.data().course_name === props.course_name && doc.data().class_number === parseInt(current_class_number)){
-                                            temp_id = doc.id;                                        
-                                            }                      
+                                            if (doc.data().course_name === props.course_name && doc.data().class_number === parseInt(current_class_number)) {
+                                                temp_id = doc.id;
+                                            }
                                         });
                                         db.collection("classDescription").doc(temp_id)
                                             .update({
@@ -586,13 +593,13 @@ const InternalContent = (props) => {
                         }
                         {listContent}
                         {props.type !== 0 &&
-                        <Button className= "edit" onClick={() => {
+                            <Button className="edit" onClick={() => {
                                 setFlagFromCalled("class_content");
                                 setCurrentClassNumber(current_class_number);
                                 setIsAddContent(true);
                                 props.setContent("add_class_zone")
                             }} >הוסף קבצים</Button>
-                        }        
+                        }
                     </div>
                 </div>
             )
@@ -609,26 +616,26 @@ const InternalContent = (props) => {
             )
 
         case "add_class_zone":
- 
+
             return (
-                <div>                    
+                <div>
                     <button className="back" id={selected_course} onClick={course_clicked}>חזור</button>
                     <div className="internal_content">
 
                         {(flag_from_called === "course_content") ?
                             (<div className="title_add_item"><h2> הוספת שיעור {class_number} לקורס {props.course_name}</h2><br /><br /></div>)
                             : (<div className="title_add_item"><h2>הוספת תוכן חדש לשיעור  {current_class_number}</h2><br /><br /></div>)}
-                        
+
                         {!is_add_content &&
                             <div className="form-group">
-                                <h4 className = "right-align">תקציר השיעור: </h4>
+                                <h4 className="right-align">תקציר השיעור: </h4>
                                 <textarea className="form-control" onChange={(e) => { setClassDescription(e.target.value); setDescriptionExist(true) }} rows="5"></textarea>
                             </div>
                         }
                         <AddZone
-                            setClassDescription = {setClassDescription}
+                            setClassDescription={setClassDescription}
                             setCurrentClassNumber={setCurrentClassNumber}
-                            description_exist = {description_exist}
+                            description_exist={description_exist}
                             setClassContent={props.setClassContent}
                             course_name={props.course_name}
                             is_add_content={is_add_content}
@@ -640,33 +647,55 @@ const InternalContent = (props) => {
                     </div>
                 </div>
             )
-        case "shared_content":
+        case "shared_content": // show the squares of student that shared content
             return (
                 <GroupContent
-                    course_name = {props.course_name}
+                    course_name={props.course_name}
+                    students_shared_content={props.students_shared_content}
+                    setSpecificStudentSheredContent={props.setSpecificStudentSheredContent}
+                    setContent={props.setContent}
                 />
-                // <div className="internal_content">
-                //     <div className="container">
-                //         <div className="row justify-content-start">
-                //             <div className="col-2 test">
-                                
-                //                 שם סטודנט
-                //                 מספר תרגיל
-                //                 קבצים
-                //             </div>
-                //             <div className="col-2 test">
-
-                //             </div>
-                //             <div className="col-2 test">
-                //             </div>
-                //             <div className="col-2 test">
-                //             </div>
-                //             <div className="col-2 test">
-                //             </div>
-                //         </div>
-                //     </div>
-                // </div>
             )
+        case "specific_student_shared_content": // show content shared by a spesific student
+            let counter_content_student = 1
+            const listContentStudent = props.specific_student_shered_content.map((content) => {
+                return (
+                    <div key={counter_content_student++} className="content_div">
+                        <a href={content.url} target="_blank" rel="noreferrer">{content.description}</a>
+                    </div>
+                )
+            });
+            return (
+                <div className="internal_content">
+                    {listContentStudent}
+                </div>
+            )
+
+        // case "add_student_shared_content":
+        //     return (
+        //         <div>
+        //             <button className="back" id={selected_course} onClick={() => { props.setContent("shared_content") }}>חזור</button>
+        //             <div className="add_form">
+        //                 <h1>הוספת תוכן</h1>
+        //                 <input id="input_class_number"  onChange={()=>props.setContent("add_student_shared_content")} className="input_fields" type="text" placeholder="מספר שיעור" required />
+        //                 {document.getElementById("input_class_number") !== null && <AddSharedZone
+        //                     //  setClassContent={props.setClassContent}
+        //                     course_name={props.course_name}
+        //                     class_number={document.getElementById("input_class_number").value}
+        //                     setContent={props.setContent}
+        //                     student_name={props.student_name}
+
+        //                 />
+        //                 }
+
+
+        //             </div>
+        //         </div>
+        //     )
+       
+
+
+
         default:
             return (
                 <div>
