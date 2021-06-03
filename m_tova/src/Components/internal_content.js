@@ -10,7 +10,7 @@ import AddZone from './add_course_content';
 import GroupContent from './group_content';
 import { getDefaultNormalizer } from '@testing-library/dom';
 import AddSharedZone from './add_shared_content';
-
+import SharedContent from './shared_content_zone'
 
 //This componnent build the internal div with the relevant content inside it
 const InternalContent = (props) => {
@@ -27,6 +27,7 @@ const InternalContent = (props) => {
     const [edit_open, setEditOpen] = useState(false)
     const [description_exist, setDescriptionExist] = useState(false)
     // const [students_shared_content, setStudentSharedContent] = useState([])
+    const [class_number_from_shared_content, setClassNumberFronSharedContent] = useState()
 
 
 
@@ -671,28 +672,43 @@ const InternalContent = (props) => {
                 </div>
             )
 
-        // case "add_student_shared_content":
+        case "add_student_shared_content":
+            return (
+                <div>
+                    {/* <button className="back" id={selected_course} onClick={() => { props.setContent("shared_content") }}>חזור</button>
+                    <div className="add_form">
+                        <h1>הוספת תוכן</h1>
+                        <input id="input_class_number"  onBlur={()=>props.setContent("add_student_shared")} className="input_fields" type="text" placeholder="מספר שיעור" required /> */}
+                    <SharedContent
+                        course_name={props.course_name}
+                        setContent={props.setContent}
+                        student_name={props.student_name}
+                        setContent={props.setContent}
+                    />
+
+                    {/* <AddSharedZone
+                            //  setClassContent={props.setClassContent}
+                            course_name={props.course_name}
+                            class_number={document.getElementById("input_class_number").value}
+                            setContent={props.setContent}
+                            student_name={props.student_name}
+
+                        /> */}
+                    {/* </div> */}
+                </div>
+            )
+        // case "add_student_shared":
         //     return (
-        //         <div>
-        //             <button className="back" id={selected_course} onClick={() => { props.setContent("shared_content") }}>חזור</button>
-        //             <div className="add_form">
-        //                 <h1>הוספת תוכן</h1>
-        //                 <input id="input_class_number"  onChange={()=>props.setContent("add_student_shared_content")} className="input_fields" type="text" placeholder="מספר שיעור" required />
-        //                 {document.getElementById("input_class_number") !== null && <AddSharedZone
-        //                     //  setClassContent={props.setClassContent}
-        //                     course_name={props.course_name}
-        //                     class_number={document.getElementById("input_class_number").value}
-        //                     setContent={props.setContent}
-        //                     student_name={props.student_name}
+        //          <AddSharedZone
+        //                 //  setClassContent={props.setClassContent}
+        //                 course_name={props.course_name}
+        //                 class_number={document.getElementById("input_class_number").value}
+        //                 setContent={props.setContent}
+        //                 student_name={props.student_name}
 
-        //                 />
-        //                 }
-
-
-        //             </div>
-        //         </div>
+        //             /> 
         //     )
-       
+
 
 
 

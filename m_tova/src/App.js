@@ -29,7 +29,7 @@ function App() {
   const [arr_of_classes, setArrOfClasses] = useState([])   //list of classes
   const [arr_of_class_content, setClassContent] = useState([])   //list of content inside class page
   const [students_shared_content, setStudentSharedContent] = useState([])
-  const [specific_student_shered_content, setSpecificStudentSheredContent]=useState([])
+  const [specific_student_shered_content, setSpecificStudentSheredContent] = useState([])
 
 
 
@@ -67,11 +67,12 @@ function App() {
                         setStudentSharedContent={setStudentSharedContent}
                       />
                       <InternalContent
+                        student_name={name}
                         type={type}
                         setContent={setContent}
                         arr_of_class_content={arr_of_class_content}
                         setClassContent={setClassContent}
-                        setCourseName = {setCourseName}
+                        setCourseName={setCourseName}
                         arr_of_classes={arr_of_classes}
                         content={content}
                         course_name={course_name}
@@ -84,8 +85,8 @@ function App() {
                         students_shared_content={students_shared_content}
                         specific_student_shered_content={specific_student_shered_content}
                         setSpecificStudentSheredContent={setSpecificStudentSheredContent}
-                        />
-                        <Footer/>
+                      />
+                      <Footer />
                     </div>
                   )
                 //instructor
@@ -117,15 +118,15 @@ function App() {
                         setStartDate={setStartDate}
                         setEndDate={setEndDate}
                         setContent={setContent}
-                        setArrOfClasses = {setArrOfClasses}
+                        setArrOfClasses={setArrOfClasses}
                         setClassContent={setClassContent}
                         course_name={course_name}
                         arr_of_class_content={arr_of_class_content}
-                        arr_of_classes = {arr_of_classes}
+                        arr_of_classes={arr_of_classes}
                         content={content}
                         list_of_courses={list_of_courses}
                         list_of_student={list_of_student} />
-                        <Footer/>
+                      <Footer />
                     </div>
                   )
                 //admin
@@ -160,13 +161,13 @@ function App() {
                         setCourseName={setCourseName}
                         arr_of_class_content={arr_of_class_content}
                         setClassContent={setClassContent}
-                        arr_of_classes = {arr_of_classes}
-                        setArrOfClasses = {setArrOfClasses}
+                        arr_of_classes={arr_of_classes}
+                        setArrOfClasses={setArrOfClasses}
                         course_name={course_name}
 
 
                       />
-                      <Footer/>
+                      <Footer />
                     </div>
 
                   )
@@ -186,8 +187,8 @@ function App() {
               name={name}
               setContent={setContent}
               setName={setName}
-              setListOfCourses = {setListOfCourses}
-              setArrOfClasses = {setArrOfClasses}
+              setListOfCourses={setListOfCourses}
+              setArrOfClasses={setArrOfClasses}
               setCourseName={setCourseName}
               setListOfStudent={setListOfStudent}
             />

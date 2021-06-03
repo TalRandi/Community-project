@@ -11,9 +11,9 @@ const AddSharedZone = props => {
     const class_number = props.class_number
     const setContent = props.setContent
     // const setClassContent = props.setClassContent
-    const studen_name=props.studentName
+    const student_name=props.student_name
 
-    console.log(class_number);
+    console.log(student_name);
 
     
     
@@ -37,7 +37,7 @@ const AddSharedZone = props => {
         var uploadTask
 
         loaded_files.forEach((item) => {
-            uploadTask = storage.ref().child(`${course_name}/class${class_number}/${studen_name}/${item.name}`).put(item)
+            uploadTask = storage.ref().child(`${course_name}/class${class_number}/${student_name}/${item.name}`).put(item)
         })
         
         uploadTask.on('state_changed', 
@@ -78,7 +78,7 @@ const AddSharedZone = props => {
                 //     }
                 //     setClassContent(temp_class_content)
                 //     setCurrentClassNumber(class_number_to_set)
-                //     setContent("class_content")
+                    setContent("specific_student_shared_content") // add the student to firstore collection studentContent? and fill the array
                 // });   
             }
         );
