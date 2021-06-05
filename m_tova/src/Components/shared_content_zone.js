@@ -13,8 +13,6 @@ class SharedContent extends Component {
             student_name:props.student_name,
             // setContent :props.setContent
         };
-
-
     }
 
 
@@ -29,14 +27,11 @@ class SharedContent extends Component {
                 {/* <button className="back" id={selected_course} onClick={() => { setContent("shared_content") }}>חזור</button> */}
                 <div className="add_form">
                     <h1>הוספת תוכן</h1>
-                    <input id="input_class_number" onChange={(event) => {
+                    <input id="add_form" onChange={(event) => {
                         this.setState({ class_number: event.target.value })
                     }}
                         className="input_fields" type="text" placeholder="מספר שיעור" required />
-
                     {
-
-                        // console.log(this.state.student_name),
                         this.state.class_number.length > 0 &&
                         <AddSharedZone
                             //  setClassContent={props.setClassContent}

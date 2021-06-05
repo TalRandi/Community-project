@@ -1,20 +1,20 @@
-class StudentList extends React.Component {
+// class StudentList extends React.Component {
 
-    constructor(props)
-    {
-        super(props)
-        this.state = {}
-    }
+//     constructor(props)
+//     {
+//         super(props)
+//         this.state = {}
+//     }
 
-    render(){
+//     render(){
 
-        return(
-            <div>
+//         return(
+//             <div>
 
 
-            </div>
-        )
-    }
-}
+//             </div>
+//         )
+//     }
+// }
 
-export default StudentList;
+// export default StudentList;

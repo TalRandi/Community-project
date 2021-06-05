@@ -20,6 +20,7 @@ const GroupContent = props => {
             }
             setSpecificStudentSheredContent(temp_student_content)
             setContent("specific_student_shared_content")
+            
         })
 
     }
