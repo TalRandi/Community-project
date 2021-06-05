@@ -9,7 +9,7 @@ const Login = props => {
     const [password, setPassword] = useState('');
 
     let setAuthorized = props.setAuthorized;
-    let type = props.type;
+    // let type = props.type;
     let setType = props.setType;
     let name = props.name;
     let setName = props.setName;

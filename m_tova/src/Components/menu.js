@@ -15,9 +15,9 @@ const Menu = (props) => {
     let name = props.name
     let setListOfCourses = props.setListOfCourses
     let setListOfInstructors = props.setListOfInstructors
-    let setArrOfClasses=props.setArrOfClasses
-    let setStudentSharedContent=props.setStudentSharedContent
-   
+    let setArrOfClasses = props.setArrOfClasses
+    let setStudentSharedContent = props.setStudentSharedContent
+
 
     //Course details clicked from student page
     const course_details = e => {
@@ -119,28 +119,28 @@ const Menu = (props) => {
 
     const course_content = e => {
         setContent(e.target.id)
-        storage.ref().child(course_name).listAll().then(list=>{
+        storage.ref().child(course_name).listAll().then(list => {
             setArrOfClasses(list.prefixes)
         })
     }
 
 
-  
+
     //Shared content clicked from student page
-    const shared_content = e =>{
-        let list=[]
-         db.collection("studentContent").where("course_name", "==", course_name)
+    const shared_content = e => {
+        let list = []
+        db.collection("studentContent").where("course_name", "==", course_name)
             .get()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
                     return (
-                        list.push({'course_name':doc.data().course_name, 'class_number': doc.data().class_number, 'student_name':doc.data().student_name})
+                        list.push({ 'course_name': doc.data().course_name, 'class_number': doc.data().class_number, 'student_name': doc.data().student_name })
                     )
                 })
                 setStudentSharedContent(list)
                 setContent(e.target.id)
             })
-       
+
     }
 
     return (
@@ -150,7 +150,7 @@ const Menu = (props) => {
                 if (props.type === 0) {
                     return (
                         <div className="menu-content">
-                            <Button onClick={shared_content} id = "shared_content">תכנים קבוצתיים</Button><br />
+                            <Button onClick={shared_content} id="shared_content">תכנים קבוצתיים</Button><br />
                             <Button onClick={course_content} id="course_content">תכני קורס</Button><br />
                             <Button onClick={course_details} id="course_details">פרטי קורס</Button><br />
                             <Button onClick={instructor_details} id="instructor_details">פרטי מדריך</Button>
@@ -161,6 +161,7 @@ const Menu = (props) => {
                 else if (props.type === 1) {
                     return (
                         <div className="menu-content">
+                            <Button onClick={courses_list_from_instructor} id="course_list_to_shared_conent">תכנים קבוצתיים</Button><br />
                             <Button onClick={courses_list_from_instructor} id="courses_list">רשימת קורסים</Button><br />
                             <Button onClick={student_list} id="student_list_from_instructor">רשימת סטודנטים</Button>
                         </div>

@@ -47,13 +47,13 @@ const AddZone = props => {
             class_description
         };
 
-        db.collection("classDescription").doc(id).set(newDescription).then(() => {
+        db.collection("classDescription").doc(id).set(newDescription).then(() => { // add to the firestore to collection classDescription
             console.log("Documents successfully written!");
         });
         var uploadTask
 
         loaded_files.forEach((item) => {
-            uploadTask = storage.ref().child(`${course_name}/class${class_number_to_set}/${item.name}`).put(item)
+            uploadTask = storage.ref().child(`${course_name}/class${class_number_to_set}/${item.name}`).put(item) // add to db storage
         })
         
         uploadTask.on('state_changed', 

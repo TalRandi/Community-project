@@ -84,6 +84,7 @@ function App() {
                         list_of_student={list_of_student}
                         students_shared_content={students_shared_content}
                         specific_student_shered_content={specific_student_shered_content}
+                        setStudentSharedContent={setStudentSharedContent}
                         setSpecificStudentSheredContent={setSpecificStudentSheredContent}
                       />
                       <Footer />
@@ -125,7 +126,11 @@ function App() {
                         arr_of_classes={arr_of_classes}
                         content={content}
                         list_of_courses={list_of_courses}
-                        list_of_student={list_of_student} />
+                        list_of_student={list_of_student}
+                        students_shared_content={students_shared_content}
+                        specific_student_shered_content={specific_student_shered_content}
+                        setStudentSharedContent={setStudentSharedContent}
+                        setSpecificStudentSheredContent={setSpecificStudentSheredContent} />
                       <Footer />
                     </div>
                   )
@@ -164,9 +169,12 @@ function App() {
                         arr_of_classes={arr_of_classes}
                         setArrOfClasses={setArrOfClasses}
                         course_name={course_name}
+                        students_shared_content={students_shared_content}
+                        specific_student_shered_content={specific_student_shered_content}
+                        setStudentSharedContent={setStudentSharedContent}
+                        setSpecificStudentSheredContent={setSpecificStudentSheredContent} />
 
-
-                      />
+                      
                       <Footer />
                     </div>
 

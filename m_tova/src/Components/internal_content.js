@@ -8,8 +8,8 @@ import deleteButton from '../Images/delete_student.png';
 import Loader from "react-loader-spinner";
 import AddZone from './add_course_content';
 import GroupContent from './group_content';
-import { getDefaultNormalizer } from '@testing-library/dom';
-import AddSharedZone from './add_shared_content';
+// import { getDefaultNormalizer } from '@testing-library/dom';
+// import AddSharedZone from './add_shared_content';
 import SharedContent from './shared_content_zone'
 
 //This componnent build the internal div with the relevant content inside it
@@ -25,14 +25,14 @@ const InternalContent = (props) => {
     const [class_description, setClassDescription] = useState('')
     const [is_add_content, setIsAddContent] = useState(false)
     const [edit_open, setEditOpen] = useState(false)
-    const [description_exist, setDescriptionExist] = useState(false)
+    const [description_exist, setDescriptionExist] = useState(false) // description class 
     // const [students_shared_content, setStudentSharedContent] = useState([])
-    const [class_number_from_shared_content, setClassNumberFronSharedContent] = useState()
+    // const [class_number_from_shared_content, setClassNumberFronSharedContent] = useState()
 
 
 
-
-    const course_clicked = e => {
+    //provide the content of the course that clicked
+    const course_clicked = e => { 
 
         props.setContent("loading")
         let course_name = e.target.id
@@ -44,6 +44,7 @@ const InternalContent = (props) => {
             props.setContent("course_content")
         })
     }
+
     //Delete student button from instructor
     const delete_student = e => {
 
@@ -52,7 +53,7 @@ const InternalContent = (props) => {
         db.collection("users").where("name", "==", user_to_delete)
             .get()
             .then(querySnapshot => {
-                db.collection("users").doc(querySnapshot.docs[0].id).delete().then(() => {
+                db.collection("users").doc(querySnapshot.docs[0].id).delete().then(() => { // delete student from firestore
                     console.log("Document successfully deleted!");
 
                     let students_arr = [...props.list_of_student]
@@ -67,6 +68,7 @@ const InternalContent = (props) => {
                 })
             })
     }
+
     //Delete instructor button from admin
     const delete_instructor = e => {
 
@@ -81,7 +83,7 @@ const InternalContent = (props) => {
         db.collection("instructors").where("name", "==", instructor_to_delete)
             .get()
             .then(querySnapshot => {
-                db.collection("instructors").doc(querySnapshot.docs[0].id).delete().then(() => {
+                db.collection("instructors").doc(querySnapshot.docs[0].id).delete().then(() => { // delete instructor from firestore collection instructors
                     console.log("Document successfully deleted!");
                 })
                 props.setListOfInstructors(instructors_arr)
@@ -103,7 +105,7 @@ const InternalContent = (props) => {
         db.collection("courses").where("course_name", "==", course_to_delete)
             .get()
             .then(querySnapshot => {
-                db.collection("courses").doc(querySnapshot.docs[0].id).delete().then(() => {
+                db.collection("courses").doc(querySnapshot.docs[0].id).delete().then(() => { // delete from firestore collection courses
                     console.log("Document successfully deleted!");
                     props.setListOfCourses(course_arr)
                 })
@@ -158,6 +160,7 @@ const InternalContent = (props) => {
             }
         });
     }
+
     //Submit courses button clicked from admin page
     const submit_course = (c_name_id, i_name_id, start_id, end_id) => {
 
@@ -193,7 +196,7 @@ const InternalContent = (props) => {
                     course_already_exist = true;
                 }
             });
-            if (!course_already_exist) {
+            if (!course_already_exist) { // if course not exsist in the firebase
                 db.collection("courses").doc(id).set(newCourse).then(() => {
                     let courses_arr = []
                     courses_arr = props.list_of_courses
@@ -251,8 +254,8 @@ const InternalContent = (props) => {
 
         storage.ref().child(props.course_name + "/class" + class_number).listAll().then(async list => {
             for (let lesson of list.items) {
-                let url = await lesson.getDownloadURL()
-                temp_class_content.push({ "url": url, "description": lesson.name })
+                let url = await lesson.getDownloadURL() 
+                temp_class_content.push({ "url": url, "description": lesson.name }) // creating object with attribute url and description   
             }
             props.setClassContent(temp_class_content)
             props.setContent("class_content")
@@ -268,6 +271,7 @@ const InternalContent = (props) => {
 
     }
 
+    //delete content in  the storge from instructor or admin 
     const delete_content = e => {
         props.setContent("loading")
         let path_to_file = `${props.course_name}/class${current_class_number}/${e.target.id}`
@@ -278,9 +282,34 @@ const InternalContent = (props) => {
             }
         }
         storage.ref().child(path_to_file).delete().then(() => {
-            console.log(props.arr_of_class_content);
             props.setContent("class_content")
         })
+    }
+
+    //delete file from student shared content , just log in user can delete his files
+    const delete_shared_content = content => {
+        props.setContent("loading")
+        let path_to_file = `${content.student.course_name}/class${content.student.class_number}/${content.student.student_name}/${content.description}`
+        storage.ref().child(path_to_file).delete().then(() => {
+
+            props.setContent("shared_content")
+        })
+    }
+
+    //provide the shared student content
+    const shared_content_from_instructor_and_admin = (e) => {
+        let list = []
+        db.collection("studentContent").where("course_name", "==", e.target.id)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    return (
+                        list.push({ 'course_name': doc.data().course_name, 'class_number': doc.data().class_number, 'student_name': doc.data().student_name })
+                    )
+                })
+                props.setStudentSharedContent(list)
+                props.setContent("shared_content")
+            })
     }
 
 
@@ -469,7 +498,7 @@ const InternalContent = (props) => {
         case "add_instructor":
             return (
                 <div>
-                <button className="back" id={selected_course} onClick={() => { props.setContent("instructors_list") }}>חזור</button>
+                    <button className="back" id={selected_course} onClick={() => { props.setContent("instructors_list") }}>חזור</button>
                     <div className="add_form">
                         <h1>הוספת מדריך</h1>
                         <input id="input_name" className="input_fields" type="text" placeholder="שם המדריך" required />
@@ -484,7 +513,7 @@ const InternalContent = (props) => {
         case "add_course":
             return (
                 <div>
-                <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</button>
+                    <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</button>
                     <div className="add_form">
                         <h1>הוספת קורס</h1>
                         <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
@@ -514,7 +543,7 @@ const InternalContent = (props) => {
         case "course_content":
 
             let counter_class = 1
-            const listClasses = props.arr_of_classes.map((lesson) => {
+            const listClasses = props.arr_of_classes.map((lesson) => { //build html of list classes 
                 return (
                     <div key={counter_class} className="content_div">
                         <ul id={counter_class} onClick={class_content} >שיעור {counter_class++}</ul>
@@ -534,7 +563,11 @@ const InternalContent = (props) => {
                             }} variant="btn btn-success">הוסף שיעור</Button>
                             {(props.type === 1) ?
                                 <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list") }}>חזור</button>
-                                : <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</button>
+                                :
+                                <div>
+                                    <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</button>
+                                    <Button className="add_item shared_content" variant="btn btn-success" id={props.course_name} onClick={shared_content_from_instructor_and_admin}>תכניים קבוציים</Button>
+                                </div>
                             }
                         </div>
                     }
@@ -551,7 +584,7 @@ const InternalContent = (props) => {
 
         case "class_content":
             let counter_content = 1
-            const listContent = props.arr_of_class_content.map((content) => {
+            const listContent = props.arr_of_class_content.map((content) => { //build html of class content 
                 return (
                     <div key={counter_content++} className="content_div">
                         <a href={content.url} target="_blank" rel="noreferrer">{content.description}</a>
@@ -656,68 +689,77 @@ const InternalContent = (props) => {
             )
         case "shared_content": // show the squares of student that shared content
             return (
-                <GroupContent
-                    course_name={props.course_name}
-                    students_shared_content={props.students_shared_content}
-                    setSpecificStudentSheredContent={props.setSpecificStudentSheredContent}
-                    setContent={props.setContent}
-                />
+                <div>
+                    { props.type === 1 ?
+                        <button className="back" id={selected_course} onClick={() => { props.setContent("course_list_to_shared_conent") }}>חזור</button>
+                        : <button className="back" id={selected_course} onClick={() => { props.setContent("course_content") }}>חזור</button>
+                    }
+                    <GroupContent
+                        course_name={props.course_name}
+                        students_shared_content={props.students_shared_content}
+                        setSpecificStudentSheredContent={props.setSpecificStudentSheredContent}
+                        setContent={props.setContent}
+                        type={props.type}
+                    />
+                </div >
             )
         case "specific_student_shared_content": // show content shared by a spesific student
             let counter_content_student = 1
+            let class_number_to_show_content // class number of directory of the student to see his content
+            let name // name of directory of the student to see his content
             const listContentStudent = props.specific_student_shered_content.map((content) => {
+                class_number_to_show_content = content.student.class_number
+                name = content.student.student_name
                 return (
                     <div key={counter_content_student++} className="content_div">
+                        {props.type === 0 ?
+                            content.student.student_name === props.student_name &&
+                            <img className="delete-button" src={deleteButton} id={content.student.class_number} alt="" onClick={() => delete_shared_content(content)}></img>
+                            : <img className="delete-button" src={deleteButton} id={content.student.class_number} alt="" onClick={() => delete_shared_content(content)}></img>
+                        }
                         <a href={content.url} target="_blank" rel="noreferrer">{content.description}</a>
                     </div>
                 )
             });
             return (
-                <div className="internal_content">
-                    {listContentStudent}
+                <div>
+                    <button className="back" id={props.course_name} onClick={() => { props.setContent("shared_content") }}>חזור</button>
+                    <div className="internal_content">
+                        {props.specific_student_shered_content.length !== 0 ?
+                            <h4>התוכן של {name} בשיעור מספר {class_number_to_show_content}</h4> :
+                            <h4>התוכן של סטודנט זה נמחק</h4>
+                        }
+                        {listContentStudent}
+                    </div>
                 </div>
+
             )
 
         case "add_student_shared_content":
             return (
                 <div>
-                    {/* <button className="back" id={selected_course} onClick={() => { props.setContent("shared_content") }}>חזור</button>
-                    <div className="add_form">
-                        <h1>הוספת תוכן</h1>
-                        <input id="input_class_number"  onBlur={()=>props.setContent("add_student_shared")} className="input_fields" type="text" placeholder="מספר שיעור" required /> */}
                     <SharedContent
                         course_name={props.course_name}
                         setContent={props.setContent}
                         student_name={props.student_name}
-                        setContent={props.setContent}
+                        setStudentSharedContent={props.setStudentSharedContent}
                     />
-
-                    {/* <AddSharedZone
-                            //  setClassContent={props.setClassContent}
-                            course_name={props.course_name}
-                            class_number={document.getElementById("input_class_number").value}
-                            setContent={props.setContent}
-                            student_name={props.student_name}
-
-                        /> */}
-                    {/* </div> */}
                 </div>
             )
-        // case "add_student_shared":
-        //     return (
-        //          <AddSharedZone
-        //                 //  setClassContent={props.setClassContent}
-        //                 course_name={props.course_name}
-        //                 class_number={document.getElementById("input_class_number").value}
-        //                 setContent={props.setContent}
-        //                 student_name={props.student_name}
+        case "course_list_to_shared_conent":
+            let coursesCounter = 1
+            const listOfCourses = props.list_of_courses.map((course) => { // build html to list of courses to shared content button from instructor
+                return (
+                    <ul id={course} onClick={shared_content_from_instructor_and_admin} key={coursesCounter++} className="course-ul">{course}</ul>
+                )
+            });
+            return (
+                <div className="internal_content">
+                    <h4> רשימת קורסים להצגת תכניים קבוצתיים</h4>
+                    {listOfCourses}
+                </div>
 
-        //             /> 
-        //     )
-
-
-
-
+            )
         default:
             return (
                 <div>

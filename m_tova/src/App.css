@@ -154,6 +154,9 @@ th {
   width: 110px;
   background-color:rgb(112, 221, 112);
 }
+.shared_content{
+  top: 37%;
+}
 
 .add_form{
   position: absolute;
