@@ -468,25 +468,31 @@ const InternalContent = (props) => {
         //From admin - inner button
         case "add_instructor":
             return (
-                <div className="add_form">
-                    <h1>הוספת מדריך</h1>
-                    <input id="input_name" className="input_fields" type="text" placeholder="שם המדריך" required />
-                    <input id="input_password" className="input_fields" type="text" placeholder="סיסמא" required />
-                    <input id="input_email" className="input_fields" type="text" placeholder='דוא"ל' required />
-                    <input id="input_phone" className="input_fields" type="text" placeholder="מספר פלאפון" required />
-                    <Button className="submit" onClick={() => submit_instructor("input_name", "input_password", "input_email", "input_phone")}>אישור</Button>
+                <div>
+                <button className="back" id={selected_course} onClick={() => { props.setContent("instructors_list") }}>חזור</button>
+                    <div className="add_form">
+                        <h1>הוספת מדריך</h1>
+                        <input id="input_name" className="input_fields" type="text" placeholder="שם המדריך" required />
+                        <input id="input_password" className="input_fields" type="text" placeholder="סיסמא" required />
+                        <input id="input_email" className="input_fields" type="text" placeholder='דוא"ל' required />
+                        <input id="input_phone" className="input_fields" type="text" placeholder="מספר פלאפון" required />
+                        <Button className="submit" onClick={() => submit_instructor("input_name", "input_password", "input_email", "input_phone")}>אישור</Button>
+                    </div>
                 </div>
             )
         //From admin - inner button    
         case "add_course":
             return (
-                <div className="add_form">
-                    <h1>הוספת קורס</h1>
-                    <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
-                    <input id="input_instructor_name" className="input_fields" type="text" placeholder="שם המדריך" required />
-                    <DatePicker id="input_start_date" className="input_fields" selected={inputStartDate} onChange={date => setInputStartDate(date)} placeholderText='תאריך התחלה' required /><br />
-                    <DatePicker id="input_end_date" className="input_fields" selected={inputEndDate} onChange={date => setInputEndDate(date)} placeholderText="תאריך סיום" required /><br />
-                    <Button className="submit" onClick={() => submit_course("input_course_name", "input_instructor_name", "input_start_date", "input_end_date")}>אישור</Button>
+                <div>
+                <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</button>
+                    <div className="add_form">
+                        <h1>הוספת קורס</h1>
+                        <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
+                        <input id="input_instructor_name" className="input_fields" type="text" placeholder="שם המדריך" required />
+                        <DatePicker id="input_start_date" className="input_fields" selected={inputStartDate} onChange={date => setInputStartDate(date)} placeholderText='תאריך התחלה' required /><br />
+                        <DatePicker id="input_end_date" className="input_fields" selected={inputEndDate} onChange={date => setInputEndDate(date)} placeholderText="תאריך סיום" required /><br />
+                        <Button className="submit" onClick={() => submit_course("input_course_name", "input_instructor_name", "input_start_date", "input_end_date")}>אישור</Button>
+                    </div>
                 </div>
             )
         case "add_student":
