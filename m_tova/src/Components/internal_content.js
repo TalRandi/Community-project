@@ -1,9 +1,9 @@
 import { db, storage } from '../Firebase/firebase'
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import React, { useState } from "react";
-import { Card, ListGroup, Table } from 'react-bootstrap';
+import { Card, ListGroup, Table, Button } from 'react-bootstrap';
 import deleteButton from '../Images/delete_student.png';
 import Loader from "react-loader-spinner";
 import AddZone from './add_course_content';
@@ -11,6 +11,7 @@ import GroupContent from './group_content';
 // import { getDefaultNormalizer } from '@testing-library/dom';
 // import AddSharedZone from './add_shared_content';
 import SharedContent from './shared_content_zone'
+// import { IoMdSearch } from 'react-icons/io';
 
 //This componnent build the internal div with the relevant content inside it
 const InternalContent = (props) => {
@@ -26,13 +27,12 @@ const InternalContent = (props) => {
     const [is_add_content, setIsAddContent] = useState(false)
     const [edit_open, setEditOpen] = useState(false)
     const [description_exist, setDescriptionExist] = useState(false) // description class 
-    // const [students_shared_content, setStudentSharedContent] = useState([])
     // const [class_number_from_shared_content, setClassNumberFronSharedContent] = useState()
 
 
 
     //provide the content of the course that clicked
-    const course_clicked = e => { 
+    const course_clicked = e => {
 
         props.setContent("loading")
         let course_name = e.target.id
@@ -254,7 +254,7 @@ const InternalContent = (props) => {
 
         storage.ref().child(props.course_name + "/class" + class_number).listAll().then(async list => {
             for (let lesson of list.items) {
-                let url = await lesson.getDownloadURL() 
+                let url = await lesson.getDownloadURL()
                 temp_class_content.push({ "url": url, "description": lesson.name }) // creating object with attribute url and description   
             }
             props.setClassContent(temp_class_content)
@@ -266,7 +266,11 @@ const InternalContent = (props) => {
 
     //display content course when course clicked from admin page
     const course_clicked_from_admin = e => {
+        // //
+
+
         props.setContent("loading")
+        props.setAddedButtonFromAdmin(true)
         course_clicked(e)
 
     }
@@ -312,6 +316,86 @@ const InternalContent = (props) => {
             })
     }
 
+    // filter search by student name or class number in shared content
+    const search_from_shared_content = (e) => {
+        const search = e.target.value
+        let res_arr = []
+        if (search.length === 0)  // the input search box is empty 
+        {
+            props.setStudentSharedContent(props.total_group_content)
+            props.setContent("shared_content")
+            return
+        }
+        for (let i = 0; i < props.total_group_content.length; i++) {
+            if (props.total_group_content[i].student_name.startsWith(search) || props.total_group_content[i].class_number === search) // search word that start with in student name or class number
+            {
+                res_arr.push(props.total_group_content[i])
+            }
+        }
+        props.setStudentSharedContent(res_arr)
+        props.setContent("shared_content")
+    }
+
+    // filter search by instructor name or course name and start/end date in courses list from admin
+    const search_from_course_list_from_admin = (e) => {
+        const search = e.target.value
+        let res_arr = []
+        if (search.length === 0) // the input search box is empty 
+        {
+            props.setListOfCourses(props.total_course_list_from_admin)
+            props.setContent("courses_list_from_admin")
+            return
+        }
+
+        for (let i = 0; i < props.total_course_list_from_admin.length; i++) {
+            if (props.total_course_list_from_admin[i].instructor_name.startsWith(search) || props.total_course_list_from_admin[i].course_name.startsWith(search)
+                || props.total_course_list_from_admin[i].start_date.includes(search) || props.total_course_list_from_admin[i].end_date.includes(search)) {
+                res_arr.push(props.total_course_list_from_admin[i])
+            }
+        }
+        props.setListOfCourses(res_arr)
+        props.setContent("courses_list_from_admin")
+    }
+    // filter search by instructor name in instructors list from admin
+    const search_from_instructors_list_from_admin = (e) => {
+        const search = e.target.value
+        let res_arr = []
+        if (search.length === 0) // the input search box is empty 
+        {
+            props.setListOfInstructors(props.total_instructor_list_from_admin)
+            props.setContent("instructors_list")
+            return
+        }
+
+        for (let i = 0; i < props.total_instructor_list_from_admin.length; i++) {
+            if (props.total_instructor_list_from_admin[i].name.startsWith(search)) { // search word that start with in instructor name 
+                res_arr.push(props.total_instructor_list_from_admin[i])
+            }
+        }
+        props.setListOfInstructors(res_arr)
+        props.setContent("instructors_list")
+    }
+
+    // filter search by student name in students list from instructor
+    const search_from_student_list_from_instructor = e => {
+        const search = e.target.value
+        let res_arr = []
+        if (search.length === 0) // the input search box is empty 
+        {
+            props.setListOfStudent(props.total_student_list_from_instructor)
+            props.setContent("student_list_from_instructor")
+            return
+        }
+
+        for (let i = 0; i < props.total_student_list_from_instructor.length; i++) {
+            if (props.total_student_list_from_instructor[i].name.startsWith(search)) { // search word that start with in student name 
+                res_arr.push(props.total_student_list_from_instructor[i])
+            }
+        }
+        props.setListOfStudent(res_arr)
+        props.setContent("student_list_from_instructor")
+
+    }
 
     switch (props.content) {
         //From student
@@ -343,13 +427,15 @@ const InternalContent = (props) => {
             });
             return (
                 <div className="internal_content">
-                    <Card className="custom_card">
-                        <ListGroup variant="flush" className="listGroup">
-                            <ListGroup.Item className="listGroup">שם הקורס: {props.course_name}</ListGroup.Item>
-                            <ListGroup.Item className="listGroup">תאריך התחלה: {props.start_date}</ListGroup.Item>
-                            <ListGroup.Item className="listGroup">תאריך סיום: {props.end_date}</ListGroup.Item>
-                        </ListGroup>
-                    </Card>
+                    {props.type === 0 &&   // if equal to 0 its a student access
+                        <Card className="custom_card">
+                            <ListGroup variant="flush" className="listGroup">
+                                <ListGroup.Item className="listGroup">שם הקורס: {props.course_name}</ListGroup.Item>
+                                <ListGroup.Item className="listGroup">תאריך התחלה: {props.start_date}</ListGroup.Item>
+                                <ListGroup.Item className="listGroup">תאריך סיום: {props.end_date}</ListGroup.Item>
+                            </ListGroup>
+                        </Card>
+                    }
                     <div className="list_students">
                         <h1>רשימת משתתפי הקורס:</h1>
                         <Table>
@@ -403,6 +489,10 @@ const InternalContent = (props) => {
             return (
                 <div>
                     <Button className="add_item" onClick={() => props.setContent("add_student")} variant="btn btn-success">הוסף סטודנט</Button>
+                    <div className="input-group rounded">
+                        <input type="search" className="form-control rounded mainLoginInput" placeholder=" &#61442; חיפוש לפי שם סטודנט" aria-label="Search"
+                            aria-describedby="search-addon" onChange={search_from_student_list_from_instructor} />
+                    </div>
                     <div className="internal_content">
 
                         <Table >
@@ -440,6 +530,10 @@ const InternalContent = (props) => {
             return (
                 <div>
                     <Button className="add_item" onClick={() => props.setContent("add_instructor")} variant="btn btn-success">הוסף מדריך</Button>
+                    <div className="input-group rounded">
+                        <input type="search" className="form-control rounded mainLoginInput" placeholder=" &#61442; חיפוש לפי שם מדריך" aria-label="Search"
+                            aria-describedby="search-addon" onChange={search_from_instructors_list_from_admin} />
+                    </div>
                     <div className="internal_content">
                         <Table >
                             <thead>
@@ -475,6 +569,10 @@ const InternalContent = (props) => {
             return (
                 <div>
                     <Button className="add_item" onClick={() => props.setContent("add_course")} variant="btn btn-success">הוסף קורס</Button>
+                    <div className="input-group rounded">
+                        <input type="search" className="form-control rounded mainLoginInput" placeholder="&#61442; חיפוש לפי שם קורס שם מדריך או תאריך " aria-label="Search"
+                            aria-describedby="search-addon" onChange={search_from_course_list_from_admin} />
+                    </div>
                     <div className="internal_content">
 
                         <Table >
@@ -518,8 +616,10 @@ const InternalContent = (props) => {
                         <h1>הוספת קורס</h1>
                         <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
                         <input id="input_instructor_name" className="input_fields" type="text" placeholder="שם המדריך" required />
-                        <DatePicker id="input_start_date" className="input_fields" selected={inputStartDate} onChange={date => setInputStartDate(date)} placeholderText='תאריך התחלה' required /><br />
-                        <DatePicker id="input_end_date" className="input_fields" selected={inputEndDate} onChange={date => setInputEndDate(date)} placeholderText="תאריך סיום" required /><br />
+                        <label className="date-label">תאריך התחלה:</label>
+                        <DatePicker id="input_start_date" className="input_fields" selected={inputStartDate} onChange={date => setInputStartDate(date)} required /><br />
+                        <label className="date-label">תאריך סיום:</label>
+                        <DatePicker id="input_end_date" className="input_fields" selected={inputEndDate} onChange={date => setInputEndDate(date)} required /><br />
                         <Button className="submit" onClick={() => submit_course("input_course_name", "input_instructor_name", "input_start_date", "input_end_date")}>אישור</Button>
                     </div>
                 </div>
@@ -566,7 +666,7 @@ const InternalContent = (props) => {
                                 :
                                 <div>
                                     <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</button>
-                                    <Button className="add_item shared_content" variant="btn btn-success" id={props.course_name} onClick={shared_content_from_instructor_and_admin}>תכניים קבוציים</Button>
+                                    <Button className="add_item shared_content" variant="btn btn-success" id={props.course_name} onClick={shared_content_from_instructor_and_admin}>תכניים קבוצתיים</Button>
                                 </div>
                             }
                         </div>
@@ -694,6 +794,10 @@ const InternalContent = (props) => {
                         <button className="back" id={selected_course} onClick={() => { props.setContent("course_list_to_shared_conent") }}>חזור</button>
                         : <button className="back" id={selected_course} onClick={() => { props.setContent("course_content") }}>חזור</button>
                     }
+                    <div className="input-group rounded">
+                        <input type="search" className="form-control rounded mainLoginInput" placeholder=" &#61442; חיפוש תוכן לפי מספר שיעור או שם סטודנט" aria-label="Search"
+                            aria-describedby="search-addon" onChange={search_from_shared_content} />
+                    </div>
                     <GroupContent
                         course_name={props.course_name}
                         students_shared_content={props.students_shared_content}

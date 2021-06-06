@@ -1,3 +1,5 @@
+@import "//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css";
+
 .App {
   text-align: center;
 }
@@ -36,15 +38,21 @@
 }
 
 nav {
-  background: rgb(167,172,231);
-  background: radial-gradient(circle, rgba(167,172,231,1) 0%, rgba(149,198,255,1) 53%, rgba(226,199,247,1) 100%);  background-color: #b0aac0;
+  background: rgb(167, 172, 231);
+  background: radial-gradient(
+    circle,
+    rgba(167, 172, 231, 1) 0%,
+    rgba(149, 198, 255, 1) 53%,
+    rgba(226, 199, 247, 1) 100%
+  );
+  background-color: #b0aac0;
   color: rgb(224, 227, 235);
   padding: 2%;
 }
 
 li {
   color: black;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-size: 1.5rem;
 }
 
@@ -73,7 +81,7 @@ li {
   right: 45%;
 }
 
-#clock{
+#clock {
   position: absolute;
   display: inline-block;
   left: 3%;
@@ -95,10 +103,11 @@ li {
   margin-top: 5%;
   padding-bottom: 10%;
 }
-.table td, .table th{
+.table td,
+.table th {
   vertical-align: middle;
 }
-td{
+td {
   width: 20%;
   background-color: rgb(145, 154, 248);
   color: black;
@@ -122,13 +131,13 @@ th {
   border: #614f54;
 }
 
-.courses_list{
+.courses_list {
   position: absolute;
   top: 25%;
   width: 60%;
 }
 
-.course-ul{
+.course-ul {
   padding: 2% 0;
   background-color: #b0aac0;
   border: 5%;
@@ -139,26 +148,26 @@ th {
   font-size: x-large;
   box-shadow: 3px 4px 2px 1px #5c5866;
 }
-.student_list_table{
+.student_list_table {
   position: absolute;
   top: 20%;
   right: 20%;
 }
 
-.add_item{
+.add_item {
   position: absolute;
   left: 6%;
   top: 28%;
   margin: 0 0 5% 0;
   height: 60px;
   width: 110px;
-  background-color:rgb(112, 221, 112);
+  background-color: rgb(112, 221, 112);
 }
-.shared_content{
+.shared_content {
   top: 37%;
 }
 
-.add_form{
+.add_form {
   position: absolute;
   text-align: right;
   top: 25%;
@@ -167,7 +176,7 @@ th {
   left: 25%;
 }
 
-.input_fields{
+.input_fields {
   display: block;
   margin-top: 4%;
   width: 100%;
@@ -177,14 +186,14 @@ th {
   padding-right: 2%;
 }
 
-.submit{
+.submit {
   height: 3rem;
   width: 7.5rem;
   background-color: rgb(3, 83, 0);
   margin: 2% 0%;
 }
 
-.internal_content{
+.internal_content {
   position: absolute;
   width: 60%;
   margin: 0% 20%;
@@ -192,51 +201,51 @@ th {
   /* margin-bottom: 10%; */
   padding-bottom: 6%;
 }
-.delete-button{
+.delete-button {
   cursor: pointer;
 }
-.course-content{
+.course-content {
   position: absolute;
   top: 30%;
   right: 40%;
 }
-.course-content td{
+.course-content td {
   cursor: pointer;
 }
 
-.content_div{
+.content_div {
   background-color: #b0aac0;
   margin: 2% 0%;
   padding: 2% 3%;
   border: #614f54 solid 2px;
 }
-.content_div a{
+.content_div a {
   color: #000000;
   font-weight: bold;
 }
-.content_div .delete-button{
+.content_div .delete-button {
   position: absolute;
   left: 3%;
   height: 30px;
   width: 40px;
 }
 
-.content_div ul{
+.content_div ul {
   color: #000000;
   font-weight: bold;
   margin-bottom: 0;
   cursor: pointer;
 }
-.content_div ul:hover{
+.content_div ul:hover {
   color: rgb(92, 128, 194);
   font-weight: bold;
 }
-.content_div a:hover{
+.content_div a:hover {
   color: rgb(92, 128, 194);
   font-weight: bold;
 }
 
-.course_header{
+.course_header {
   text-align: right;
   font-weight: bold;
   color: #1a63b6;
@@ -244,7 +253,7 @@ th {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.class_header{
+.class_header {
   text-align: right;
   font-weight: bold;
   font-size: large;
@@ -252,55 +261,55 @@ th {
   color: #4b7980;
 }
 
-h3{
+h3 {
   color: black;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 }
 
-.add-zone{
+.add-zone {
   flex-direction: column;
   align-items: center;
   padding: 5% 0%;
   border-width: 2;
   border-radius: 2;
   border-color: #7a7a7a6c;
-  border-style: dashed ;
-  background-color: #fafafa ;
+  border-style: dashed;
+  background-color: #fafafa;
   color: #008cdd;
   cursor: pointer;
 }
-.internal_content h4{
+.internal_content h4 {
   text-align: right;
   margin-bottom: 3%;
 }
-aside ul{
+aside ul {
   text-align: right;
 }
 
-#upload{
+#upload {
   margin: 2.5% 0%;
   font-size: 1rem;
   color: #9c9c9c;
 }
-.clickable_courses{
+.clickable_courses {
   cursor: pointer;
   color: #000000;
   background-color: #adbac9;
 }
-.clickable_courses:hover{
+.clickable_courses:hover {
   background-color: #7b8897;
 }
 
-.title_add_item{
+.title_add_item {
   font-weight: bold;
   right: 0;
   color: #4b7980;
 }
-.title_add_item h2{
+.title_add_item h2 {
   text-align: right;
 }
 
-.back{
+.back {
   position: absolute;
   left: 1%;
   top: 15%;
@@ -311,13 +320,13 @@ aside ul{
   width: 100px;
   background-color: #59a5fd;
 }
-.back:hover{
+.back:hover {
   background-color: #2573cc;
 }
-footer{
-  position:fixed;
-  bottom:0;
-  left:0;
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
   background-color: #aab7c0;
   color: black;
@@ -327,30 +336,29 @@ footer{
   font-size: 14px;
   padding: 1.3%;
   font-weight: bold;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial
-  ,"Noto Sans","Liberation Sans",sans-serif
-  ,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
-#small_logo_footer{
+#small_logo_footer {
   position: absolute;
   height: 55px;
   width: 124px;
   left: 2%;
-  bottom:5%;
+  bottom: 5%;
 }
 
-.right-align{
+.right-align {
   text-align: right;
   padding: 1% 0%;
 }
 
-.description{
+.description {
   padding: 2% 1% 3% 1%;
   background-color: #ebebeb;
   border-radius: 15px;
 }
 
-.edit{
+.edit {
   display: block;
   right: 0;
   height: 3rem;
@@ -359,18 +367,50 @@ footer{
   background-color: #85bdfd;
 }
 
-.save{
+.save {
   background-color: rgb(3, 83, 0);
 }
-.shared-content-card{
+.shared-content-card {
   border: #000000 solid 1px;
 }
 
-.test{
+.test {
   margin: 1% 3% 2% 0%;
   padding: 2.5%;
-  background-color:#7a78786c;
+  background-color: #7a78786c;
   cursor: pointer;
   box-shadow: #4a4b4b 5px 5px 10px 2px;
   border-radius: 10px;
 }
+
+.input-group {
+  position: absolute;
+  top: 20%;
+  right: 25%;
+  left: 25%;
+  width: 50%;
+}
+
+.mainLoginInput{
+  font-family: FontAwesome;
+  border-color: #3d3c3d;
+  height: 40px;
+  padding: 0px;
+  font-size: 20px;
+  margin: 5px 0;
+  color: hsl(0, 5%, 44%);
+}
+
+.footer-content{
+  display: inline;
+  margin-left: 1%;
+  margin-right:0.3% ;
+}
+
+.date-label{
+  margin-left: 2%;
+}
+
+
+
+

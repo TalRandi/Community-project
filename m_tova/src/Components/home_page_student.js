@@ -34,6 +34,8 @@ const HomeStudent = (props) => {
                 setStartDate={props.setStartDate}
                 setEndDate={props.setEndDate}
                 setListOfStudent={props.setListOfStudent}
+                setTotalGroupContent={props.setTotalGroupContent}
+
 
             />
         </div>

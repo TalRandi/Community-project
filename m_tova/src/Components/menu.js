@@ -17,7 +17,14 @@ const Menu = (props) => {
     let setListOfInstructors = props.setListOfInstructors
     let setArrOfClasses = props.setArrOfClasses
     let setStudentSharedContent = props.setStudentSharedContent
-
+    let setTotalGroupContent = props.setTotalGroupContent
+    let setTotalCourseListFromAdmin = props.setTotalCourseListFromAdmin
+    let setTotalInstructorListFromAdmin = props.setTotalInstructorListFromAdmin
+    let added_button_from_admin=props.added_button_from_admin
+    let setAddedButtonFromAdmin=props.setAddedButtonFromAdmin
+    let total_student_list_from_instructor=props.total_student_list_from_instructor
+    let setTotalStudentListFromInstructor =props.setTotalStudentListFromInstructor
+    let list_of_student =props.list_of_student
 
     //Course details clicked from student page
     const course_details = e => {
@@ -85,14 +92,13 @@ const Menu = (props) => {
 
     //Student list button clicked from instructor page
     const student_list = e => {
-
+        setTotalStudentListFromInstructor(list_of_student)
         setContent(e.target.id)
     }
 
     //Instructor list button clicked from admin page
     const instructors_list = e => {
-
-        setContent(e.target.id)
+        setAddedButtonFromAdmin(false)
         let instructors_arr = []
 
         db.collection("instructors").get().then((querySnapshot) => {
@@ -100,13 +106,16 @@ const Menu = (props) => {
                 instructors_arr.push(doc.data())
             });
             setListOfInstructors(instructors_arr)
+            setTotalInstructorListFromAdmin(instructors_arr)
+            setContent(e.target.id)
+
         });
 
     }
     //Courses list button clicked from admin page
     const courses_list_from_admin = e => {
-
-        setContent(e.target.id)
+        
+        setAddedButtonFromAdmin(false)
         let courses_arr_admin = []
 
         db.collection("courses").get().then(querySnapshot => {
@@ -114,6 +123,8 @@ const Menu = (props) => {
                 courses_arr_admin.push(doc.data())
             });
             setListOfCourses(courses_arr_admin)
+            setTotalCourseListFromAdmin(courses_arr_admin)
+            setContent(e.target.id)
         })
     }
 
@@ -124,6 +135,19 @@ const Menu = (props) => {
         })
     }
 
+    const specific_course_student_list_from_admin =(e)=>{
+
+         let new_list_student = []
+        db.collection("users").where("course", "==", course_name)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.docs.forEach(element => {
+                    new_list_student.push({ 'name': element.data().name, 'phone_number': element.data().phone_number })
+                });
+                setListOfStudent(new_list_student)
+                setContent(e.target.id)
+            })
+    }
 
 
     //Shared content clicked from student page
@@ -138,10 +162,13 @@ const Menu = (props) => {
                     )
                 })
                 setStudentSharedContent(list)
+                setTotalGroupContent(list)
                 setContent(e.target.id)
             })
 
     }
+
+     
 
     return (
         <div className="side-menu">
@@ -172,7 +199,15 @@ const Menu = (props) => {
                     return (
                         <div className="menu-content">
                             <Button onClick={instructors_list} id="instructors_list">רשימת מדריכים</Button><br />
-                            <Button onClick={courses_list_from_admin} id="courses_list_from_admin">רשימת קורסים</Button>
+                            <Button onClick={courses_list_from_admin} id="courses_list_from_admin">רשימת קורסים</Button><br />
+                            <Button  id="courses_list_from_admin">הפקת דוחות</Button>
+                            {added_button_from_admin === true &&
+                                <div>
+                                    <Button onClick={specific_course_student_list_from_admin} id="course_details">רשימת סטודנטים</Button>
+                                </div>
+                            }
+
+
                         </div>
                     )
                 }

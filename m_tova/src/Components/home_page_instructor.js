@@ -22,9 +22,12 @@ const HomeInstructor = (props) => {
             <Menu 
                 setListOfStudent = {props.setListOfStudent}
                 setListOfCourses = {props.setListOfCourses}
+                list_of_student={props.list_of_student}
                 name = {props.name}
                 setContent = {props.setContent}
-                type = {props.type}/>
+                type = {props.type}
+                total_student_list_from_instructor={props.total_student_list_from_instructor} 
+                setTotalStudentListFromInstructor ={props.setTotalStudentListFromInstructor}/>
         </div>
     );
 }

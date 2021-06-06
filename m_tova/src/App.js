@@ -2,7 +2,7 @@ import Login from './Components/login';
 import HomeStudent from './Components/home_page_student';
 import HomeInstructor from './Components/home_page_instructor';
 import HomeAdmin from './Components/home_page_admin';
-import { useState } from 'react'
+import {  useState } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -30,6 +30,11 @@ function App() {
   const [arr_of_class_content, setClassContent] = useState([])   //list of content inside class page
   const [students_shared_content, setStudentSharedContent] = useState([])
   const [specific_student_shered_content, setSpecificStudentSheredContent] = useState([])
+  const [total_group_content, setTotalGroupContent] = useState([]) // for the search in group content
+  const [total_course_list_from_admin, setTotalCourseListFromAdmin] = useState([])// for the search in courses list from admin
+  const [total_instructor_list_from_admin, setTotalInstructorListFromAdmin] = useState([])// for the search in instructors list from admin
+  const [added_button_from_admin, setAddedButtonFromAdmin] = useState(false)
+  const [total_student_list_from_instructor, setTotalStudentListFromInstructor] = useState([])// for the search in students list from instructor
 
 
 
@@ -65,6 +70,8 @@ function App() {
                         setArrOfClasses={setArrOfClasses}
                         students_shared_content={students_shared_content}
                         setStudentSharedContent={setStudentSharedContent}
+                        total_group_content={total_group_content}
+                        setTotalGroupContent={setTotalGroupContent}
                       />
                       <InternalContent
                         student_name={name}
@@ -86,6 +93,8 @@ function App() {
                         specific_student_shered_content={specific_student_shered_content}
                         setStudentSharedContent={setStudentSharedContent}
                         setSpecificStudentSheredContent={setSpecificStudentSheredContent}
+                        total_group_content={total_group_content}
+                        setTotalGroupContent={setTotalGroupContent}
                       />
                       <Footer />
                     </div>
@@ -110,6 +119,10 @@ function App() {
                         setContent={setContent}
                         type={type}
                         name={name}
+                        total_student_list_from_instructor={total_student_list_from_instructor} 
+                        setTotalStudentListFromInstructor ={setTotalStudentListFromInstructor}
+                        list_of_student={list_of_student}
+                        
                       />
                       <InternalContent
                         name={name}
@@ -130,7 +143,12 @@ function App() {
                         students_shared_content={students_shared_content}
                         specific_student_shered_content={specific_student_shered_content}
                         setStudentSharedContent={setStudentSharedContent}
-                        setSpecificStudentSheredContent={setSpecificStudentSheredContent} />
+                        setSpecificStudentSheredContent={setSpecificStudentSheredContent}
+                        total_group_content={total_group_content}
+                        setTotalGroupContent={setTotalGroupContent}
+                        total_student_list_from_instructor={total_student_list_from_instructor} 
+                        setTotalStudentListFromInstructor ={setTotalStudentListFromInstructor}
+                        />
                       <Footer />
                     </div>
                   )
@@ -142,6 +160,7 @@ function App() {
                         setName={setName}
                         setType={setType}
                         setCourseName={setCourseName}
+                        course_name={course_name}
                         setPhoneNumber={setPhoneNumber}
                         setEmail={setEmail}
                         setInstructorName={setInstructorName}
@@ -155,6 +174,12 @@ function App() {
                         type={type}
                         name={name}
                         setListOfInstructors={setListOfInstructors}
+                        total_course_list_from_admin={total_course_list_from_admin}
+                        setTotalCourseListFromAdmin={setTotalCourseListFromAdmin}
+                        total_instructor_list_from_admin={total_instructor_list_from_admin}
+                        setTotalInstructorListFromAdmin={setTotalInstructorListFromAdmin}
+                        setAddedButtonFromAdmin={setAddedButtonFromAdmin}
+                        added_button_from_admin={added_button_from_admin}
                       />
                       <InternalContent
                         list_of_courses={list_of_courses}
@@ -172,9 +197,18 @@ function App() {
                         students_shared_content={students_shared_content}
                         specific_student_shered_content={specific_student_shered_content}
                         setStudentSharedContent={setStudentSharedContent}
-                        setSpecificStudentSheredContent={setSpecificStudentSheredContent} />
+                        setSpecificStudentSheredContent={setSpecificStudentSheredContent}
+                        total_group_content={total_group_content}
+                        setTotalGroupContent={setTotalGroupContent}
+                        total_course_list_from_admin={total_course_list_from_admin}
+                        setTotalCourseListFromAdmin={setTotalCourseListFromAdmin}
+                        total_instructor_list_from_admin={total_instructor_list_from_admin}
+                        setTotalInstructorListFromAdmin={setTotalInstructorListFromAdmin}
+                        setAddedButtonFromAdmin={setAddedButtonFromAdmin}
+                        list_of_student={list_of_student}
 
-                      
+                        />
+
                       <Footer />
                     </div>
 
