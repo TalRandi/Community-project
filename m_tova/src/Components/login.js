@@ -60,6 +60,13 @@ const Login = props => {
                                         querySnapshot.forEach(doc => {
                                             courses_arr_admin.push(doc.data())
                                         });
+                                        courses_arr_admin.sort((course1,course2)=>{   // sort by course name
+                                            if(course1.course_name > course2.course_name)
+                                                return 1
+                                            else if(course1.course_name < course2.course_name)
+                                                  return -1
+                                            return 0
+                                         })
                                         setListOfCourses(courses_arr_admin)
                                         setTotalCourseListFromAdmin(courses_arr_admin)
                                     })
@@ -113,6 +120,8 @@ const Login = props => {
                                 });
                             })  
                         });
+
+                        console.log(students_arr);
                         props.setListOfStudent(students_arr)
                         return
                     }) 

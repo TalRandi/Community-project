@@ -8,6 +8,7 @@ import deleteButton from '../Images/delete_student.png';
 import Loader from "react-loader-spinner";
 import AddZone from './add_course_content';
 import GroupContent from './group_content';
+import { ImSortAmountAsc } from "react-icons/im";
 // import { getDefaultNormalizer } from '@testing-library/dom';
 // import AddSharedZone from './add_shared_content';
 import SharedContent from './shared_content_zone'
@@ -153,6 +154,13 @@ const InternalContent = (props) => {
                     let instructors_arr = []
                     instructors_arr = props.list_of_instructors
                     instructors_arr.push(newInstructor)
+                    instructors_arr.sort((instructor1, instructor2) => {   // sort by instructor name
+                        if (instructor1.name > instructor2.name)
+                            return 1
+                        else if (instructor1.name < instructor2.name)
+                            return -1
+                        return 0
+                    })
                     props.setContent("instructors_list")
                     props.setListOfInstructors(instructors_arr)
 
@@ -266,7 +274,6 @@ const InternalContent = (props) => {
 
     //display content course when course clicked from admin page
     const course_clicked_from_admin = e => {
-        // //
 
 
         props.setContent("loading")
@@ -311,6 +318,14 @@ const InternalContent = (props) => {
                         list.push({ 'course_name': doc.data().course_name, 'class_number': doc.data().class_number, 'student_name': doc.data().student_name })
                     )
                 })
+                list.sort((student1, student2) => {   // sort by student name
+                    if (student1.student_name > student2.student_name)
+                        return 1
+                    else if (student1.student_name < student2.student_name)
+                        return -1
+                    return 0
+                })
+                props.setTotalGroupContent(list)
                 props.setStudentSharedContent(list)
                 props.setContent("shared_content")
             })
@@ -338,7 +353,6 @@ const InternalContent = (props) => {
 
     // filter search by instructor name or course name and start/end date in courses list from admin
     const search_from_course_list_from_admin = (e) => {
-
         const search = e.target.value
         let res_arr = []
         if (search.length === 0) // the input search box is empty 
@@ -395,6 +409,16 @@ const InternalContent = (props) => {
         props.setListOfStudent(res_arr)
         props.setContent("student_list_from_instructor")
 
+    }
+
+
+    const sort_by_start_date_from_admin = () => {
+        let temp_list_of_courses = props.list_of_courses
+        temp_list_of_courses.sort((course1, course2) => {
+            return  new Date(course1.start_date) >  new Date(course2.start_date) ? 1 : -1; 
+        })
+        props.setListOfCourses(temp_list_of_courses)
+        props.setContent("courses_list_from_admin")
     }
 
     switch (props.content) {
@@ -553,9 +577,9 @@ const InternalContent = (props) => {
             );
         //From admin 
         case "courses_list_from_admin":
-
             let counter = 1
             const listCourses = props.list_of_courses.map((course) => {
+                
                 return (
                     <tr key={counter++}>
                         <td id={course.course_name} className="clickable_courses" onClick={course_clicked_from_admin}>{course.course_name}</td>
@@ -578,10 +602,11 @@ const InternalContent = (props) => {
                         <Table >
                             <thead>
                                 <tr>
+
                                     <th>שם הקורס</th>
                                     <th>שם מדריך</th>
-                                    <th>תאריך התחלה</th>
-                                    <th>תאריך סיום</th>
+                                    <th>תאריך התחלה <ImSortAmountAsc onClick={sort_by_start_date_from_admin} variant="btn btn-success">מיין </ImSortAmountAsc></th>
+                                    <th>תאריך סיום <ImSortAmountAsc onClick={sort_by_start_date_from_admin} variant="btn btn-success">מיין </ImSortAmountAsc></th>
                                     <th>מחיקת קורס</th>
                                 </tr>
                             </thead>

@@ -45,6 +45,14 @@ const Menu = (props) => {
                 querySnapshot.docs.forEach(element => {
                     new_list_student.push({ 'name': element.data().name, 'phone_number': element.data().phone_number })
                 });
+                new_list_student.sort((student1,student2)=>{   // sort by student name
+                    if(student1.name > student2.name)
+                        return 1
+                    else if(student1.name < student2.name)
+                          return -1
+                    return 0
+                 })
+
                 setListOfStudent(new_list_student)
                 setContent(e.target.id)
             })
@@ -104,6 +112,13 @@ const Menu = (props) => {
             querySnapshot.forEach((doc) => {
                 instructors_arr.push(doc.data())
             });
+            instructors_arr.sort((instructor1,instructor2)=>{   // sort by instructor name
+                if(instructor1.name > instructor2.name)
+                    return 1
+                else if(instructor1.name < instructor2.name)
+                      return -1
+                return 0
+             })
             setListOfInstructors(instructors_arr)
             setTotalInstructorListFromAdmin(instructors_arr)
             setContent(e.target.id)
@@ -121,6 +136,13 @@ const Menu = (props) => {
             querySnapshot.forEach(doc => {
                 courses_arr_admin.push(doc.data())
             });
+            courses_arr_admin.sort((course1,course2)=>{   // sort by course name
+                if(course1.course_name > course2.course_name)
+                    return 1
+                else if(course1.course_name < course2.course_name)
+                      return -1
+                return 0
+             })
             setListOfCourses(courses_arr_admin)
             setTotalCourseListFromAdmin(courses_arr_admin)
             setContent(e.target.id)
@@ -143,6 +165,13 @@ const Menu = (props) => {
                 querySnapshot.docs.forEach(element => {
                     new_list_student.push({ 'name': element.data().name, 'phone_number': element.data().phone_number })
                 });
+                new_list_student.sort((student1,student2)=>{   // sort by student name
+                        if(student1.name > student2.name)
+                            return 1
+                        else if(student1.name < student2.name)
+                              return -1
+                        return 0
+                     })
                 setListOfStudent(new_list_student)
                 setContent(e.target.id)
             })
@@ -160,6 +189,13 @@ const Menu = (props) => {
                         list.push({ 'course_name': doc.data().course_name, 'class_number': doc.data().class_number, 'student_name': doc.data().student_name })
                     )
                 })
+                list.sort((student1,student2)=>{   // sort by student name
+                    if(student1.student_name > student2.student_name)
+                        return 1
+                    else if(student1.student_name < student2.student_name)
+                          return -1
+                    return 0
+                 })
                 setStudentSharedContent(list)
                 setTotalGroupContent(list)
                 setContent(e.target.id)

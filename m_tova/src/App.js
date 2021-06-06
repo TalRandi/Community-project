@@ -232,6 +232,7 @@ function App() {
               setCourseName={setCourseName}
               setListOfStudent={setListOfStudent}
               setTotalCourseListFromAdmin = {setTotalCourseListFromAdmin}
+              
             />
           </div>
         )}
