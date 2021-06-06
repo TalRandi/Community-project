@@ -22,7 +22,6 @@ const Menu = (props) => {
     let setTotalInstructorListFromAdmin = props.setTotalInstructorListFromAdmin
     let added_button_from_admin=props.added_button_from_admin
     let setAddedButtonFromAdmin=props.setAddedButtonFromAdmin
-    let total_student_list_from_instructor=props.total_student_list_from_instructor
     let setTotalStudentListFromInstructor =props.setTotalStudentListFromInstructor
     let list_of_student =props.list_of_student
 

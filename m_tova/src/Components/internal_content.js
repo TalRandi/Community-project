@@ -338,6 +338,7 @@ const InternalContent = (props) => {
 
     // filter search by instructor name or course name and start/end date in courses list from admin
     const search_from_course_list_from_admin = (e) => {
+
         const search = e.target.value
         let res_arr = []
         if (search.length === 0) // the input search box is empty 
@@ -346,7 +347,6 @@ const InternalContent = (props) => {
             props.setContent("courses_list_from_admin")
             return
         }
-
         for (let i = 0; i < props.total_course_list_from_admin.length; i++) {
             if (props.total_course_list_from_admin[i].instructor_name.startsWith(search) || props.total_course_list_from_admin[i].course_name.startsWith(search)
                 || props.total_course_list_from_admin[i].start_date.includes(search) || props.total_course_list_from_admin[i].end_date.includes(search)) {

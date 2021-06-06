@@ -17,6 +17,7 @@ const Login = props => {
     let setContent= props.setContent
     let setArrOfClasses = props.setArrOfClasses
     let setListOfCourses = props.setListOfCourses
+    let setTotalCourseListFromAdmin = props.setTotalCourseListFromAdmin
 
     //Submit button clicked
     const login_clicked = () => {
@@ -60,6 +61,7 @@ const Login = props => {
                                             courses_arr_admin.push(doc.data())
                                         });
                                         setListOfCourses(courses_arr_admin)
+                                        setTotalCourseListFromAdmin(courses_arr_admin)
                                     })
                                     setContent("courses_list_from_admin")
                                     return

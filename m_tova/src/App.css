@@ -61,6 +61,7 @@ li {
   left: 1%;
   height: 10%;
   width: 15%;
+  border-radius: 15px;
 }
 
 .side-menu {
@@ -90,7 +91,7 @@ li {
 .custom_card {
   width: 30rem;
   font-size: x-large;
-  box-shadow: 0px 0px 50px 3px rgb(93, 104, 107);
+  box-shadow: 5px -2px 25px 1px rgb(93, 104, 107);
 }
 
 .listGroup {
@@ -101,13 +102,19 @@ li {
 .list_students {
   position: absolute;
   margin-top: 5%;
+  width: 100%;
   padding-bottom: 10%;
+}
+table{
+  box-shadow: rgb(80, 93, 128) 5px -2px 25px 1px;
 }
 .table td,
 .table th {
   vertical-align: middle;
 }
-td {
+td{
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
   width: 20%;
   background-color: rgb(145, 154, 248);
   color: black;
@@ -198,7 +205,6 @@ th {
   width: 60%;
   margin: 0% 20%;
   top: 28%;
-  /* margin-bottom: 10%; */
   padding-bottom: 6%;
 }
 .delete-button {
@@ -216,8 +222,19 @@ th {
 .content_div {
   background-color: #b0aac0;
   margin: 2% 0%;
+  box-shadow: #a1a1a1 3px -1px 7px 3px;
+  border-radius: 10px;
   padding: 2% 3%;
   border: #614f54 solid 2px;
+}
+.content_div:hover{
+  background: rgb(167, 172, 231);
+  background: radial-gradient(
+    circle,
+    rgb(153, 156, 184) 0%,
+    rgb(121, 142, 165) 53%,
+    #b0aac0 100%
+  );
 }
 .content_div a {
   color: #000000;
@@ -237,8 +254,7 @@ th {
   cursor: pointer;
 }
 .content_div ul:hover {
-  color: rgb(92, 128, 194);
-  font-weight: bold;
+  font-size: 1.1rem;
 }
 .content_div a:hover {
   color: rgb(92, 128, 194);
@@ -395,8 +411,8 @@ footer {
   font-family: FontAwesome;
   border-color: #3d3c3d;
   height: 40px;
-  padding: 0px;
-  font-size: 20px;
+  padding: 0% 2%;
+  font-size: 1.3rem;
   margin: 5px 0;
   color: hsl(0, 5%, 44%);
 }
