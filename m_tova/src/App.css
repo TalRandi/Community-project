@@ -192,6 +192,11 @@ th {
   border-radius: 10px;
   padding-right: 2%;
 }
+.input-date{
+  border-radius: 10px;
+  margin-top: 4%;
+  border: #b0aac0 solid;
+}
 
 .submit {
   height: 3rem;

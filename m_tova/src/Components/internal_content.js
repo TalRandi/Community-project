@@ -1,14 +1,14 @@
 import { db, storage } from '../Firebase/firebase'
 // import { Button } from 'react-bootstrap';
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, ListGroup, Table, Button } from 'react-bootstrap';
 import deleteButton from '../Images/delete_student.png';
 import Loader from "react-loader-spinner";
 import AddZone from './add_course_content';
 import GroupContent from './group_content';
-import { ImSortAmountAsc } from "react-icons/im";
+import { ImSortAmountAsc, ImSortAmountDesc } from "react-icons/im";
 // import { getDefaultNormalizer } from '@testing-library/dom';
 // import AddSharedZone from './add_shared_content';
 import SharedContent from './shared_content_zone'
@@ -28,6 +28,9 @@ const InternalContent = (props) => {
     const [is_add_content, setIsAddContent] = useState(false)
     const [edit_open, setEditOpen] = useState(false)
     const [description_exist, setDescriptionExist] = useState(false) // description class 
+    const [ascending_or_descending_sort_start_date, setSortStartDate] = useState(true)
+    const [ascending_or_descending_sort_end_date, setSortEndDate] = useState(true)
+
     // const [class_number_from_shared_content, setClassNumberFronSharedContent] = useState()
 
 
@@ -174,8 +177,11 @@ const InternalContent = (props) => {
 
         const course_name = document.getElementById(c_name_id).value;
         const instructor_name = document.getElementById(i_name_id).value;
-        const start_date = document.getElementById(start_id).value;
-        const end_date = document.getElementById(end_id).value;
+        // const start_date = document.getElementById(start_id).value;
+        // const end_date = document.getElementById(end_id).value;
+        const start_date = inputStartDate
+        const end_date = inputEndDate
+
 
         if (course_name === "") {
             alert("חובה להכניס שם קורס")
@@ -209,6 +215,13 @@ const InternalContent = (props) => {
                     let courses_arr = []
                     courses_arr = props.list_of_courses
                     courses_arr.push(newCourse)
+                    courses_arr.sort((course1,course2)=>{   // sort by course name
+                        if(course1.course_name > course2.course_name)
+                            return 1
+                        else if(course1.course_name < course2.course_name)
+                              return -1
+                        return 0
+                     })
                     props.setListOfCourses(courses_arr)
                     props.setContent("courses_list_from_admin")
                 });
@@ -410,12 +423,34 @@ const InternalContent = (props) => {
         props.setContent("student_list_from_instructor")
 
     }
+    // useEffect(()=>{console.log(ascending_or_descending_sort_start_date);},[ascending_or_descending_sort_start_date])
 
+    const sort_by_start_date_from_admin = (type) => {
+        // console.log("before", ascending_or_descending_sort_start_date);
+        if (type === 'start_date') {
+            setSortStartDate(!ascending_or_descending_sort_start_date)
+        }
+        else
+            setSortEndDate(!ascending_or_descending_sort_end_date)
+        // console.log("after if",ascending_or_descending_sort_start_date);
 
-    const sort_by_start_date_from_admin = () => {
-        let temp_list_of_courses = props.list_of_courses
+        let temp_list_of_courses = [...props.list_of_courses]
+        let ascending_or_descending = false // if sort by ascending or descending true = ascending false = descending
+        if (ascending_or_descending_sort_start_date && type === 'start_date') {
+            ascending_or_descending = true
+        }
+        if (ascending_or_descending_sort_end_date && type === 'end_date') {
+            ascending_or_descending = true
+        }
+
         temp_list_of_courses.sort((course1, course2) => {
-            return  new Date(course1.start_date) >  new Date(course2.start_date) ? 1 : -1; 
+            let new_date1 = course1[type].substring(3, 5) + "/" + course1[type].substring(0, 2) + "/" + course1[type].substring(6, 10)
+            let new_date2 = course2[type].substring(3, 5) + "/" + course2[type].substring(0, 2) + "/" + course2[type].substring(6, 10)
+            if (ascending_or_descending)
+                return new Date(new_date1) > new Date(new_date2) ? 1 : -1;
+            else
+                return new Date(new_date1) < new Date(new_date2) ? 1 : -1;
+
         })
         props.setListOfCourses(temp_list_of_courses)
         props.setContent("courses_list_from_admin")
@@ -579,7 +614,7 @@ const InternalContent = (props) => {
         case "courses_list_from_admin":
             let counter = 1
             const listCourses = props.list_of_courses.map((course) => {
-                
+
                 return (
                     <tr key={counter++}>
                         <td id={course.course_name} className="clickable_courses" onClick={course_clicked_from_admin}>{course.course_name}</td>
@@ -605,8 +640,10 @@ const InternalContent = (props) => {
 
                                     <th>שם הקורס</th>
                                     <th>שם מדריך</th>
-                                    <th>תאריך התחלה <ImSortAmountAsc onClick={sort_by_start_date_from_admin} variant="btn btn-success">מיין </ImSortAmountAsc></th>
-                                    <th>תאריך סיום <ImSortAmountAsc onClick={sort_by_start_date_from_admin} variant="btn btn-success">מיין </ImSortAmountAsc></th>
+                                    <th>תאריך התחלה {ascending_or_descending_sort_start_date ? <ImSortAmountAsc onClick={() => sort_by_start_date_from_admin('start_date')} variant="btn btn-success">מיין </ImSortAmountAsc>
+                                        : <ImSortAmountDesc onClick={() => { sort_by_start_date_from_admin('start_date') }} variant="btn btn-success">מיין </ImSortAmountDesc>}</th>
+                                    <th>תאריך סיום {ascending_or_descending_sort_end_date ? <ImSortAmountAsc onClick={() => sort_by_start_date_from_admin('end_date')} variant="btn btn-success">מיין </ImSortAmountAsc> :
+                                        <ImSortAmountDesc onClick={() => sort_by_start_date_from_admin('end_date')} variant="btn btn-success">מיין </ImSortAmountDesc>}</th>
                                     <th>מחיקת קורס</th>
                                 </tr>
                             </thead>
@@ -642,9 +679,12 @@ const InternalContent = (props) => {
                         <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
                         <input id="input_instructor_name" className="input_fields" type="text" placeholder="שם המדריך" required />
                         <label className="date-label">תאריך התחלה:</label>
-                        <DatePicker id="input_start_date" className="input_fields" selected={inputStartDate} onChange={date => setInputStartDate(date)} required /><br />
+                        <input type="date" id="input_start_date" className="input-date" selected={inputStartDate} onChange={date => {
+                            let new_date = date.target.value.substring(8, 10) + "/" + date.target.value.substring(5, 7) + "/" + date.target.value.substring(0, 4)
+                            setInputStartDate(new_date)
+                        }} required /><br />
                         <label className="date-label">תאריך סיום:</label>
-                        <DatePicker id="input_end_date" className="input_fields" selected={inputEndDate} onChange={date => setInputEndDate(date)} required /><br />
+                        <input type="date" id="input_end_date" className="input-date" dateformat="dd/mm/yy" selected={inputEndDate} onChange={date => { let new_date = date.target.value.substring(8, 10) + "/" + date.target.value.substring(5, 7) + "/" + date.target.value.substring(0, 4); setInputEndDate(new_date) }} required /><br />
                         <Button className="submit" onClick={() => submit_course("input_course_name", "input_instructor_name", "input_start_date", "input_end_date")}>אישור</Button>
                     </div>
                 </div>
