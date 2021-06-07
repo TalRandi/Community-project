@@ -27,7 +27,7 @@ const Login = props => {
             alert('חובה למלא שם משתמש וסיסמא');
             return;
         }
-
+        setContent("loading")
         //Student
         db.collection("users").where("name", "==", name)
         .get()
@@ -120,8 +120,6 @@ const Login = props => {
                                 });
                             })  
                         });
-
-                        console.log(students_arr);
                         props.setListOfStudent(students_arr)
                         return
                     }) 

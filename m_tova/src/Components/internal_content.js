@@ -2,7 +2,7 @@ import { db, storage } from '../Firebase/firebase'
 // import { Button } from 'react-bootstrap';
 // import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Card, ListGroup, Table, Button } from 'react-bootstrap';
 import deleteButton from '../Images/delete_student.png';
 import Loader from "react-loader-spinner";
@@ -25,12 +25,14 @@ const InternalContent = (props) => {
     const [flag_from_called, setFlagFromCalled] = useState(''); // flag to know if add item buttom clicked from course content or class content
     const [selected_course, setSelectedCourse] = useState('')
     const [class_description, setClassDescription] = useState('')
+    const [comment, setComment] = useState('')
     const [is_add_content, setIsAddContent] = useState(false)
     const [edit_open, setEditOpen] = useState(false)
+    const [comment_open, setCommentOpen] = useState(false)
     const [description_exist, setDescriptionExist] = useState(false) // description class 
     const [ascending_or_descending_sort_start_date, setSortStartDate] = useState(true)
     const [ascending_or_descending_sort_end_date, setSortEndDate] = useState(true)
-
+    const [current_student_content, setCurrentStudentContent] = useState({})
     // const [class_number_from_shared_content, setClassNumberFronSharedContent] = useState()
 
 
@@ -288,7 +290,6 @@ const InternalContent = (props) => {
     //display content course when course clicked from admin page
     const course_clicked_from_admin = e => {
 
-
         props.setContent("loading")
         props.setAddedButtonFromAdmin(true)
         course_clicked(e)
@@ -322,14 +323,15 @@ const InternalContent = (props) => {
 
     //provide the shared student content
     const shared_content_from_instructor_and_admin = (e) => {
+        props.setContent("loading")
         let list = []
+   
         db.collection("studentContent").where("course_name", "==", e.target.id)
             .get()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
-                    return (
-                        list.push({ 'course_name': doc.data().course_name, 'class_number': doc.data().class_number, 'student_name': doc.data().student_name })
-                    )
+                    
+                    list.push({ 'course_name': doc.data().course_name, 'class_number': doc.data().class_number, 'student_name': doc.data().student_name })
                 })
                 list.sort((student1, student2) => {   // sort by student name
                     if (student1.student_name > student2.student_name)
@@ -637,13 +639,12 @@ const InternalContent = (props) => {
                         <Table >
                             <thead>
                                 <tr>
-
                                     <th>שם הקורס</th>
                                     <th>שם מדריך</th>
-                                    <th>תאריך התחלה {ascending_or_descending_sort_start_date ? <ImSortAmountAsc onClick={() => sort_by_start_date_from_admin('start_date')} variant="btn btn-success">מיין </ImSortAmountAsc>
-                                        : <ImSortAmountDesc onClick={() => { sort_by_start_date_from_admin('start_date') }} variant="btn btn-success">מיין </ImSortAmountDesc>}</th>
-                                    <th>תאריך סיום {ascending_or_descending_sort_end_date ? <ImSortAmountAsc onClick={() => sort_by_start_date_from_admin('end_date')} variant="btn btn-success">מיין </ImSortAmountAsc> :
-                                        <ImSortAmountDesc onClick={() => sort_by_start_date_from_admin('end_date')} variant="btn btn-success">מיין </ImSortAmountDesc>}</th>
+                                    <th>תאריך התחלה {ascending_or_descending_sort_start_date ? <ImSortAmountAsc className="sort_icon" onClick={() => sort_by_start_date_from_admin('start_date')} variant="btn btn-success">מיין </ImSortAmountAsc>
+                                        : <ImSortAmountDesc className="sort_icon" onClick={() => { sort_by_start_date_from_admin('start_date') }} variant="btn btn-success">מיין </ImSortAmountDesc>}</th>
+                                    <th>תאריך סיום {ascending_or_descending_sort_end_date ? <ImSortAmountAsc className="sort_icon" onClick={() => sort_by_start_date_from_admin('end_date')} variant="btn btn-success">מיין </ImSortAmountAsc> :
+                                        <ImSortAmountDesc className="sort_icon" onClick={() => sort_by_start_date_from_admin('end_date')} variant="btn btn-success">מיין </ImSortAmountDesc>}</th>
                                     <th>מחיקת קורס</th>
                                 </tr>
                             </thead>
@@ -678,13 +679,15 @@ const InternalContent = (props) => {
                         <h1>הוספת קורס</h1>
                         <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
                         <input id="input_instructor_name" className="input_fields" type="text" placeholder="שם המדריך" required />
-                        <label className="date-label">תאריך התחלה:</label>
-                        <input type="date" id="input_start_date" className="input-date" selected={inputStartDate} onChange={date => {
-                            let new_date = date.target.value.substring(8, 10) + "/" + date.target.value.substring(5, 7) + "/" + date.target.value.substring(0, 4)
-                            setInputStartDate(new_date)
-                        }} required /><br />
-                        <label className="date-label">תאריך סיום:</label>
-                        <input type="date" id="input_end_date" className="input-date" dateformat="dd/mm/yy" selected={inputEndDate} onChange={date => { let new_date = date.target.value.substring(8, 10) + "/" + date.target.value.substring(5, 7) + "/" + date.target.value.substring(0, 4); setInputEndDate(new_date) }} required /><br />
+                        <div className = "start-end_input">
+                            <label className="date-label">תאריך התחלה:</label>
+                            <input type="date" id="input_start_date" className="input-date" selected={inputStartDate} onChange={date => {
+                                let new_date = date.target.value.substring(8, 10) + "/" + date.target.value.substring(5, 7) + "/" + date.target.value.substring(0, 4)
+                                setInputStartDate(new_date)
+                            }} required /><br />
+                            <label className="date-label">תאריך סיום:</label>
+                            <input type="date" id="input_end_date" className="input-date" dateformat="dd/mm/yy" selected={inputEndDate} onChange={date => { let new_date = date.target.value.substring(8, 10) + "/" + date.target.value.substring(5, 7) + "/" + date.target.value.substring(0, 4); setInputEndDate(new_date) }} required /><br />
+                        </div>
                         <Button className="submit" onClick={() => submit_course("input_course_name", "input_instructor_name", "input_start_date", "input_end_date")}>אישור</Button>
                     </div>
                 </div>
@@ -731,7 +734,7 @@ const InternalContent = (props) => {
                                 :
                                 <div>
                                     <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</button>
-                                    <Button className="add_item shared_content" variant="btn btn-success" id={props.course_name} onClick={shared_content_from_instructor_and_admin}>תכניים קבוצתיים</Button>
+                                    <Button className="add_item shared_content" variant="btn btn-success" id={props.course_name} onClick={shared_content_from_instructor_and_admin}>תכנים קבוצתיים</Button>
                                 </div>
                             }
                         </div>
@@ -864,11 +867,13 @@ const InternalContent = (props) => {
                             aria-describedby="search-addon" onChange={search_from_shared_content} />
                     </div>
                     <GroupContent
+                        setCurrentStudentContent = {setCurrentStudentContent}
                         course_name={props.course_name}
                         students_shared_content={props.students_shared_content}
                         setSpecificStudentSheredContent={props.setSpecificStudentSheredContent}
                         setContent={props.setContent}
                         type={props.type}
+                        setComment = {setComment}
                     />
                 </div >
             )
@@ -899,6 +904,33 @@ const InternalContent = (props) => {
                             <h4>התוכן של סטודנט זה נמחק</h4>
                         }
                         {listContentStudent}
+                        <h4 className="right-align">תגובת המדריך: </h4>
+                        <p className="right-align description">{comment}</p>
+                        {props.type === 1 && <Button className="edit" onClick={() => { setCommentOpen(!comment_open) }}>ערוך תגובה</Button>}
+                        {comment_open &&
+                            (<div>
+                                <textarea value={comment} className="form-control comments_text_area" onChange={(e) => { setComment(e.target.value) }} rows="5"></textarea>
+                                <Button className="edit save" onClick={() => {
+                                    let temp_id
+                                    db.collection("studentContent").where("course_name", "==", current_student_content.course_name).get().then((querySnapshot) => {
+
+                                        querySnapshot.forEach((doc) => {
+                                            if (current_student_content.class_number === doc.data().class_number && current_student_content.student_name === doc.data().student_name) {
+                                                temp_id = doc.id;
+                                            }
+                                        })
+                                        db.collection("studentContent").doc(temp_id)
+                                        .update({
+                                            comment
+                                        })
+                                        .then(() => {
+                                            setCommentOpen(false)
+                                            console.log("Document successfully updated!");
+                                        })
+                                    });
+                                }}>שמור</Button>
+                            </div>)
+                        }
                     </div>
                 </div>
 
@@ -919,13 +951,19 @@ const InternalContent = (props) => {
             let coursesCounter = 1
             const listOfCourses = props.list_of_courses.map((course) => { // build html to list of courses to shared content button from instructor
                 return (
-                    <ul id={course} onClick={shared_content_from_instructor_and_admin} key={coursesCounter++} className="course-ul">{course}</ul>
+                    <div id={course} onClick={shared_content_from_instructor_and_admin} className="course_list_to_shared_content col-2" key={coursesCounter++}>
+                        {course}
+                    </div>
                 )
             });
             return (
                 <div className="internal_content">
-                    <h4> רשימת קורסים להצגת תכניים קבוצתיים</h4>
-                    {listOfCourses}
+                    <h4> רשימת קורסים להצגת תכנים קבוצתיים</h4>
+                    <div className="container">
+                        <div className="row justify-content-start">
+                            {listOfCourses}
+                        </div>
+                    </div>
                 </div>
 
             )

@@ -1,5 +1,5 @@
 // import { useState } from 'react';
-import { storage } from '../Firebase/firebase';
+import { db, storage } from '../Firebase/firebase';
 import { Button } from 'react-bootstrap';
 
 //build interface of shared content per selected course
@@ -10,20 +10,34 @@ const GroupContent = props => {
     const setSpecificStudentSheredContent = props.setSpecificStudentSheredContent
     const setContent = props.setContent
     const type = props.type
-
-
+    const setComment = props.setComment
+    const setCurrentStudentContent = props.setCurrentStudentContent
 
     //updeting array of attributes {url, description, full object of student(name, class number, course name)}
     const getDetailStudent = (student) => {
+        setContent("loading")
         let temp_student_content = []
+        let comment
+
         storage.ref().child(`${student.course_name}/class${student.class_number}/${student.student_name}`).listAll().then(async list => {
             for (let lesson of list.items) {
                 let url = await lesson.getDownloadURL()
                 temp_student_content.push({ "url": url, "description": lesson.name, "student": student })
             }
-            setSpecificStudentSheredContent(temp_student_content)
-            setContent("specific_student_shared_content")
-
+            db.collection("studentContent").where("course_name", "==", student.course_name)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(student.class_number === doc.data().class_number && student.student_name === doc.data().student_name) {
+                        comment = doc.data().comment
+                        return
+                    }
+                })
+                setCurrentStudentContent({"class_number": student.class_number, "student_name": student.student_name, "course_name" : student.course_name})
+                setComment(comment)
+                setSpecificStudentSheredContent(temp_student_content)
+                setContent("specific_student_shared_content")
+            })
         })
 
     }
@@ -40,9 +54,9 @@ const GroupContent = props => {
                         {
                             students_shared_content.map(student => {
                                 return (
-                                    <div key={student.student_name + student.class_number} className="col-2 test" onClick={() => getDetailStudent(student)}>
-                                        <h5> שם הסטודנט: {student.student_name}</h5>
-                                        <h5>מספר שיעור: {student.class_number}</h5>
+                                    <div key={student.student_name + student.class_number} className="col-2 shared_content_square" onClick={() => getDetailStudent(student)}>
+                                        <h5> שם הסטודנט: </h5><h6>{student.student_name}</h6>
+                                        <h5>מספר שיעור: </h5><h6>{student.class_number}</h6>
                                     </div>
                                 )
                             })}
