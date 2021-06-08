@@ -24,6 +24,7 @@ const Menu = (props) => {
     let setAddedButtonFromAdmin=props.setAddedButtonFromAdmin
     let setTotalStudentListFromInstructor =props.setTotalStudentListFromInstructor
     let list_of_student =props.list_of_student
+    let setTotalCourseListFromInstructor =props.setTotalCourseListFromInstructor
 
     //Course details clicked from student page
     const course_details = e => {
@@ -93,6 +94,10 @@ const Menu = (props) => {
                 querySnapshot.docs.forEach(element => {
                     courses_arr_instructor.push(element.data().course_name)
                 });
+                courses_arr_instructor.sort((course1, course2) => {   // sort the list by student name 
+                    return course1 > course2 ? 1 : -1
+                })
+                setTotalCourseListFromInstructor(courses_arr_instructor)
                 setListOfCourses(courses_arr_instructor)
             })
     }

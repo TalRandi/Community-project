@@ -35,6 +35,7 @@ function App() {
   const [total_instructor_list_from_admin, setTotalInstructorListFromAdmin] = useState([])// for the search in instructors list from admin
   const [added_button_from_admin, setAddedButtonFromAdmin] = useState(false)
   const [total_student_list_from_instructor, setTotalStudentListFromInstructor] = useState([])// for the search in students list from instructor
+  const [total_course_list_from_instructor, setTotalCourseListFromInstructor] = useState([])// for the search in students list from instructor
 
 
 
@@ -122,6 +123,7 @@ function App() {
                         total_student_list_from_instructor={total_student_list_from_instructor} 
                         setTotalStudentListFromInstructor ={setTotalStudentListFromInstructor}
                         list_of_student={list_of_student}
+                        setTotalCourseListFromInstructor ={setTotalCourseListFromInstructor}
                         
                       />
                       <InternalContent
@@ -139,6 +141,7 @@ function App() {
                         arr_of_classes={arr_of_classes}
                         content={content}
                         list_of_courses={list_of_courses}
+                        setListOfCourses={setListOfCourses}
                         list_of_student={list_of_student}
                         students_shared_content={students_shared_content}
                         specific_student_shered_content={specific_student_shered_content}
@@ -148,6 +151,8 @@ function App() {
                         setTotalGroupContent={setTotalGroupContent}
                         total_student_list_from_instructor={total_student_list_from_instructor} 
                         setTotalStudentListFromInstructor ={setTotalStudentListFromInstructor}
+                        total_course_list_from_instructor={total_course_list_from_instructor}
+                        setTotalCourseListFromInstructor ={setTotalCourseListFromInstructor}
                         />
                       <Footer />
                     </div>
@@ -232,6 +237,7 @@ function App() {
               setCourseName={setCourseName}
               setListOfStudent={setListOfStudent}
               setTotalCourseListFromAdmin = {setTotalCourseListFromAdmin}
+              setTotalCourseListFromInstructor ={setTotalCourseListFromInstructor}
               
             />
           </div>

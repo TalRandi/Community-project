@@ -27,7 +27,8 @@ const HomeInstructor = (props) => {
                 setContent = {props.setContent}
                 type = {props.type}
                 total_student_list_from_instructor={props.total_student_list_from_instructor} 
-                setTotalStudentListFromInstructor ={props.setTotalStudentListFromInstructor}/>
+                setTotalStudentListFromInstructor ={props.setTotalStudentListFromInstructor}
+                setTotalCourseListFromInstructor ={props.setTotalCourseListFromInstructor}/>
         </div>
     );
 }

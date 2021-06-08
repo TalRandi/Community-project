@@ -97,6 +97,9 @@ const AddSharedZone = props => {
                                 list.push({ 'course_name': doc.data().course_name, 'class_number': doc.data().class_number, 'student_name': doc.data().student_name })
                             )
                         })
+                        list.sort((student1, student2) => {   // sort by student name
+                            return student1.student_name > student2.student_name ? 1 : -1
+                        })
                         setStudentSharedContent(list)
                         setContent("shared_content")
                     })

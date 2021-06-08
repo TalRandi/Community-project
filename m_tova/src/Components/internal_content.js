@@ -217,13 +217,13 @@ const InternalContent = (props) => {
                     let courses_arr = []
                     courses_arr = props.list_of_courses
                     courses_arr.push(newCourse)
-                    courses_arr.sort((course1,course2)=>{   // sort by course name
-                        if(course1.course_name > course2.course_name)
+                    courses_arr.sort((course1, course2) => {   // sort by course name
+                        if (course1.course_name > course2.course_name)
                             return 1
-                        else if(course1.course_name < course2.course_name)
-                              return -1
+                        else if (course1.course_name < course2.course_name)
+                            return -1
                         return 0
-                     })
+                    })
                     props.setListOfCourses(courses_arr)
                     props.setContent("courses_list_from_admin")
                 });
@@ -296,7 +296,7 @@ const InternalContent = (props) => {
 
     }
 
-    //delete content in  the storge from instructor or admin 
+    //delete content in the storage from instructor or admin 
     const delete_content = e => {
         props.setContent("loading")
         let path_to_file = `${props.course_name}/class${current_class_number}/${e.target.id}`
@@ -315,9 +315,42 @@ const InternalContent = (props) => {
     const delete_shared_content = content => {
         props.setContent("loading")
         let path_to_file = `${content.student.course_name}/class${content.student.class_number}/${content.student.student_name}/${content.description}`
-        storage.ref().child(path_to_file).delete().then(() => {
+        storage.ref().child(path_to_file).delete().then(() => { // delete the file from the storage
+            storage.ref().child(`${content.student.course_name}/class${content.student.class_number}/${content.student.student_name}`).listAll().then(list => { // check if there files in the student directory in this class and course
+                if (list.items.length === 0) { // if there 0 filse in the directory then delete from firestore the document
+                    db.collection("studentContent").where("course_name", "==", content.student.course_name) // get all the documents in the collection student content
+                        .get()
+                        .then(querySnapshot => {
+                            querySnapshot.forEach(doc => {
+                                if (doc.data().student_name === content.student.student_name && doc.data().class_number === content.student.class_number) // check if the document is the document that need to delete
+                                    db.collection("studentContent").doc(doc.id).delete().then(() => { // delete the document
+                                        let list = []
+                                        db.collection("studentContent").where("course_name", "==", content.student.course_name) // get the new list in this collection
+                                            .get()
+                                            .then(querySnapshot => {
+                                                querySnapshot.forEach(doc => {
+                                                    return (
+                                                        list.push({ 'course_name': doc.data().course_name, 'class_number': doc.data().class_number, 'student_name': doc.data().student_name })
+                                                    )
+                                                })
+                                                list.sort((student1, student2) => {   // sort the list by student name 
+                                                    return student1.student_name > student2.student_name ? 1 : -1
+                                                })
+                                                props.setStudentSharedContent(list) // update the array student_shared_content
+                                                props.setContent("shared_content")
+                                            })
+                                    })
+                            })
+                        })
+                }
+                else
+                    props.setContent("shared_content")
 
-            props.setContent("shared_content")
+            })
+
+
+
+
         })
     }
 
@@ -325,12 +358,12 @@ const InternalContent = (props) => {
     const shared_content_from_instructor_and_admin = (e) => {
         props.setContent("loading")
         let list = []
-   
+
         db.collection("studentContent").where("course_name", "==", e.target.id)
             .get()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
-                    
+
                     list.push({ 'course_name': doc.data().course_name, 'class_number': doc.data().class_number, 'student_name': doc.data().student_name })
                 })
                 list.sort((student1, student2) => {   // sort by student name
@@ -425,8 +458,26 @@ const InternalContent = (props) => {
         props.setContent("student_list_from_instructor")
 
     }
-    // useEffect(()=>{console.log(ascending_or_descending_sort_start_date);},[ascending_or_descending_sort_start_date])
+    //search couse by course name from instructor
+    const search_from_course_list_from_instructor = e => {
+        const search = e.target.value
+        let res_arr = []
+        if (search.length === 0) // the input search box is empty 
+        {
+            props.setListOfCourses(props.total_course_list_from_instructor)
+            props.setContent(e.target.id)
+            return
+        }
+        for (let i = 0; i < props.total_course_list_from_instructor.length; i++) {
+            if (props.total_course_list_from_instructor[i].startsWith(search)) { // search word that start with in student name 
+                res_arr.push(props.total_course_list_from_instructor[i])
+            }
+        }
+        props.setListOfCourses(res_arr)
+        props.setContent(e.target.id)
+    }
 
+    // sort ascending or descending the table by date (start\end date) from admin 
     const sort_by_start_date_from_admin = (type) => {
         // console.log("before", ascending_or_descending_sort_start_date);
         if (type === 'start_date') {
@@ -444,15 +495,13 @@ const InternalContent = (props) => {
         if (ascending_or_descending_sort_end_date && type === 'end_date') {
             ascending_or_descending = true
         }
-
         temp_list_of_courses.sort((course1, course2) => {
-            let new_date1 = course1[type].substring(3, 5) + "/" + course1[type].substring(0, 2) + "/" + course1[type].substring(6, 10)
-            let new_date2 = course2[type].substring(3, 5) + "/" + course2[type].substring(0, 2) + "/" + course2[type].substring(6, 10)
+            let new_date1 = course1[type].substring(3, 5) + "/" + course1[type].substring(0, 2) + "/" + course1[type].substring(6, 10) // cast the date to object Date format from dd/mm/yyy to mm/dd/yyy
+            let new_date2 = course2[type].substring(3, 5) + "/" + course2[type].substring(0, 2) + "/" + course2[type].substring(6, 10) // cast the date to object Date format from dd/mm/yyy to mm/dd/yyy
             if (ascending_or_descending)
                 return new Date(new_date1) > new Date(new_date2) ? 1 : -1;
             else
                 return new Date(new_date1) < new Date(new_date2) ? 1 : -1;
-
         })
         props.setListOfCourses(temp_list_of_courses)
         props.setContent("courses_list_from_admin")
@@ -525,9 +574,14 @@ const InternalContent = (props) => {
                 )
             });
             return (
-                <div className="internal_content">
-                    <h4>רשימת קורסים</h4>
-                    {listItemsCourses}
+                <div>  <div className="input-group rounded">
+                    <input type="search" className="form-control rounded mainLoginInput" placeholder=" &#61442; חיפוש לפי שם קורס" aria-label="Search"
+                        aria-describedby="search-addon" id="courses_list" onChange={search_from_course_list_from_instructor} />
+                </div>
+                    <div className="internal_content">
+                        <h4>רשימת קורסים</h4>
+                        {listItemsCourses}
+                    </div>
                 </div>
             );
         //From instructor        
@@ -679,7 +733,7 @@ const InternalContent = (props) => {
                         <h1>הוספת קורס</h1>
                         <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
                         <input id="input_instructor_name" className="input_fields" type="text" placeholder="שם המדריך" required />
-                        <div className = "start-end_input">
+                        <div className="start-end_input">
                             <label className="date-label">תאריך התחלה:</label>
                             <input type="date" id="input_start_date" className="input-date" selected={inputStartDate} onChange={date => {
                                 let new_date = date.target.value.substring(8, 10) + "/" + date.target.value.substring(5, 7) + "/" + date.target.value.substring(0, 4)
@@ -867,13 +921,13 @@ const InternalContent = (props) => {
                             aria-describedby="search-addon" onChange={search_from_shared_content} />
                     </div>
                     <GroupContent
-                        setCurrentStudentContent = {setCurrentStudentContent}
+                        setCurrentStudentContent={setCurrentStudentContent}
                         course_name={props.course_name}
                         students_shared_content={props.students_shared_content}
                         setSpecificStudentSheredContent={props.setSpecificStudentSheredContent}
                         setContent={props.setContent}
                         type={props.type}
-                        setComment = {setComment}
+                        setComment={setComment}
                     />
                 </div >
             )
@@ -899,34 +953,27 @@ const InternalContent = (props) => {
                 <div>
                     <button className="back" id={props.course_name} onClick={() => { props.setContent("shared_content") }}>חזור</button>
                     <div className="internal_content">
-                        {props.specific_student_shered_content.length !== 0 ?
-                            <h4>התוכן של {name} בשיעור מספר {class_number_to_show_content}</h4> :
-                            <h4>התוכן של סטודנט זה נמחק</h4>
-                        }
+                        <h3>התוכן של {name} בשיעור מספר {class_number_to_show_content}</h3>
                         {listContentStudent}
                         <h4 className="right-align">תגובת המדריך: </h4>
                         <p className="right-align description">{comment}</p>
-                        {props.type === 1 && <Button className="edit" onClick={() => { setCommentOpen(!comment_open) }}>ערוך תגובה</Button>}
+                        {props.type === 1 && <Button className="edit" onClick={() => { setCommentOpen(!comment_open) }}>הוסף תגובה</Button>}
                         {comment_open &&
                             (<div>
                                 <textarea value={comment} className="form-control comments_text_area" onChange={(e) => { setComment(e.target.value) }} rows="5"></textarea>
                                 <Button className="edit save" onClick={() => {
                                     let temp_id
                                     db.collection("studentContent").where("course_name", "==", current_student_content.course_name).get().then((querySnapshot) => {
-
                                         querySnapshot.forEach((doc) => {
                                             if (current_student_content.class_number === doc.data().class_number && current_student_content.student_name === doc.data().student_name) {
                                                 temp_id = doc.id;
                                             }
                                         })
                                         db.collection("studentContent").doc(temp_id)
-                                        .update({
-                                            comment
-                                        })
-                                        .then(() => {
-                                            setCommentOpen(false)
-                                            console.log("Document successfully updated!");
-                                        })
+                                            .update({ comment }).then(() => {
+                                                setCommentOpen(false)
+                                                console.log("Document successfully updated!");
+                                            })
                                     });
                                 }}>שמור</Button>
                             </div>)
@@ -957,11 +1004,16 @@ const InternalContent = (props) => {
                 )
             });
             return (
-                <div className="internal_content">
-                    <h4> רשימת קורסים להצגת תכנים קבוצתיים</h4>
-                    <div className="container">
-                        <div className="row justify-content-start">
-                            {listOfCourses}
+                <div><div className="input-group rounded">
+                    <input type="search" className="form-control rounded mainLoginInput" placeholder=" &#61442; חיפוש לפי שם קורס" aria-label="Search"
+                        aria-describedby="search-addon" id="course_list_to_shared_conent" onChange={search_from_course_list_from_instructor} />
+                </div>
+                    <div className="internal_content">
+                        <h4> רשימת קורסים להצגת תכנים קבוצתיים</h4>
+                        <div className="container">
+                            <div className="row justify-content-start">
+                                {listOfCourses}
+                            </div>
                         </div>
                     </div>
                 </div>

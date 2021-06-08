@@ -18,6 +18,7 @@ const Login = props => {
     let setArrOfClasses = props.setArrOfClasses
     let setListOfCourses = props.setListOfCourses
     let setTotalCourseListFromAdmin = props.setTotalCourseListFromAdmin
+    let setTotalCourseListFromInstructor =props.setTotalCourseListFromInstructor
 
     //Submit button clicked
     const login_clicked = () => {
@@ -94,6 +95,10 @@ const Login = props => {
                                     querySnapshot.docs.forEach(element => {
                                         courses_arr_instructor.push(element.data().course_name)
                                     });
+                                    courses_arr_instructor.sort((course1, course2) => {   // sort the list by course name 
+                                        return course1 > course2 ? 1 : -1
+                                    })
+                                    setTotalCourseListFromInstructor(courses_arr_instructor)
                                     setListOfCourses(courses_arr_instructor)
                                     setContent("courses_list")
                                 })
