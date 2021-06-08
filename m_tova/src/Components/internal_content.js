@@ -182,13 +182,15 @@ const InternalContent = (props) => {
     //Submit courses button clicked from admin page
     const submit_course = (c_name_id, i_name_id, start_id, end_id) => {
 
-        const course_name = document.getElementById(c_name_id).value;
-        const instructor_name = document.getElementById(i_name_id).value;
+        let course_name = document.getElementById(c_name_id).value;
+        let instructor_name = document.getElementById(i_name_id).value;
         // const start_date = document.getElementById(start_id).value;
         // const end_date = document.getElementById(end_id).value;
-        const start_date = inputStartDate
-        const end_date = inputEndDate
-
+        let start_date = inputStartDate
+        let end_date = inputEndDate
+        
+        course_name = course_name.trim();
+        instructor_name = instructor_name.trim(); 
 
         if (course_name === "") {
             alert("חובה להכניס שם קורס")
@@ -201,6 +203,7 @@ const InternalContent = (props) => {
         }
 
         var course_already_exist = false;
+        var is_valid_instructor = false;
         const id = db.collection('stack_over').doc().id
 
         var newCourse = {
@@ -210,39 +213,70 @@ const InternalContent = (props) => {
             end_date
         };
 
-        db.collection("courses").get().then((querySnapshot) => {
+        db.collection("instructors").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                if (doc.data().course_name === course_name) {
-                    alert("קורס כבר קיים")
-                    course_already_exist = true;
+                if (doc.data().name === instructor_name) {
+                    is_valid_instructor = true;
                 }
             });
-            if (!course_already_exist) { // if course not exsist in the firebase
-                db.collection("courses").doc(id).set(newCourse).then(() => {
-                    let courses_arr = []
-                    courses_arr = props.list_of_courses
-                    courses_arr.push(newCourse)
-                    courses_arr.sort((course1, course2) => {   // sort by course name
-                        if (course1.course_name > course2.course_name)
-                            return 1
-                        else if (course1.course_name < course2.course_name)
-                            return -1
-                        return 0
-                    })
-                    props.setListOfCourses(courses_arr)
-                    props.setContent("courses_list_from_admin")
+            if(is_valid_instructor){
+                db.collection("courses").get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        if (doc.data().course_name === course_name) {
+                            alert("קורס כבר קיים")
+                            course_already_exist = true;
+                        }
+                    });
+                    if (!course_already_exist) { // if course not exist in the firebase
+                        db.collection("courses").doc(id).set(newCourse).then(() => {
+                            let courses_arr = []
+                            courses_arr = props.list_of_courses
+                            courses_arr.push(newCourse)
+                            courses_arr.sort((course1, course2) => {   // sort by course name
+                                if (course1.course_name > course2.course_name)
+                                    return 1
+                                else if (course1.course_name < course2.course_name)
+                                    return -1
+                                return 0
+                            })
+                            props.setListOfCourses(courses_arr)
+                            props.setContent("courses_list_from_admin")
+                        });
+                    }
                 });
             }
+            else
+                alert("מדריך אינו קיים")
         });
+        
+        
     }
     //Submit student button clicked from instructor page
     const submit_student = (name_id, pass_id, course_id, phone_id) => {
 
-        const name = document.getElementById(name_id).value;
-        const password = document.getElementById(pass_id).value;
-        const course = document.getElementById(course_id).value;
-        const phone_number = document.getElementById(phone_id).value;
+        let name = document.getElementById(name_id).value;
+        let password = document.getElementById(pass_id).value;
+        let course = document.getElementById(course_id).value;
+        let phone_number = document.getElementById(phone_id).value;
 
+        name = name.trim();
+        password = password.trim();
+        course = course.trim();
+        phone_number = phone_number.trim();
+
+
+        if (name === "") {
+            alert("חובה להכניס שם משתמש")
+            return;
+        }
+
+        if (password.length < 6 || password.length > 10) {
+            alert("הסיסמה חייבת להכיל בין 6 ל10 תווים")
+            return;
+        }
+
+        var student_already_exist = false;
+        var is_valid_course = false;
         const id = db.collection('stack_over').doc().id
 
         var newStudent = {
@@ -252,13 +286,34 @@ const InternalContent = (props) => {
             phone_number
         };
 
-        db.collection("users").doc(id).set(newStudent).then(() => {
-            console.log("Documents successfully written!");
-            let students_arr = []
-            students_arr = props.list_of_student
-            students_arr.push(newStudent)
-            props.setListOfStudent(students_arr)
-            props.setContent("student_list_from_instructor")
+        db.collection("users").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if (doc.data().name === name) {
+                    alert("שם משתמש כבר קיים")
+                    student_already_exist = true;
+                }
+            });
+            if(!student_already_exist){
+                db.collection("courses").get().then((querySnapshot) =>{
+                    querySnapshot.forEach((doc) => { 
+                    if(doc.data().course_name === course && doc.data().instructor_name === props.name)
+                        is_valid_course = true;
+                    })
+                    if(is_valid_course){
+                        db.collection("users").doc(id).set(newStudent).then(() => {
+                            console.log("Documents successfully written!");
+                            let students_arr = []
+                            students_arr = props.list_of_student
+                            students_arr.push(newStudent)
+                            props.setListOfStudent(students_arr)
+                            props.setContent("student_list_from_instructor")
+            
+                        });
+                    }
+                    else
+                        alert("קורס לא קיים")       
+                });    
+            }
         });
     }
 
