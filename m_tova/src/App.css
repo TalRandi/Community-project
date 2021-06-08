@@ -207,7 +207,7 @@ th {
 .internal_content {
   position: absolute;
   width: 60%;
-  margin: 0% 20%;
+  margin: 1% 20%;
   top: 28%;
   padding-bottom: 6%;
 }
@@ -226,7 +226,7 @@ th {
 .content_div {
   background-color: #b0aac0;
   margin: 2% 0%;
-  box-shadow: #a1a1a1 3px -1px 7px 3px;
+  box-shadow: #a1a1a1 3px -1px 10px 3px;
   border-radius: 10px;
   padding: 2% 3%;
   border: #614f54 solid 2px;
@@ -237,7 +237,7 @@ th {
     circle,
     rgb(153, 156, 184) 0%,
     rgb(121, 142, 165) 53%,
-    #b0aac0 100%
+    #b0aac0 100%,
   );
   cursor: pointer;
 }
@@ -295,6 +295,11 @@ h3 {
   background-color: #fafafa;
   color: #008cdd;
   cursor: pointer;
+  transition: background-color 1s;
+}
+.add-zone:hover{
+  background-color: #dbd9d9;
+  transition: background-color 1s;
 }
 .internal_content h4 {
   text-align: right;
@@ -316,6 +321,7 @@ aside ul {
 }
 .clickable_courses:hover {
   background-color: #7b8897;
+  transition: background-color 1s;
 }
 
 .title_add_item {
@@ -410,6 +416,7 @@ footer {
 }
 .shared_content_square:hover{
   background-color: #a19d9d;
+  transition: background-color 1s;
 }
 
 .course_list_to_shared_content{
@@ -422,10 +429,12 @@ footer {
   color: #546fc5;
   box-shadow: #4a4b4b 5px 5px 10px 2px;
   border-radius: 10px;
+  transition: background-color 1s;
 }
 .course_list_to_shared_content:hover{
   background-color: #918ba5;
   color: #203d9e;
+  transition: background-color 1s;
 }
 
 .input-group {

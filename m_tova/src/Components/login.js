@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react'
 import '../App.css';
 import logo from '../Images/m_tova_logo.jpeg';
 import { db, storage } from '../Firebase/firebase'
+// import * as emailjs from 'emailjs-com'
+// import{ init } from 'emailjs-com';
+// init("user_Y2qLV3DeopuCmHbIa8CFe");
 
 const Login = props => {
 
@@ -20,9 +23,31 @@ const Login = props => {
     let setTotalCourseListFromAdmin = props.setTotalCourseListFromAdmin
     let setTotalCourseListFromInstructor =props.setTotalCourseListFromInstructor
 
-    //Submit button clicked
-    const login_clicked = () => {
 
+    
+
+    // const test = (e) =>{
+
+    //     e.preventDefault(); // Prevents default refresh by the browser
+
+    //     emailjs.sendForm(
+    //         'gmail',
+    //         'template_cdtr97i',
+    //         '#login-form',
+    //         'user_Y2qLV3DeopuCmHbIa8CFe'
+    //         )
+    //         .then((result) => {
+    //             alert("Message Sent, We will get back to you shortly", result.text);
+    //         },
+    //         (error) => {
+    //             alert("An error occurred, Please try again", error.text);
+    //         });     
+    // } 
+
+    //Submit button clicked
+    const login_clicked = (e) => {
+        if(e.key !== 'Enter' && e.type !== 'click')
+            return
         //Invalid input
         if (name === '' || password === '') {
             alert('חובה למלא שם משתמש וסיסמא');
@@ -280,7 +305,7 @@ const Login = props => {
 
     return (
         <div>
-            <div id="login-form">
+            <div id="login-form" onKeyPress={login_clicked}>
                 <h3 id="login-title">התחברות</h3>
 
                 <div className="form-group">
@@ -297,6 +322,7 @@ const Login = props => {
                 </div>
 
                 <button onClick={login_clicked} type="submit" className="btn btn-dark btn-lg btn-block">התחבר</button>
+                {/* <button onClick={test} type="submit" className="btn btn-dark btn-lg btn-block">test</button> */}
                 <p className="forgot-password text-right">
                     <a href = "/">שכחתי סיסמא</a>
                 </p>
