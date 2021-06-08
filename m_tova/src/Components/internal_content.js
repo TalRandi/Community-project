@@ -117,22 +117,27 @@ const InternalContent = (props) => {
                 })
             })
     }
-
+  
     //Submit instructor button clicked from admin page
     const submit_instructor = (name_id, password_id, email_id, phone_id) => {
 
-        const name = document.getElementById(name_id).value;
-        const password = document.getElementById(password_id).value;
-        const email = document.getElementById(email_id).value;
-        const phone_number = document.getElementById(phone_id).value;
+        let name = document.getElementById(name_id).value;
+        let password = document.getElementById(password_id).value;
+        let email = document.getElementById(email_id).value;
+        let phone_number = document.getElementById(phone_id).value;
+
+        name = name.trim();
+        password = password.trim();
+        email = email.trim();
+        phone_number = phone_number.trim();
 
         if (name === "") {
             alert("חובה להכניס שם משתמש")
             return;
         }
 
-        if (password.length < 6) {
-            alert("הסיסמה חייבת להכיל לפחות 6 תווים")
+        if (password.length < 6 || password.length > 10) {
+            alert("הסיסמה חייבת להכיל בין 6 ל10 תווים")
             return;
         }
 
@@ -536,33 +541,37 @@ const InternalContent = (props) => {
                 )
             });
             return (
-                <div className="internal_content">
-                    {props.type === 0 &&   // if equal to 0 its a student access
-                        <Card className="custom_card">
-                            <ListGroup variant="flush" className="listGroup">
-                                <ListGroup.Item className="listGroup">שם הקורס: {props.course_name}</ListGroup.Item>
-                                <ListGroup.Item className="listGroup">תאריך התחלה: {props.start_date}</ListGroup.Item>
-                                <ListGroup.Item className="listGroup">תאריך סיום: {props.end_date}</ListGroup.Item>
-                            </ListGroup>
-                        </Card>
+                <div>
+                    {props.type !== 0 && 
+                    <button className="back" id={selected_course} onClick={() => { props.setContent("course_content") }}>חזור</button>
                     }
-                    <div className="list_students">
-                        <h1>רשימת משתתפי הקורס:</h1>
-                        <Table>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>שם הסטודנט</th>
-                                    <th>מספר פלאפון </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {listItems}
-                            </tbody>
-                        </Table>
+                    <div className="internal_content">
+                        {props.type === 0 &&   // if equal to 0 its a student access
+                            <Card className="custom_card">
+                                <ListGroup variant="flush" className="listGroup">
+                                    <ListGroup.Item className="listGroup">שם הקורס: {props.course_name}</ListGroup.Item>
+                                    <ListGroup.Item className="listGroup">תאריך התחלה: {props.start_date}</ListGroup.Item>
+                                    <ListGroup.Item className="listGroup">תאריך סיום: {props.end_date}</ListGroup.Item>
+                                </ListGroup>
+                            </Card>
+                        }
+                        <div className="list_students">
+                            <h1>רשימת משתתפי הקורס:</h1>
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>שם הסטודנט</th>
+                                        <th>מספר פלאפון </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {listItems}
+                                </tbody>
+                            </Table>
+                        </div>
                     </div>
                 </div>
-
             );
         //From instructor
         case "courses_list":

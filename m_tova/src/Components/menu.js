@@ -162,8 +162,8 @@ const Menu = (props) => {
     }
 
     const specific_course_student_list_from_admin =(e)=>{
-
-         let new_list_student = []
+        
+        let new_list_student = []
         db.collection("users").where("course", "==", course_name)
             .get()
             .then(querySnapshot => {
@@ -180,6 +180,7 @@ const Menu = (props) => {
                 setListOfStudent(new_list_student)
                 setContent(e.target.id)
             })
+            
     }
 
 
