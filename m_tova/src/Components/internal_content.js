@@ -130,6 +130,7 @@ const InternalContent = (props) => {
         password = password.trim();
         email = email.trim();
         phone_number = phone_number.trim();
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
         if (name === "") {
             alert("חובה להכניס שם משתמש")
@@ -138,6 +139,16 @@ const InternalContent = (props) => {
 
         if (password.length < 6 || password.length > 10) {
             alert("הסיסמה חייבת להכיל בין 6 ל10 תווים")
+            return;
+        }
+ 
+        if(!re.test(email)){
+            alert("כתובת אימייל לא חוקית")
+            return;
+        }
+
+        if(phone_number.length !== 10 || phone_number[0] !== "0" || phone_number[1] !== "5"){
+            alert("מספר פלאפון לא תקין")
             return;
         }
 
@@ -189,6 +200,7 @@ const InternalContent = (props) => {
         // let start_date = inputStartDate
         // let end_date = inputEndDate
 
+        let invalid_date = new Date(temp_start_date) > new Date(temp_end_date) ? true : false;
         course_name = course_name.trim();
         instructor_name = instructor_name.trim(); 
 
@@ -225,7 +237,12 @@ const InternalContent = (props) => {
                 end_date += "/"
             }
         }
-        
+
+        if(invalid_date){
+            alert("תאריך הסיום חייב להיות אחרי תאריך ההתחלה")
+            return
+        }
+
         var course_already_exist = false;
         var is_valid_instructor = false;
         const id = db.collection('stack_over').doc().id
@@ -296,6 +313,11 @@ const InternalContent = (props) => {
 
         if (password.length < 6 || password.length > 10) {
             alert("הסיסמה חייבת להכיל בין 6 ל10 תווים")
+            return;
+        }
+
+        if(phone_number.length !== 10 || phone_number[0] !== "0" || phone_number[1] !== "5"){
+            alert("מספר פלאפון לא תקין")
             return;
         }
 
