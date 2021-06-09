@@ -54,6 +54,10 @@ const Login = props => {
             return;
         }
         setContent("loading")
+
+
+        // let temp = name.trim()
+        // console.log("name is " ,name.length, "trim is ",temp.length);
         //Student
         db.collection("users").where("name", "==", name)
         .get()
@@ -309,11 +313,11 @@ const Login = props => {
                 <h3 id="login-title">התחברות</h3>
 
                 <div className="form-group">
-                    <input id="name-input" type="text" onChange={e => setName(e.target.value)} className="form-control" placeholder="שם משתמש" />
+                    <input id="name-input" type="text" onChange={e => setName(e.target.value.trim())} className="form-control" placeholder="שם משתמש" />
                 </div>
 
                 <div className="form-group">
-                    <input type="password" onChange={e => setPassword(e.target.value)} className="form-control" placeholder="סיסמא" />
+                    <input type="password" onChange={e => setPassword(e.target.value.trim())} className="form-control" placeholder="סיסמא" />
                 </div>
                 <div>
                     {/* <input className="radio-input" type="radio" name="student" checked={type === 0} onChange={() => setType(0)} />סטודנט
