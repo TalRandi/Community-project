@@ -211,6 +211,7 @@ function App() {
                         setTotalInstructorListFromAdmin={setTotalInstructorListFromAdmin}
                         setAddedButtonFromAdmin={setAddedButtonFromAdmin}
                         list_of_student={list_of_student}
+                        setAddedButtonFromAdmin={setAddedButtonFromAdmin}
                         />
                       <Footer />
                     </div>

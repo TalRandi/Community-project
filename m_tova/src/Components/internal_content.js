@@ -184,11 +184,11 @@ const InternalContent = (props) => {
 
         let course_name = document.getElementById(c_name_id).value;
         let instructor_name = document.getElementById(i_name_id).value;
-        // const start_date = document.getElementById(start_id).value;
-        // const end_date = document.getElementById(end_id).value;
-        let start_date = inputStartDate
-        let end_date = inputEndDate
-        
+        const temp_start_date = document.getElementById(start_id).value;
+        const temp_end_date = document.getElementById(end_id).value;
+        // let start_date = inputStartDate
+        // let end_date = inputEndDate
+
         course_name = course_name.trim();
         instructor_name = instructor_name.trim(); 
 
@@ -202,6 +202,30 @@ const InternalContent = (props) => {
             return;
         }
 
+        if(temp_start_date === ""){
+            alert("חובה להכניס תאריך התחלה")
+            return
+        }
+
+        if(temp_end_date === ""){
+            alert("חובה להכניס תאריך סיום")
+            return
+        }
+
+        let start_date_array = temp_start_date.split("-")
+        let end_date_array = temp_end_date.split("-") 
+        let start_date =""
+        let end_date = ""
+
+        for(let i = start_date_array.length-1 ; i >= 0;i--){
+            start_date += start_date_array[i]
+            end_date += end_date_array[i]
+            if(i !== 0){
+                start_date += "/"
+                end_date += "/"
+            }
+        }
+        
         var course_already_exist = false;
         var is_valid_instructor = false;
         const id = db.collection('stack_over').doc().id
@@ -799,7 +823,7 @@ const InternalContent = (props) => {
                         <input id="input_instructor_name" className="input_fields" type="text" placeholder="שם המדריך" required />
                         <div className="start-end_input">
                             <label className="date-label">תאריך התחלה:</label>
-                            <input type="date" id="input_start_date" className="input-date" selected={inputStartDate} onChange={date => {
+                            <input type="date" id="input_start_date" className="input-date" dateformat="dd/mm/yy" selected={inputStartDate} onChange={date => {
                                 let new_date = date.target.value.substring(8, 10) + "/" + date.target.value.substring(5, 7) + "/" + date.target.value.substring(0, 4)
                                 setInputStartDate(new_date)
                             }} required /><br />
@@ -851,7 +875,7 @@ const InternalContent = (props) => {
                                 <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list") }}>חזור</button>
                                 :
                                 <div>
-                                    <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin") }}>חזור</button>
+                                    <button className="back" id={selected_course} onClick={() => { props.setContent("courses_list_from_admin"); props.setAddedButtonFromAdmin(false) }}>חזור</button>
                                     <Button className="add_item shared_content" variant="btn btn-success" id={props.course_name} onClick={shared_content_from_instructor_and_admin}>תכנים קבוצתיים</Button>
                                 </div>
                             }
