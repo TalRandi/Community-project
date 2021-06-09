@@ -209,7 +209,6 @@ function App() {
                         setTotalCourseListFromAdmin={setTotalCourseListFromAdmin}
                         total_instructor_list_from_admin={total_instructor_list_from_admin}
                         setTotalInstructorListFromAdmin={setTotalInstructorListFromAdmin}
-                        setAddedButtonFromAdmin={setAddedButtonFromAdmin}
                         list_of_student={list_of_student}
                         setAddedButtonFromAdmin={setAddedButtonFromAdmin}
                         />

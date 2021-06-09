@@ -241,7 +241,7 @@ const Menu = (props) => {
                         <div className="menu-content">
                             <Button onClick={instructors_list} id="instructors_list">רשימת מדריכים</Button><br />
                             <Button onClick={courses_list_from_admin} id="courses_list_from_admin">רשימת קורסים</Button><br />
-                            <Button  id="courses_list_from_admin">הפקת דוחות</Button>
+                            {/* <Button  id="courses_list_from_admin">הפקת דוחות</Button> */}
                             {added_button_from_admin === true &&
                                 <div>
                                     <Button onClick={specific_course_student_list_from_admin} id="course_details">רשימת סטודנטים</Button>
