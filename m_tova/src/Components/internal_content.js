@@ -141,7 +141,6 @@ const InternalContent = (props) => {
             alert("הסיסמה חייבת להכיל בין 6 ל10 תווים")
             return;
         }
- 
         if(!re.test(email)){
             alert("כתובת אימייל לא חוקית")
             return;
@@ -293,21 +292,27 @@ const InternalContent = (props) => {
         
     }
     //Submit student button clicked from instructor page
-    const submit_student = (name_id, pass_id, course_id, phone_id) => {
+    const submit_student = (name_id, pass_id, course_id, phone_id,email_id) => {
 
         let name = document.getElementById(name_id).value;
         let password = document.getElementById(pass_id).value;
         let course = document.getElementById(course_id).value;
         let phone_number = document.getElementById(phone_id).value;
+        let email = document.getElementById(email_id).value;
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
         name = name.trim();
         password = password.trim();
         course = course.trim();
         phone_number = phone_number.trim();
-
+        email =  email.trim()
 
         if (name === "") {
             alert("חובה להכניס שם משתמש")
+            return;
+        }
+        if(!re.test(email)){
+            alert("כתובת אימייל לא חוקית")
             return;
         }
 
@@ -329,7 +334,8 @@ const InternalContent = (props) => {
             name,
             password,
             course,
-            phone_number
+            phone_number,
+            email
         };
 
         db.collection("users").get().then((querySnapshot) => {
@@ -867,7 +873,8 @@ const InternalContent = (props) => {
                         <input id="input_password" className="input_fields" type="text" placeholder="סיסמא" required />
                         <input id="input_course_name" className="input_fields" type="text" placeholder="שם הקורס" required />
                         <input id="input_phone" className="input_fields" type="text" placeholder="מספר פלאפון" required />
-                        <Button className="submit" onClick={() => submit_student("input_student_name", "input_password", "input_course_name", "input_phone")}>אישור</Button>
+                        <input id="input_email" className="input_fields" type="text" placeholder="דואר אלקטרוני" required />
+                        <Button className="submit" onClick={() => submit_student("input_student_name", "input_password", "input_course_name", "input_phone","input_email")}>אישור</Button>
                     </div>
                 </div>
             )

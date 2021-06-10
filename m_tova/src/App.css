@@ -16,6 +16,12 @@
 .btn {
   margin: 10% 0 5% 0;
 }
+.forgot-password:hover{
+  cursor: pointer;
+  font-weight: bold;
+  
+}
+
 #logo {
   position: absolute;
   top: 25%;

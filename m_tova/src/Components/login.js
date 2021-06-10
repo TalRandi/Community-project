@@ -13,7 +13,7 @@ const Login = props => {
 
     const [password, setPassword] = useState('');
     const [forgot_pass, setForgotPass] = useState(false)
-    const [reset_pass, setResetPass] = useState('')
+    const [reset_email, setResetEmail] = useState('')
     const [reset_pass_name, setResetPassName] = useState('')
 
     let setAuthorized = props.setAuthorized;
@@ -26,8 +26,18 @@ const Login = props => {
     let setListOfCourses = props.setListOfCourses
     let setTotalCourseListFromAdmin = props.setTotalCourseListFromAdmin
     let setTotalCourseListFromInstructor =props.setTotalCourseListFromInstructor
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-    const reset_password = (name, e) =>{
+    const reset_password = (name, e, email) =>{
+
+        if (name === "") {
+            alert("חובה להכניס שם משתמש")
+            return;
+        }
+        if(!re.test(email)){
+            alert("כתובת אימייל לא חוקית")
+            return;
+        }
 
         //Student
         db.collection("users").where("name", "==", name)
@@ -48,42 +58,62 @@ const Login = props => {
                                 return;
                             }
                             querySnapshot.docs.forEach(element => {
-                                setResetPass(element.data().password)
+                                if(element.data().email === email)
+                                    sendMail(e,element.data().password,element.data().email)
+                                else
+                                alert("המייל לא תואם את המייל במערכת")
                             });
                         })    
                     }
                     //Instructor
                     querySnapshot.docs.forEach(element => {
-                        setResetPass(element.data().password)
+                        if(element.data().email === email)
+                            sendMail(e,element.data().password,element.data().email)
+                        else
+                            alert("המייל לא תואם את המייל במערכת")
                     });
                 })
             }
             //Student
             querySnapshot.docs.forEach(element => {
-                setResetPass(element.data().password)
+                if(element.data().email === email)
+                    sendMail(e,element.data().password,element.data().email)
+                else
+                    alert("המייל לא תואם את המייל במערכת")
+                
+
             });
+
         })
-        console.log(reset_pass);
-        console.log(reset_pass_name);
-        
-        sendMail(e);
     }
 
-    const sendMail = (e) =>{
-       
+
+
+
+    const sendMail = (e,reset_pass,reset_email) =>{
+
+        let templateParams ={
+            from_name : reset_pass_name,
+            from_password : reset_pass,
+            from_email: reset_email
+        }
+
         e.preventDefault(); // Prevents default refresh by the browser
 
-        emailjs.sendForm(
+       
+        emailjs.send(
             'service_oui61z6',
             'template_cdtr97i',
-            '#forgot-pass',
+            templateParams,
             'user_Y2qLV3DeopuCmHbIa8CFe'
             )
             .then((result) => {
-                alert("Message Sent, We will get back to you shortly", result.text);
+                alert("המייל נשלח לכתובת המייל שהזנת", result.text);
+                window.location.reload(false);
+
             },
             (error) => {
-                alert("An error occurred, Please try again", error.text);
+                alert("קרתה שגיאה,נא נסה שנית", error.text);
             });     
     } 
 
@@ -241,15 +271,15 @@ const Login = props => {
                 </div>
 
                 <button onClick={login_clicked} type="submit" className="btn btn-dark btn-lg btn-block">התחבר</button>
-                {/* <button onClick={test} type="submit" className="btn btn-dark btn-lg btn-block">test</button> */}
                 <p className="forgot-password text-right" onClick = {() => setForgotPass(!forgot_pass)}>
                     שכחתי סיסמא
                 </p>
                 {forgot_pass && 
                     <form id = "forgot-pass">
-                        <input onChange= {(e) => {setResetPassName(e.target.value); }} name = "from_name" className="form-control" type="text" placeholder = "הכנס שם משתמש"/>
-                        <input id = "reset_pass_input" value = {reset_pass} onChange= {(e) => setResetPass(reset_pass)} name = "password" className="form-control" type="text" ></input>
-                        <Button className="btn btn-dark btn-lg btn-block" type="submit" onClick = {(e) => reset_password(reset_pass_name, e)}>שלח</Button>
+                        <div className="form-group"> <input onChange= {(e) => {setResetPassName(e.target.value); }} name = "from_name" className="form-control" type="text" placeholder = "הכנס שם משתמש"/></div>
+                        
+                        <div className="form-group"><input id = "reset_email_input"  onChange= {(e) => setResetEmail(e.target.value)} name = "email" className="form-control" type="text"placeholder ="הכנס כתובת מייל   " ></input></div> 
+                        <Button className="btn btn-dark btn-lg btn-block"  onClick = {(e) => reset_password(reset_pass_name, e,reset_email)}>שלח</Button>
                     </form>
                 }
             </div>
