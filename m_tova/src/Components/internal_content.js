@@ -936,7 +936,7 @@ const InternalContent = (props) => {
                     <div className="internal_content">
 
                         <h4 className="course_header">{props.course_name}</h4>
-                        <h4 className="class_header">שיעור: {current_class_number}</h4>
+                        <h4 className="class_header">שיעור {current_class_number}</h4>
                         <h4 className="right-align">תקציר השיעור :</h4>
                         <p className="right-align description">{class_description}</p>
                         {props.type !== 0 && <Button className="edit" onClick={() => { setEditOpen(!edit_open) }}>ערוך תקציר</Button>}

@@ -7,6 +7,7 @@ const HomeInstructor = (props) => {
             <NavBar 
                 setName = {props.setName}
                 setType = {props.setType}
+                type={props.type}
                 setCourseName = {props.setCourseName}
                 setPhoneNumber = {props.setPhoneNumber}
                 setEmail = {props.setEmail}

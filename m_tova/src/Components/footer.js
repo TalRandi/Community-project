@@ -7,7 +7,7 @@ const Footer = (props) => {
     return (
         <div>
             <footer>
-                <img id="small_logo_footer" src={logo} alt="" />
+            <a href="https://mtova.org.il"><img id="small_logo_footer" src={logo} alt="" ></img></a>
                 <MdPlace size={20}/>
                 <h6 className="footer-content">
                     משרד ראשי
