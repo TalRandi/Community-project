@@ -690,10 +690,11 @@ const InternalContent = (props) => {
                 )
             });
             return (
-                <div>  <div className="input-group rounded">
-                    <input type="search" className="form-control rounded mainLoginInput" placeholder=" &#61442; חיפוש לפי שם קורס" aria-label="Search"
-                        aria-describedby="search-addon" id="courses_list" onChange={search_from_course_list_from_instructor} />
-                </div>
+                <div>  
+                    <div className="input-group rounded">
+                        <input type="search" className="form-control rounded mainLoginInput" placeholder=" &#61442; חיפוש לפי שם קורס" aria-label="Search"
+                            aria-describedby="search-addon" id="courses_list" onChange={search_from_course_list_from_instructor} />
+                    </div>
                     <div className="internal_content">
                         <h4>רשימת קורסים</h4>
                         {listItemsCourses}
@@ -805,7 +806,6 @@ const InternalContent = (props) => {
                             aria-describedby="search-addon" onChange={search_from_course_list_from_admin} />
                     </div>
                     <div className="internal_content">
-
                         <Table >
                             <thead>
                                 <tr>

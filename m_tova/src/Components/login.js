@@ -258,32 +258,93 @@ const Login = props => {
     }, []);
 
     return (
-        <div>
-            <div id="login-form" onKeyPress={login_clicked}>
-                <h3 id="login-title">התחברות</h3>
+        // <div>
+        //     <div id="login-form" onKeyPress={login_clicked}>
+        //         <h3 id="login-title">התחברות</h3>
 
-                <div className="form-group">
-                    <input id="name-input" type="text" onChange={e => setName(e.target.value.trim())} className="form-control" placeholder="שם משתמש" />
-                </div>
+        //         <div className="form-group">
+        //             <input id="name-input" type="text" onChange={e => setName(e.target.value.trim())} className="form-control" placeholder="שם משתמש" />
+        //         </div>
 
-                <div className="form-group">
-                    <input type="password" onChange={e => setPassword(e.target.value.trim())} className="form-control" placeholder="סיסמא" />
-                </div>
+        //         <div className="form-group">
+        //             <input type="password" onChange={e => setPassword(e.target.value.trim())} className="form-control" placeholder="סיסמא" />
+        //         </div>
 
-                <button onClick={login_clicked} type="submit" className="btn btn-dark btn-lg btn-block">התחבר</button>
-                <p className="forgot-password text-right" onClick = {() => setForgotPass(!forgot_pass)}>
-                    שכחתי סיסמא
-                </p>
-                {forgot_pass && 
-                    <form id = "forgot-pass">
-                        <div className="form-group"> <input onChange= {(e) => {setResetPassName(e.target.value); }} name = "from_name" className="form-control" type="text" placeholder = "הכנס שם משתמש"/></div>
+        //         <button onClick={login_clicked} type="submit" className="btn btn-dark btn-lg btn-block">התחבר</button>
+        //         <p className="forgot-password text-right" onClick = {() => setForgotPass(!forgot_pass)}>
+        //             שכחתי סיסמא
+        //         </p>
+        //         {forgot_pass && 
+        //             <form id = "forgot-pass">
+        //                 <div className="form-group"> <input onChange= {(e) => {setResetPassName(e.target.value); }} name = "from_name" className="form-control" type="text" placeholder = "הכנס שם משתמש"/></div>
                         
-                        <div className="form-group"><input id = "reset_email_input"  onChange= {(e) => setResetEmail(e.target.value)} name = "email" className="form-control" type="text"placeholder ="הכנס כתובת מייל   " ></input></div> 
-                        <Button className="btn btn-dark btn-lg btn-block"  onClick = {(e) => reset_password(reset_pass_name, e,reset_email)}>שלח</Button>
-                    </form>
-                }
+        //                 <div className="form-group"><input id = "reset_email_input"  onChange= {(e) => setResetEmail(e.target.value)} name = "email" className="form-control" type="text"placeholder ="הכנס כתובת מייל   " ></input></div> 
+        //                 <Button className="btn btn-dark btn-lg btn-block"  onClick = {(e) => reset_password(reset_pass_name, e,reset_email)}>שלח</Button>
+        //             </form>
+        //         }
+        //     </div>
+        //     <img id="logo" src={logo} alt = ""/>
+
+        // </div>
+        <div>
+            <div className="container" id ="login-form" onKeyPress={login_clicked}>
+                <div className="row justify-content-start">
+                    <div className="col col-md-1 col-sm-12">
+                        <h3 className="right-align" id="login-title">התחברות</h3>
+                    </div>
+                </div>
+
+                <div className="row justify-content-start">
+                    <div className="col col-md-6 col-sm-12">
+                        <input id="name-input" type="text" onChange={e => setName(e.target.value.trim())} className="form-control" placeholder="שם משתמש" />
+                    </div>
+                </div>
+
+                <div className="row justify-content-start">
+                    <div className="col col-md-6 col-sm-12">
+                        <input type="password" onChange={e => setPassword(e.target.value.trim())} className="form-control" placeholder="סיסמא" />
+                    </div>
+                </div>
+
+                <div className="row justify-content-start">
+                    <div className="col col-md-6 col-sm-12">
+                        <button onClick={login_clicked} type="submit" className="btn btn-dark btn-lg btn-block">התחבר</button>
+                    </div>
+                </div>
+                <div className="row justify-content-start">
+                    <div className="col col-md-6 col-sm-12">
+                        <p className="forgot-password" onClick = {() => setForgotPass(!forgot_pass)}>
+                            שכחתי סיסמא
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    {forgot_pass && 
+                        <form id = "forgot-pass">
+                            <div className="row justify-content-start">
+                                <div className="col col-md-6 col-sm-12">
+                                    <input onChange= {(e) => {setResetPassName(e.target.value); }} name = "from_name" className="form-control" type="text" placeholder = "הכנס שם משתמש"/>
+                                </div>
+                            </div>
+                             
+                            <div className="row justify-content-start">
+                                <div className="col col-md-6 col-sm-12">
+                                    <input id = "reset_email_input"  onChange= {(e) => setResetEmail(e.target.value)} name = "email" className="form-control" type="text"placeholder ="הכנס כתובת מייל" ></input>
+                                </div>  
+                            </div> 
+                            
+                            <div className="row justify-content-start">
+                                <div className="col col-md-6 col-sm-12">
+                                    <Button className="btn btn-dark btn-lg btn-block"  onClick = {(e) => reset_password(reset_pass_name, e,reset_email)}>שלח</Button>
+                                </div> 
+                            </div> 
+                        </form>
+                    }
+                </div>
             </div>
-            <img id="logo" src={logo} alt = ""/>
+            <div className="row">
+                <img id="logo" src={logo} alt = ""/>
+            </div>
 
         </div>
     );
